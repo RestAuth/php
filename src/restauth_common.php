@@ -52,6 +52,7 @@ class RestAuthConnection {
 #		if( $body ) print( "Body: $body\n" );
 		
 		# initialize curl session
+#TODO: handle ssl
 		$curl_session = curl_init();
 		curl_setopt( $curl_session, CURLOPT_URL, $url );
 		curl_setopt( $curl_session, CURLOPT_PORT, $this->port );
@@ -73,6 +74,8 @@ class RestAuthConnection {
 		curl_setopt( $curl_session, CURLOPT_HTTPHEADER, $headers );
 		
 		$resp = curl_exec( $curl_session );
+
+# TODO: catch 400, 401, 403, 500
 
 		# parse response
 		$header_size = curl_getinfo( $curl_session, CURLINFO_HEADER_SIZE );
