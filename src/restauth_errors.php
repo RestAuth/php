@@ -53,4 +53,26 @@ class RestAuthResourceConflict extends RestAuthException {
 class RestAuthDataUnacceptable extends RestAuthException {
 }
 
+/**
+ * Superclass for exceptions related to access for this service.
+ */
+class RestAuthServiceAuthorizationException extends RestAuthException {
+}
+
+/**
+ * Thrown when the user/password does not match the registered service.
+ *
+ * On a protocol level, this corresponds to the HTTP status code 401.
+ */
+class RestAuthUnauthorized extends RestAuthServiceAuthorizationException {
+}
+
+/**
+ * Thrown when service authentication failed and is not possible from this host.
+ *
+ * On a protocol level, this corresponds to the HTTP status code 403.
+ */
+class RestAuthForbidden extends RestAuthServiceAuthorizationException {
+}
+
 ?>

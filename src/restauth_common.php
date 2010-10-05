@@ -9,8 +9,8 @@ class HttpResponse {
 	 * Constructor. 
 	 *
 	 * @param int $code The HTTP response code.
-	 * @param str $body The body of the HTTP response.
-	 * @param str $headers The headers of the HTTP response.
+	 * @param string $body The body of the HTTP response.
+	 * @param string $headers The headers of the HTTP response.
 	 */
 	function __construct( $code, $body, $headers ) {
 		$this->code = $code;
@@ -34,13 +34,24 @@ class HttpResponse {
  * An instance of this class represents a connection to a RestAuth service. 
  *
  * An instance of this class needs to be passed to any constructor of a
- * {@link RestAuthConnection} or their respective factory methods.
- *
- * Note that instantiating an object of this class does not invoke any network
- * connection by itself. Due to the statelessnes nature of HTTP i.e. an
- * unavailable service will only trigger an error when actually doing a request.
+ * {@link RestAuthResource} or the respective factory methods.
  */
 class RestAuthConnection {
+	/**
+	 * A simple constructor.
+	 *
+	 * Note that instantiating an object of this class does not invoke any network
+	 * connection by itself. Due to the statelessnes nature of HTTP i.e. an
+	 * unavailable service will only trigger an error when actually doing a request.
+	 *
+	 * @param string $host The hostname of the RestAuth service
+	 * @param int $port The port the RestAuth service listens on
+	 * @param string $user The service name to use for authenticating with RestAuth
+	 * @param string $password The password to use for authenticating with RestAuth.
+	 * @param boolean $use_ssl Wether or not to use SSL
+	 * @param string $cert The certificate to use when using SSL.
+	 * @todo SSL is not handled at all so far, the parameters for it are not used at all.
+	 */
 	function __construct( $host, $port, $user, $password, $use_ssl = true, $cert = '' ) {
 		$this->host = rtrim( $host, '/' );
 		$this->port = $port;
@@ -62,8 +73,8 @@ class RestAuthConnection {
 	 * service. This method is already invoked by the constructor, so you
 	 * only have to call it when they change for some reason.
 	 * 
-	 * @param str $user The username to use
-	 * @param str $password The password to use
+	 * @param string $user The username to use
+	 * @param string $password The password to use
 	 */
 	function set_credentials( $user, $password ) {
 		$this->user = $user;
@@ -81,8 +92,21 @@ class RestAuthConnection {
 	 * This method takes care of service authentication, encryption
 	 * and sets the Accept headers. 
 	 *
-	 * @todo Handle SSL
-	 * @todo Handl general response codes (400, 401, 403, 500)
+	 * @param string $method The HTTP request method. Either "GET", "POST",
+	 *	"PUT" or "DELETE".
+	 * @param string $url The URL to perform the request on. 
+	 * @param array $body The body for POST or PUT requests. This is assumed
+	 *	to be valid JSON.
+	 * @param array $headers Additional headers to send with this request.
+	 *
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 *	parsed. This should only happen with POST or PUT requests.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 * 	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	suffers from an internal error.
 	 */
 	function send( $method, $url, $body = '', $headers = array() ) {
 		# build final url
@@ -119,6 +143,15 @@ class RestAuthConnection {
 		# parse response
 		$header_size = curl_getinfo( $curl_session, CURLINFO_HEADER_SIZE );
 		$resp_code = curl_getinfo( $curl_session, CURLINFO_HTTP_CODE );
+
+		# handle error status codes
+		switch ( $resp_code ) {
+			case 400: throw new RestAuthBadRequest();
+			case 401: throw new RestAuthUnauthorized();
+			case 403: throw new RestAuthForbidden();
+			case 500: throw new RestAuthInternalServiceError();
+		}
+
 		$resp_headers = trim(substr( $resp, 0, $header_size ));
 		$resp_body = trim( substr( $resp, $header_size ) );
 		
@@ -132,13 +165,17 @@ class RestAuthConnection {
 	 * method internally calls the {@link RestAuthConnection::send() send}
 	 * function to perform service authentication.
 	 * 
-	 * @param str $url The URL to perform the GET request on. The URL must
+	 * @param string $url The URL to perform the GET request on. The URL must
 	 * 	not include a query string.
 	 * @param array $params Optional query parameters for this request.
 	 * @param array $headers Additional headers to send with this request.
 	 *
-	 * @throws BadRequest When the RestAuth service returns HTTP status code 400
-	 * @throws InternalServerError When the RestAuth service returns HTTP status code 500
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 * 	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	suffers from an internal error.
 	 */
 	function get( $url, $params = array(), $headers = array() ) {
 		$url = $this->sanitize_url( $url );
@@ -156,13 +193,19 @@ class RestAuthConnection {
 	 * method internally calls the {@link RestAuthConnection::send() send}
 	 * function to perform service authentication.
 	 * 
-	 * @param str $url The URL to perform the GET request on. The URL must
+	 * @param string $url The URL to perform the GET request on. The URL must
 	 * 	not include a query string.
 	 * @param array $params Optional query parameters for this request.
 	 * @param array $headers Additional headers to send with this request.
 	 *
-	 * @throws BadRequest When the RestAuth service returns HTTP status code 400
-	 * @throws InternalServerError When the RestAuth service returns HTTP status code 500
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 *	parsed. This should only happen with POST or PUT requests.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 * 	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	suffers from an internal error.
 	 */
 	function post( $url, $params = array(), $headers = array() ) {
 		$url = $this->sanitize_url( $url );
@@ -178,7 +221,7 @@ class RestAuthConnection {
 	 * method internally calls the {@link RestAuthConnection::send() send}
 	 * function to perform service authentication.
 	 * 
-	 * @param str $url The URL to perform the GET request on. The URL must
+	 * @param string $url The URL to perform the GET request on. The URL must
 	 * 	not include a query string.
 	 * @param array $params Optional query parameters for this request.
 	 * @param array $headers Additional headers to send with this request.
@@ -200,12 +243,16 @@ class RestAuthConnection {
 	 * method internally calls the {@link RestAuthConnection::send() send}
 	 * function to perform service authentication.
 	 * 
-	 * @param str $url The URL to perform the GET request on. The URL must
+	 * @param string $url The URL to perform the GET request on. The URL must
 	 * 	not include a query string.
 	 * @param array $headers Additional headers to send with this request.
 	 *
-	 * @throws BadRequest When the RestAuth service returns HTTP status code 400
-	 * @throws InternalServerError When the RestAuth service returns HTTP status code 500
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 * 	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	suffers from an internal error.
 	 */
 	function delete( $url, $headers = array() ) {
 		$url = $this->sanitize_url( $url );
@@ -217,9 +264,9 @@ class RestAuthConnection {
 	 * Sanitize the path segment of an URL. Makes sure it ends with a slash,
 	 * contains no double slashes and performs character escaping.
 	 *
-	 * @param str $url The path segment of an URL. Please note that this
+	 * @param string $url The path segment of an URL. Please note that this
 	 * 	should not contain the query part ("?...") or the domain.
-	 * @return str The sanitized path segmet of an URL
+	 * @return string The sanitized path segmet of an URL
 	 * @todo: rename to sanitize_path
 	 */
 	function sanitize_url( $url ) {
@@ -252,15 +299,18 @@ abstract class RestAuthResource {
 	 * all parameters (otherwise unmodified) to 
 	 * {@link RestAuthConnection::get()}.
 	 *
-	 * @param str $url The URL to perform the GET request on. The URL must
+	 * @param string $url The URL to perform the GET request on. The URL must
 	 * 	not include a query string.
 	 * @param array $params Optional query parameters for this request.
 	 * @param array $headers Additional headers to send with this request.
-	 * @param str $prefix Modify the prefix used for this request
+	 * @param string $prefix Modify the prefix used for this request
 	 *
-	 * @throws BadRequest When the RestAuth service returns HTTP status code 400
-	 * @throws InternalServerError When the RestAuth service returns HTTP status code 500
-	 */
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 * 	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	suffers from an internal error.
 	 */
 	function get( $url, $params = array(), $headers = array(), $prefix = '' ) {
 		if ( $prefix ) {
@@ -280,14 +330,20 @@ abstract class RestAuthResource {
 	 * all parameters (otherwise unmodified) to 
 	 * {@link RestAuthConnection::post()}.
 	 *
-	 * @param str $url The URL to perform the POST request on. The URL must
+	 * @param string $url The URL to perform the POST request on. The URL must
 	 * 	not include a query string.
 	 * @param array $params Optional query parameters for this request.
 	 * @param array $headers Additional headers to send with this request.
-	 * @param str $prefix Modify the prefix used for this request
+	 * @param string $prefix Modify the prefix used for this request
 	 *
-	 * @throws BadRequest When the RestAuth service returns HTTP status code 400
-	 * @throws InternalServerError When the RestAuth service returns HTTP status code 500
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 *	parsed. This should only happen with POST or PUT requests.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 * 	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	suffers from an internal error.
 	 */
 	function post( $url, $params = array(), $headers = array(), $prefix = '' ) {
 		if ( $prefix ) {
@@ -307,14 +363,20 @@ abstract class RestAuthResource {
 	 * all parameters (otherwise unmodified) to 
 	 * {@link RestAuthConnection::put()}.
 	 *
-	 * @param str $url The URL to perform the PUT request on. The URL must
+	 * @param string $url The URL to perform the PUT request on. The URL must
 	 * 	not include a query string.
 	 * @param array $params Optional query parameters for this request.
 	 * @param array $headers Additional headers to send with this request.
-	 * @param str $prefix Modify the prefix used for this request
+	 * @param string $prefix Modify the prefix used for this request
 	 *
-	 * @throws BadRequest When the RestAuth service returns HTTP status code 400
-	 * @throws InternalServerError When the RestAuth service returns HTTP status code 500
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 *	parsed. This should only happen with POST or PUT requests.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 * 	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	suffers from an internal error.
 	 */
 	function put( $url, $params = array(), $headers = array(), $prefix = '' ) {
 		if ( $prefix ) {
@@ -334,13 +396,17 @@ abstract class RestAuthResource {
 	 * all parameters (otherwise unmodified) to 
 	 * {@link RestAuthConnection::get()}.
 	 *
-	 * @param str $url The URL to perform the DELETE request on. The URL 
+	 * @param string $url The URL to perform the DELETE request on. The URL 
 	 *	must not include a query string.
 	 * @param array $headers Additional headers to send with this request.
-	 * @param str $prefix Modify the prefix used for this request
+	 * @param string $prefix Modify the prefix used for this request
 	 *
-	 * @throws BadRequest When the RestAuth service returns HTTP status code 400
-	 * @throws InternalServerError When the RestAuth service returns HTTP status code 500
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 * 	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	suffers from an internal error.
 	 */
 	function delete( $url, $headers = array(), $prefix = '' ) {
 		if ( $prefix ) {
