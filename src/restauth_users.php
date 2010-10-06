@@ -1,28 +1,42 @@
 <?php
+/**
+ * @package php-restauth
+ */
 
+/**
+ * General includes
+ */
 require_once( 'restauth_errors.php' );
 require_once( 'restauth_common.php' );
 
 /**
  * Thrown when a user queried is not found.
+ * 
+ * @package php-restauth
  */
 class RestAuthUserNotFound extends RestAuthResourceNotFound {
 }
 
 /**
  * Thrown when a property queried is not found.
+ * 
+ * @package php-restauth
  */
 class RestAuthPropertyNotFound extends RestAuthResourceNotFound {
 }
 
 /**
  * Thrown when a user is supposed to be created but already exists.
+ * 
+ * @package php-restauth
  */
 class RestAuthUserExists extends RestAuthResourceConflict {
 }
 
 /**
  * Thrown when a property is supposed to be created but already exists.
+ * 
+ * @package php-restauth
  */
 class RestAuthPropertyExists extends RestAuthResourceConflict {
 }
@@ -34,6 +48,10 @@ class RestAuthPropertyExists extends RestAuthResourceConflict {
  * @param string $name The name of this user.
  * @param string $password The password for the new user
  * @throws {@link RestAuthUserExists} If the user already exists.
+ * @throws {@link RestAuthBadRequest} When the request body could not be parsed.
+ * @throws {@link RestAuthUnauthorized} When service authentication failed.
+ * @throws {@link RestAuthForbidden} When service authentication failed and
+ * 	authorization is not possible from this host.
  * @throws {@link RestAuthDataUnacceptable} When username or password is invalid.
  * @throws {@link RestAuthInternalServerError} When the RestAuth service returns
  *	HTTP status code 500
@@ -57,6 +75,10 @@ function RestAuthCreateUser( $conn, $name, $password ) {
  * @param RestAuthConnection $conn The connection to a RestAuth service.
  * @param string $name The name of this user.
  * @throws {@link RestAuthUserNotFound} If the user does not exist in RestAuth.
+ * @throws {@link RestAuthBadRequest} When the request body could not be parsed.
+ * @throws {@link RestAuthUnauthorized} When service authentication failed.
+ * @throws {@link RestAuthForbidden} When service authentication failed and
+ * 	authorization is not possible from this host.
  * @throws {@link RestAuthInternalServerError} When the RestAuth service returns
  *	HTTP status code 500
  * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -75,6 +97,10 @@ function RestAuthGetUser( $conn, $name ) {
  * Factory method that gets all users known to RestAuth.
  *
  * @param RestAuthConnection $conn The connection to a RestAuth service.
+ * @throws {@link RestAuthBadRequest} When the request body could not be parsed.
+ * @throws {@link RestAuthUnauthorized} When service authentication failed.
+ * @throws {@link RestAuthForbidden} When service authentication failed and
+ * 	authorization is not possible from this host.
  * @throws {@link RestAuthInternalServerError} When the RestAuth service returns
  *	HTTP status code 500
  * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -99,6 +125,8 @@ function RestAuthGetAllUsers( $conn ) {
  * @see RestAuthGetUser
  * @see RestAuthGetAllUsers
  * @see RestAuthCreateUser
+ * 
+ * @package php-restauth
  */
 class RestAuthUser extends RestAuthResource {
 	/**
