@@ -1,8 +1,16 @@
 <?php
 
 /**
+ * This file contains code related to HTTP handling.
+ * 
+ * @package php-restauth
+ */
+
+/**
  * A standard HTTP response that also parses headers and makes them conveniently
  * available as an array.
+ * 
+ * @package php-restauth
  */
 class HttpResponse {
 	/**
@@ -35,6 +43,8 @@ class HttpResponse {
  *
  * An instance of this class needs to be passed to any constructor of a
  * {@link RestAuthResource} or the respective factory methods.
+ * 
+ * @package php-restauth
  */
 class RestAuthConnection {
 	/**
@@ -267,7 +277,7 @@ class RestAuthConnection {
 	 * @param string $url The path segment of an URL. Please note that this
 	 * 	should not contain the query part ("?...") or the domain.
 	 * @return string The sanitized path segmet of an URL
-	 * @todo: rename to sanitize_path
+	 * @todo rename to sanitize_path
 	 */
 	function sanitize_url( $url ) {
 		if ( substr( $url, -1 ) !== '/' ) {
@@ -289,6 +299,8 @@ class RestAuthConnection {
 /**
  * Superclass for {@link RestAuthUser} and {@link RestAuthGroup} objects.
  * Exists to wrap http requests with the prefix of the given resource.
+ * 
+ * @package php-restauth
  */
 abstract class RestAuthResource {
 	/**
