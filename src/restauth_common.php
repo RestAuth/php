@@ -159,7 +159,7 @@ class RestAuthConnection {
 			case 400: throw new RestAuthBadRequest();
 			case 401: throw new RestAuthUnauthorized();
 			case 403: throw new RestAuthForbidden();
-			case 500: throw new RestAuthInternalServiceError();
+			case 500: throw new RestAuthInternalServerError();
 		}
 
 		$resp_headers = trim(substr( $resp, 0, $header_size ));
