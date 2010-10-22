@@ -233,7 +233,8 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
 	 */
 	function get_properties() {
-		$resp = $this->get( $this->name, array(), array(), '/userprops/' );
+		$url = "$this->name/props/";
+		$resp = $this->get( $url );
 		
 		switch ( $resp->code ) {
 			case 200:
@@ -265,8 +266,9 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
 	 */
 	function create_property( $name, $value ) {
+		$url = "$this->name/props/";
 		$params = array( 'prop' => $name, 'value' =>$value );
-		$resp = $this->post( $this->name, $params, array(), '/userprops/' );
+		$resp = $this->post( $url, $params );
 		switch ( $resp->code ) {
 			case 200: return;
 			case 404: throw new RestAuthUserNotFound();
@@ -293,9 +295,9 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
 	 */
 	function set_property( $name, $value ) {
-		$url = $this->name . '/' . $name;
+		$url = "$this->name/props/$name";
 		$params = array( 'value' => $value );
-		$resp = $this->put( $url, $params, array(), '/userprops/' );
+		$resp = $this->put( $url, $params );
 		switch ( $resp->code ) {
 			case 200: return;
 			case 404: throw new RestAuthUserNotFound();
@@ -317,8 +319,8 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
 	 */
 	function get_property( $name ) {
-		$url = $this->name . '/' . $name;
-		$resp = $this->get( $url, array(), array(), '/userprops/' );
+		$url = "$this->name/props/$name";
+		$resp = $this->get( $url );
 
 		switch ( $resp->code ) {
 			case 200:
@@ -349,8 +351,8 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
 	 */
 	function del_property( $name ) {
-		$url = $this->name . '/' . $name;
-		$resp = $this->delete( $url, array(), '/userprops/' );
+		$url = "$this->name/props/$name";
+		$resp = $this->delete( $url );
 
 		switch ( $resp->code ) {
 			case 200: return;
