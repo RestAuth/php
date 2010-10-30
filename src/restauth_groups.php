@@ -126,7 +126,7 @@ class RestAuthGroup extends RestAuthResource {
 	 * @param RestAuthConnection $conn A connection to a RestAuth service.
 	 * @param string $name The name of the new group.
 	 */
-	function __construct( $conn, $name ) {
+	public function __construct( $conn, $name ) {
 		$this->prefix = '/groups/';
 		$this->conn = $conn;
 		$this->name = $name;
@@ -148,7 +148,7 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	function get_members( $recursive = true ) {
+	public function get_members( $recursive = true ) {
 		$params = array();
 		if ( ! $recursive )
 			$params['nonrecursive'] = 1;
@@ -184,7 +184,7 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	function add_user( $user, $autocreate = true ) {
+	public function add_user( $user, $autocreate = true ) {
 		$params = array( 'user' => $user->name );
 		if ( $autocreate )
 			$params['autocreate'] = 1;
@@ -223,7 +223,7 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	function add_group( $group, $autocreate = true ) {
+	public function add_group( $group, $autocreate = true ) {
 		$params = array( 'group' => $group->name );
 		if ( $autocreate )
 			$params['autocreate'] = 1;
@@ -259,7 +259,7 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	function is_member( $user, $recursive = true ) {
+	public function is_member( $user, $recursive = true ) {
 		$params = array();
 		if ( ! $recursive )
 			$params['nonrecursive'] = 1;
@@ -296,7 +296,7 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	function remove() {
+	public function remove() {
 		$resp = $this->_delete( $this->name );
 		switch ( $resp->code ) {
 			case 200: return;
@@ -319,7 +319,7 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	function remove_user( $user ) {
+	public function remove_user( $user ) {
 		$url = $this->name . '/' . $user->name;
 		$resp = $this->_delete( $url );
 

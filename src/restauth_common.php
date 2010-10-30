@@ -20,11 +20,11 @@ class HttpResponse {
 	 * @param string $body The body of the HTTP response.
 	 * @param string $headers The headers of the HTTP response.
 	 */
-	function __construct( $code, $body, $headers ) {
+	public function __construct( $code, $body, $headers ) {
 		$this->code = $code;
 		$this->body = $body;
-
 		$this->headers = array();
+
 		foreach( explode( "\n", $headers ) as $header ) {
 			$header = trim( $header );
 			$pos = strpos( $header, ':' );
@@ -62,7 +62,7 @@ class RestAuthConnection {
 	 * @param string $cert The certificate to use when using SSL.
 	 * @todo SSL is not handled at all so far, the parameters for it are not used at all.
 	 */
-	function __construct( $host, $port, $user, $password, $use_ssl = true, $cert = '' ) {
+	public function __construct( $host, $port, $user, $password, $use_ssl = true, $cert = '' ) {
 		$this->host = rtrim( $host, '/' );
 		$this->port = $port;
 		$this->use_ssl = $use_ssl;
@@ -86,7 +86,7 @@ class RestAuthConnection {
 	 * @param string $user The username to use
 	 * @param string $password The password to use
 	 */
-	function set_credentials( $user, $password ) {
+	public function set_credentials( $user, $password ) {
 		$this->user = $user;
 		$this->password = $password;
 		$this->auth_field = $user . ':' . $password;
@@ -118,7 +118,7 @@ class RestAuthConnection {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function send( $method, $url, $body = '', $headers = array() ) {
+	public function send( $method, $url, $body = '', $headers = array() ) {
 		# build final url
 		$url = $this->base_url . $url;
 
@@ -187,7 +187,7 @@ class RestAuthConnection {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function get( $url, $params = array(), $headers = array() ) {
+	public function get( $url, $params = array(), $headers = array() ) {
 		$url = $this->sanitize_url( $url );
 
 		if ( $params ) {
@@ -217,7 +217,7 @@ class RestAuthConnection {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function post( $url, $params = array(), $headers = array() ) {
+	public function post( $url, $params = array(), $headers = array() ) {
 		$url = $this->sanitize_url( $url );
 
 		$headers[] = 'Content-Type: application/json';
@@ -239,7 +239,7 @@ class RestAuthConnection {
 	 * @throws BadRequest When the RestAuth service returns HTTP status code 400
 	 * @throws InternalServerError When the RestAuth service returns HTTP status code 500
 	 */
-	function put( $url, $params = array(), $headers = array() ) {
+	public function put( $url, $params = array(), $headers = array() ) {
 		$url = $this->sanitize_url( $url );
 
 		$headers[] = 'Content-Type: application/json';
@@ -264,7 +264,7 @@ class RestAuthConnection {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function delete( $url, $headers = array() ) {
+	public function delete( $url, $headers = array() ) {
 		$url = $this->sanitize_url( $url );
 
 		return $this->send( 'DELETE', $url, NULL, $headers );
@@ -279,7 +279,7 @@ class RestAuthConnection {
 	 * @return string The sanitized path segmet of an URL
 	 * @todo rename to sanitize_path
 	 */
-	function sanitize_url( $url ) {
+	public function sanitize_url( $url ) {
 		if ( substr( $url, -1 ) !== '/' ) {
 			$url .= '/';
 		}
@@ -324,7 +324,7 @@ abstract class RestAuthResource {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function _get( $url, $params = array(), $headers = array() ) {
+	protected function _get( $url, $params = array(), $headers = array() ) {
 		$url = static::prefix . $url;
 		return $this->conn->get( $url, $params, $headers );
 	}
@@ -352,7 +352,7 @@ abstract class RestAuthResource {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function _post( $url, $params = array(), $headers = array() ) {
+	protected function _post( $url, $params = array(), $headers = array() ) {
 		$url = static::prefix . $url;
 		return $this->conn->post( $url, $params, $headers );
 	}
@@ -380,7 +380,7 @@ abstract class RestAuthResource {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function _put( $url, $params = array(), $headers = array() ) {
+	protected function _put( $url, $params = array(), $headers = array() ) {
 		$url = static::prefix . $url;
 		return $this->conn->put( $url, $params, $headers );
 	}
@@ -405,7 +405,7 @@ abstract class RestAuthResource {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function _delete( $url, $headers = array() ) {
+	protected function _delete( $url, $headers = array() ) {
 		return $this->conn->delete( static::prefix . $url, $headers );
 	}
 }
