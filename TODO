@@ -1,5 +1,1 @@
-* Catch 400, 401, 403, 500 response codes
-* Handle SSL
 * Get more information into exceptions
-* Write phpdoc
-* do not use libcurl?
