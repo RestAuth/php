@@ -55,8 +55,8 @@ class RestAuthGroup extends RestAuthResource {
 		$resp = $conn->post( '/groups/', array( 'group' => $name ) );
 		switch ( $resp->code ) {
 			case 201: return new RestAuthGroup( $conn, $name );
-			case 409: throw new RestAuthGroupExists();
-			default: throw new RestAuthUnknownStatus();
+			case 409: throw new RestAuthGroupExists( $resp );
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -116,7 +116,7 @@ class RestAuthGroup extends RestAuthResource {
 					$groups[] = new RestAuthGroup( $conn, $groupname );
 				}
 				return $groups;
-			default: throw new RestAuthUnknownStatus();
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -161,8 +161,8 @@ class RestAuthGroup extends RestAuthResource {
 					$users[] = new RestAuthUser( $this->conn, $username );
 				}
 				return $users;
-			case 404: throw new RestAuthGroupNotFound();
-			default: throw new RestAuthUnknownStatus();
+			case 404: throw new RestAuthGroupNotFound( $resp );
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -194,14 +194,14 @@ class RestAuthGroup extends RestAuthResource {
 			case 200: return;
 			case 404: switch( $resp->headers['Resource'] ) {
 				case 'User':
-					throw new RestAuthUserNotFound();
+					throw new RestAuthUserNotFound( $resp );
 				case 'Group': 
-					throw new RestAuthGroupNotFound();
+					throw new RestAuthGroupNotFound( $resp );
 				default: 
-					throw new RestAuthException(
+					throw new RestAuthBadResponse( $resp,
 						"Received 404 without Resource header" );
 				}
-			default: throw new RestAuthUnknownStatus();
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -233,12 +233,12 @@ class RestAuthGroup extends RestAuthResource {
 			case 200: return;
 			case 404: switch( $resp->headers['Resource'] ) {
 				case 'Group': 
-					throw new RestAuthGroupNotFound();
+					throw new RestAuthGroupNotFound( $resp );
 				default: 
-					throw new RestAuthException(
+					throw new RestAuthBadResponse( $resp,
 						"Received 404 without Resource header" );
 				}
-			default: throw new RestAuthUnknownStatus();
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -272,15 +272,15 @@ class RestAuthGroup extends RestAuthResource {
 			case 404:
 				switch( $resp->headers['Resource'] ) {
 					case 'User':
-						throw new RestAuthUserNotFound();
+						throw new RestAuthUserNotFound( $resp );
 					case 'Group': 
-						throw new RestAuthGroupNotFound();
+						throw new RestAuthGroupNotFound( $resp );
 					default: 
-						throw new RestAuthException(
+						throw new RestAuthBadResponse( $resp,
 							"Received 404 without Resource header" );
 				}
 			default:
-				throw new RestAuthUnknownStatus();
+				throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -300,8 +300,8 @@ class RestAuthGroup extends RestAuthResource {
 		$resp = $this->_delete( $this->name );
 		switch ( $resp->code ) {
 			case 200: return;
-			case 404: throw new RestAuthGroupNotFound();
-			default: throw new RestAuthUnknownStatus();
+			case 404: throw new RestAuthGroupNotFound( $resp );
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -328,15 +328,15 @@ class RestAuthGroup extends RestAuthResource {
 			case 404:
 				switch( $resp->headers['Resource'] ) {
 					case 'User':
-						throw new RestAuthUserNotFound();
+						throw new RestAuthUserNotFound( $resp );
 					case 'Group': 
-						throw new RestAuthGroupNotFound();
+						throw new RestAuthGroupNotFound( $resp );
 					default: 
-						throw new RestAuthException(
+						throw new RestAuthBadResponse( $resp,
 							"Received 404 without Resource header" );
 				}
 			default:
-				throw new RestAuthUnknownStatus();
+				throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 }

@@ -77,9 +77,9 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $conn->post( '/users/', $params );
 		switch ( $resp->code ) {
 			case 201: return new RestAuthUser( $conn, $name );
-			case 409: throw new RestAuthUserExists();
-			case 412: throw new RestAuthDataUnacceptable();
-			default:  throw new RestAuthUnknownStatus();
+			case 409: throw new RestAuthUserExists( $resp );
+			case 412: throw new RestAuthDataUnacceptable( $resp );
+			default:  throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -108,8 +108,8 @@ class RestAuthUser extends RestAuthResource {
 
 		switch ( $resp->code ) {
 			case 200: return new RestAuthUser( $conn, $name );
-			case 404: throw new RestAuthUserNotFound();
-			default: throw new RestAuthUnknownStatus();
+			case 404: throw new RestAuthUserNotFound( $resp );
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -138,7 +138,7 @@ class RestAuthUser extends RestAuthResource {
 					$response[] = new RestAuthUser( $conn, $name );
 				}
 				return $response;
-			default: throw new RestAuthUnknownStatus();
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -178,8 +178,8 @@ class RestAuthUser extends RestAuthResource {
 
 		switch ( $resp->code ) {
 			case 200: return;
-			case 404: throw new RestAuthUserNotFound();
-			default: throw new RestAuthUnknownStatus();
+			case 404: throw new RestAuthUserNotFound( $resp );
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -207,7 +207,7 @@ class RestAuthUser extends RestAuthResource {
 		switch ( $resp->code ) {
 			case 200: return true;
 			case 404: return false;
-			default: throw new RestAuthUnknownStatus();
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -227,8 +227,8 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $this->_delete( $this->name );
 		switch ( $resp->code ) {
 			case 200: return;
-			case 404: throw new RestAuthUserNotFound();
-			default: throw new RestAuthUnknownStatus();
+			case 404: throw new RestAuthUserNotFound( $resp );
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -256,8 +256,8 @@ class RestAuthUser extends RestAuthResource {
 			case 200:
 				$props = (array) json_decode( $resp->body );
 				return $props;
-			case 404: throw new RestAuthUserNotFound();
-			default: throw new RestAuthUnknownStatus();
+			case 404: throw new RestAuthUserNotFound( $resp );
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 	
@@ -284,8 +284,8 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $this->_put( $url, $params );
 		switch ( $resp->code ) {
 			case 200: return;
-			case 404: throw new RestAuthUserNotFound();
-			default: throw new RestAuthUnknownStatus();
+			case 404: throw new RestAuthUserNotFound( $resp );
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -317,9 +317,9 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $this->_post( $url, $params );
 		switch ( $resp->code ) {
 			case 200: return;
-			case 404: throw new RestAuthUserNotFound();
-			case 409: throw new RestAuthPropertyExists();
-			default: throw new RestAuthUnknownStatus();
+			case 404: throw new RestAuthUserNotFound( $resp );
+			case 409: throw new RestAuthPropertyExists( $resp );
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -351,13 +351,13 @@ class RestAuthUser extends RestAuthResource {
 			case 404:
 				switch( $resp->headers['Resource'] ) {
 					case 'User':
-						throw new RestAuthUserNotFound();
+						throw new RestAuthUserNotFound( $resp );
 					case 'Property':
-						throw new RestAuthPropertyNotFound();
+						throw new RestAuthPropertyNotFound( $resp );
 				}
-				throw new RestAuthException(
+				throw new RestAuthBadResponse( $resp,
 					"Received 404 without Resource header" );
-			default: throw new RestAuthUnknownStatus();
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 
@@ -380,8 +380,8 @@ class RestAuthUser extends RestAuthResource {
 
 		switch ( $resp->code ) {
 			case 200: return;
-			case 404: throw new RestAuthUserNotFound();
-			default: throw new RestAuthUnknownStatus();
+			case 404: throw new RestAuthUserNotFound( $resp );
+			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
 }
