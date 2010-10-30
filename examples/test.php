@@ -4,38 +4,38 @@ require_once( 'restauth.php' );
 $conn = new RestAuthConnection( 'localhost', 8000, 'vowi', 'vowi', false );
 
 # verify initial state:
-$all_users = RestAuthGetAllUsers( $conn );
+$all_users = RestAuthUser::get_all( $conn );
 if ( count( $all_users ) != 0 )
 	die( "Error: ".count($all_users)." left over users!" );
 
-$all_groups = RestAuthGetAllGroups( $conn );
+$all_groups = RestAuthGroup::get_all( $conn );
 if ( count( $all_groups ) != 0 )
 	die( "Error: Left over groups!" );
 
 # do some user testing:
-$user0 = RestAuthCreateUser( $conn, 'user0', 'password0' );
-$user1 = RestAuthCreateUser( $conn, 'user1', 'password1' );
-$user2 = RestAuthCreateUser( $conn, 'user2', 'password2' );
-$user3 = RestAuthCreateUser( $conn, 'user3', 'password3' );
-$user4 = RestAuthCreateUser( $conn, 'user4', 'password4' );
-$user5 = RestAuthCreateUser( $conn, 'user5', 'password5' );
-$user6 = RestAuthCreateUser( $conn, 'user6', 'password6' );
-$user7 = RestAuthCreateUser( $conn, 'user7', 'password7' );
-$user8 = RestAuthCreateUser( $conn, 'user8', 'password8' );
-$user9 = RestAuthCreateUser( $conn, 'user9', 'password9' );
+$user0 = RestAuthUser::create( $conn, 'user0', 'password0' );
+$user1 = RestAuthUser::create( $conn, 'user1', 'password1' );
+$user2 = RestAuthUser::create( $conn, 'user2', 'password2' );
+$user3 = RestAuthUser::create( $conn, 'user3', 'password3' );
+$user4 = RestAuthUser::create( $conn, 'user4', 'password4' );
+$user5 = RestAuthUser::create( $conn, 'user5', 'password5' );
+$user6 = RestAuthUser::create( $conn, 'user6', 'password6' );
+$user7 = RestAuthUser::create( $conn, 'user7', 'password7' );
+$user8 = RestAuthUser::create( $conn, 'user8', 'password8' );
+$user9 = RestAuthUser::create( $conn, 'user9', 'password9' );
 
 # ten users?
-$all_users = RestAuthGetAllUsers( $conn );
+$all_users = RestAuthUser::get_all( $conn );
 if ( count( $all_users ) != 10 )
 	die( "Error: ".count($all_users)." users instead of 10!" );
 
 foreach( $all_users as $user ) {
 	# verify that we can get them all:
-	RestAuthGetUser( $conn, $user->name );
+	RestAuthUser::get( $conn, $user->name );
 
 	try {
 		# verify that we can't create them:
-		RestAuthCreateUser( $conn, $user->name, 'wrong password' );
+		RestAuthUser::create( $conn, $user->name, 'wrong password' );
 		die( "Error: Successfully created existing user!" );
 	} catch ( RestAuthUserExists $e ) {
 		if ( $user->verify_password( 'wrong password' ) )
@@ -49,7 +49,7 @@ foreach( $all_users as $user ) {
 
 # verify that getting a non-existing user throws an exception:
 try {
-	RestAuthGetUser( $conn, 'wrong_user' );
+	RestAuthUser::get( $conn, 'wrong_user' );
 	die( "Error: Successfully got wrong user!" );
 } catch ( RestAuthUserNotFound $e ) {
 }
@@ -122,24 +122,24 @@ foreach( $all_users as $user ) {
 	}
 }
 
-$group0 = RestAuthCreateGroup( $conn, 'group 0' );
-$group1 = RestAuthCreateGroup( $conn, 'group 1' );
-$group2 = RestAuthCreateGroup( $conn, 'group 2' );
-$group3 = RestAuthCreateGroup( $conn, 'group 3' );
-$group4 = RestAuthCreateGroup( $conn, 'group 4' );
-$group5 = RestAuthCreateGroup( $conn, 'group 5' );
-$group6 = RestAuthCreateGroup( $conn, 'group 6' );
-$group7 = RestAuthCreateGroup( $conn, 'group 7' );
-$group8 = RestAuthCreateGroup( $conn, 'group 8' );
-$group9 = RestAuthCreateGroup( $conn, 'group 9' );
+$group0 = RestAuthGroup::create( $conn, 'group 0' );
+$group1 = RestAuthGroup::create( $conn, 'group 1' );
+$group2 = RestAuthGroup::create( $conn, 'group 2' );
+$group3 = RestAuthGroup::create( $conn, 'group 3' );
+$group4 = RestAuthGroup::create( $conn, 'group 4' );
+$group5 = RestAuthGroup::create( $conn, 'group 5' );
+$group6 = RestAuthGroup::create( $conn, 'group 6' );
+$group7 = RestAuthGroup::create( $conn, 'group 7' );
+$group8 = RestAuthGroup::create( $conn, 'group 8' );
+$group9 = RestAuthGroup::create( $conn, 'group 9' );
 
-$all_groups = RestAuthGetAllGroups( $conn );
+$all_groups = RestAuthGroup::get_all( $conn );
 if ( count( $all_groups ) != 10 )
 	die( "Error: Not 10 groups!" );
 
 foreach ( $all_groups as $group ) {
 	# see if we can get them
-	RestAuthGetGroup( $conn, $group->name );
+	RestAuthGroup::get( $conn, $group->name );
 
 	# verify that we have zero members:
 	if ( count( $group->get_members() ) != 0 )

@@ -41,99 +41,111 @@ class RestAuthUserExists extends RestAuthResourceConflict {
 class RestAuthPropertyExists extends RestAuthResourceConflict {
 }
 
-/**
- * Factory method that creates a new user in the RestAuth database.
- *
- * @param RestAuthConnection $conn The connection to a RestAuth service.
- * @param string $name The name of this user.
- * @param string $password The password for the new user
- * @throws {@link RestAuthUserExists} If the user already exists.
- * @throws {@link RestAuthBadRequest} When the request body could not be parsed.
- * @throws {@link RestAuthUnauthorized} When service authentication failed.
- * @throws {@link RestAuthForbidden} When service authentication failed and
- * 	authorization is not possible from this host.
- * @throws {@link RestAuthDataUnacceptable} When username or password is invalid.
- * @throws {@link RestAuthInternalServerError} When the RestAuth service returns
- *	HTTP status code 500
- * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
- */
-function RestAuthCreateUser( $conn, $name, $password ) {
-	$params = array( 'user' => $name, 'password' => $password );
-	$resp = $conn->post( '/users/', $params );
-	switch ( $resp->code ) {
-		case 201: return new RestAuthUser( $conn, $name );
-		case 409: throw new RestAuthUserExists();
-		case 412: throw new RestAuthDataUnacceptable();
-		default:  throw new RestAuthUnknownStatus();
-	}
-}
 
-/**
- * Factory method that gets an existing user from RestAuth. This method verifies
- * that the user exists in the RestAuth and throws UserNotFound if not.
- *
- * @param RestAuthConnection $conn The connection to a RestAuth service.
- * @param string $name The name of this user.
- * @throws {@link RestAuthUserNotFound} If the user does not exist in RestAuth.
- * @throws {@link RestAuthBadRequest} When the request body could not be parsed.
- * @throws {@link RestAuthUnauthorized} When service authentication failed.
- * @throws {@link RestAuthForbidden} When service authentication failed and
- * 	authorization is not possible from this host.
- * @throws {@link RestAuthInternalServerError} When the RestAuth service returns
- *	HTTP status code 500
- * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
- */
-function RestAuthGetUser( $conn, $name ) {
-	$resp = $conn->get( '/users/' . $name . '/' );
-
-	switch ( $resp->code ) {
-		case 200: return new RestAuthUser( $conn, $name );
-		case 404: throw new RestAuthUserNotFound();
-		default: throw new RestAuthUnknownStatus();
-	}
-}
-
-/**
- * Factory method that gets all users known to RestAuth.
- *
- * @param RestAuthConnection $conn The connection to a RestAuth service.
- * @throws {@link RestAuthBadRequest} When the request body could not be parsed.
- * @throws {@link RestAuthUnauthorized} When service authentication failed.
- * @throws {@link RestAuthForbidden} When service authentication failed and
- * 	authorization is not possible from this host.
- * @throws {@link RestAuthInternalServerError} When the RestAuth service returns
- *	HTTP status code 500
- * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
- */
-function RestAuthGetAllUsers( $conn ) {
-	$resp = $conn->get( '/users/' );
-
-	switch ( $resp->code ) {
-		case 200:
-			$response = array();
-			foreach( json_decode( $resp->body ) as $name ) {
-				$response[] = new RestAuthUser( $conn, $name );
-			}
-			return $response;
-		default: throw new RestAuthUnknownStatus();
-	}
-}
 
 /**
  * This class acts as a frontend for actions related to users.
  *
- * @see RestAuthGetUser
- * @see RestAuthGetAllUsers
- * @see RestAuthCreateUser
- * 
  * @package php-restauth
  */
 class RestAuthUser extends RestAuthResource {
 	/**
+	 * Factory method that creates a new user in the RestAuth database and
+	 * throws {@link RestAuthUserExists} if the user already exists.
+	 *
+	 * @param RestAuthConnection $conn The connection to a RestAuth service.
+	 * @param string $name The name of this user.
+	 * @param string $password The password for the new user
+	 * @throws {@link RestAuthUserExists} If the user already exists.
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 * 	parsed.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 * 	and authorization is not possible from this host.
+	 * @throws {@link RestAuthDataUnacceptable} When username or password is
+	 *	invalid.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
+	public static function create( $conn, $name, $password ) {
+		$params = array( 'user' => $name, 'password' => $password );
+		$resp = $conn->post( '/users/', $params );
+		switch ( $resp->code ) {
+			case 201: return new RestAuthUser( $conn, $name );
+			case 409: throw new RestAuthUserExists();
+			case 412: throw new RestAuthDataUnacceptable();
+			default:  throw new RestAuthUnknownStatus();
+		}
+	}
+
+	/**
+	 * Factory method that gets an existing user from RestAuth. This method
+	 * verifies that the user exists and throws {@link RestAuthUserNotFound}
+	 * if not.
+	 *
+	 * @param RestAuthConnection $conn The connection to a RestAuth service.
+	 * @param string $name The name of this user.
+	 * @throws {@link RestAuthUserNotFound} If the user does not exist in
+	 *	RestAuth.
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 *	parsed.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
+	public static function get( $conn, $name ) {
+		$resp = $conn->get( '/users/' . $name . '/' );
+
+		switch ( $resp->code ) {
+			case 200: return new RestAuthUser( $conn, $name );
+			case 404: throw new RestAuthUserNotFound();
+			default: throw new RestAuthUnknownStatus();
+		}
+	}
+
+	/**
+	 * Factory method that gets all users known to RestAuth.
+	 *
+	 * @param RestAuthConnection $conn The connection to a RestAuth service.
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 *	parsed.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
+	public static function get_all( $conn ) {
+		$resp = $conn->get( '/users/' );
+
+		switch ( $resp->code ) {
+			case 200:
+				$response = array();
+				foreach( json_decode( $resp->body ) as $name ) {
+					$response[] = new RestAuthUser( $conn, $name );
+				}
+				return $response;
+			default: throw new RestAuthUnknownStatus();
+		}
+	}
+
+	/**
 	 * Constructor that initializes an object representing a user in
-	 * RestAuth. The constructor does not verify if the user exists, use
-	 * {@link RestAuthGetUser} or {@link RestAuthGetAllUsers} if you wan't
-	 * to be sure it exists.
+	 * RestAuth. 
+	 *
+	 * <b>Note:</b> The constructor does not verify if the user exists, use
+	 * {@link get} or {@link get_all} if you wan't to be sure it exists.
 	 *
 	 * @param RestAuthConnection $conn The connection to a RestAuth service.
 	 * @param string $name The name of this user.
@@ -161,7 +173,7 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
 	 */
 	function set_password( $password ) {
-		$resp = $this->put( $this->name, array( 'password' => $password ) );
+		$resp = $this->_put( $this->name, array( 'password' => $password ) );
 
 		switch ( $resp->code ) {
 			case 200: return;
@@ -190,7 +202,7 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
 	 */
 	function verify_password( $password ) {
-		$resp = $this->post( $this->name, array( 'password' => $password ) );
+		$resp = $this->_post( $this->name, array( 'password' => $password ) );
 		switch ( $resp->code ) {
 			case 200: return true;
 			case 404: return false;
@@ -211,7 +223,7 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
 	 */
 	function remove() {
-		$resp = $this->delete( $this->name );
+		$resp = $this->_delete( $this->name );
 		switch ( $resp->code ) {
 			case 200: return;
 			case 404: throw new RestAuthUserNotFound();
@@ -221,6 +233,9 @@ class RestAuthUser extends RestAuthResource {
 
 	/**
 	 * Get all properties defined for this user.
+	 *
+	 * This method causes a single request to the RestAuth service and is
+	 * a much better solution when fetching multiple properties.
 	 * 
 	 * @return array A key/value array of the properties defined for this user.
 	 * @throws {@link RestAuthUserNotFound} When the user does exist
@@ -234,7 +249,7 @@ class RestAuthUser extends RestAuthResource {
 	 */
 	function get_properties() {
 		$url = "$this->name/props/";
-		$resp = $this->get( $url );
+		$resp = $this->_get( $url );
 		
 		switch ( $resp->code ) {
 			case 200:
@@ -244,41 +259,9 @@ class RestAuthUser extends RestAuthResource {
 			default: throw new RestAuthUnknownStatus();
 		}
 	}
-
+	
 	/**
-	 * Create a new property for this user. This method fails if the
-	 * property already existed. Use L{set_property} if you do not care
-	 * if the property already exists.
-	 *
-	 * @param string $name The property to set.
-	 * @param string $value The new value of the property.
-	 *
-	 * @throws {@link RestAuthUserNotFound} When the user does exist
-	 * @throws {@link RestAuthBadRequest} When the request body could not be
-	 *	parsed.
-	 * @throws {@link RestAuthUnauthorized} When service authentication
-	 *      failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *      and authorization is not possible from this host.
-	 * @throws {@link RestAuthPropertyExists} When the property already exists
-	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
-	 *	returns HTTP status code 500
-	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
-	 */
-	function create_property( $name, $value ) {
-		$url = "$this->name/props/";
-		$params = array( 'prop' => $name, 'value' =>$value );
-		$resp = $this->post( $url, $params );
-		switch ( $resp->code ) {
-			case 200: return;
-			case 404: throw new RestAuthUserNotFound();
-			case 409: throw new RestAuthPropertyExists();
-			default: throw new RestAuthUnknownStatus();
-		}
-	}
-
-	/**
-	 * Set a property for this user. This method overwrites and previous
+	 * Set a property for this user. This method overwrites any previous
 	 * entry.
 	 *
 	 * @param string $name The property to set.
@@ -297,7 +280,7 @@ class RestAuthUser extends RestAuthResource {
 	function set_property( $name, $value ) {
 		$url = "$this->name/props/$name";
 		$params = array( 'value' => $value );
-		$resp = $this->put( $url, $params );
+		$resp = $this->_put( $url, $params );
 		switch ( $resp->code ) {
 			case 200: return;
 			case 404: throw new RestAuthUserNotFound();
@@ -305,9 +288,48 @@ class RestAuthUser extends RestAuthResource {
 		}
 	}
 
+
 	/**
-	 * Get the given property for this user.
+	 * Create a new property for this user. 
+	 * 
+	 * This method fails if the property already existed. Use {@link
+	 * set_property} if you do not care if the property already exists.
+	 * 
+	 * @param string $name The property to set.
+	 * @param string $value The new value of the property.
 	 *
+	 * @throws {@link RestAuthUserNotFound} When the user does exist
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 *	parsed.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *      failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *      and authorization is not possible from this host.
+	 * @throws {@link RestAuthPropertyExists} When the property already exists
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
+	 */
+	function create_property( $name, $value ) {
+		$url = "$this->name/props/";
+		$params = array( 'prop' => $name, 'value' =>$value );
+		$resp = $this->_post( $url, $params );
+		switch ( $resp->code ) {
+			case 200: return;
+			case 404: throw new RestAuthUserNotFound();
+			case 409: throw new RestAuthPropertyExists();
+			default: throw new RestAuthUnknownStatus();
+		}
+	}
+
+	/**
+	 * Get the given property for this user. 
+	 *
+	 * <b>Note:</b> Each call to this function causes an HTTP request to 
+	 * the RestAuth service. If you want to get many properties, consider
+	 * using {@link get_properties}.
+	 *
+	 * @param string $name Name of the property we should get.
 	 * @return string The value of the property.
 	 * @throws {@link RestAuthUserNotFound} When the user does exist
 	 * @throws {@link RestAuthUnauthorized} When service authentication
@@ -320,7 +342,7 @@ class RestAuthUser extends RestAuthResource {
 	 */
 	function get_property( $name ) {
 		$url = "$this->name/props/$name";
-		$resp = $this->get( $url );
+		$resp = $this->_get( $url );
 
 		switch ( $resp->code ) {
 			case 200:
@@ -339,8 +361,9 @@ class RestAuthUser extends RestAuthResource {
 	}
 
 	/**
-	 * Delete the given property.
+	 * Delete the named property.
 	 *
+	 * @param string $name Name of the property that should be deleted.
 	 * @throws {@link RestAuthUserNotFound} When the user does exist
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
@@ -352,7 +375,7 @@ class RestAuthUser extends RestAuthResource {
 	 */
 	function del_property( $name ) {
 		$url = "$this->name/props/$name";
-		$resp = $this->delete( $url );
+		$resp = $this->_delete( $url );
 
 		switch ( $resp->code ) {
 			case 200: return;

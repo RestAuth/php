@@ -324,7 +324,7 @@ abstract class RestAuthResource {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function get( $url, $params = array(), $headers = array() ) {
+	function _get( $url, $params = array(), $headers = array() ) {
 		$url = $this->prefix . $url;
 		return $this->conn->get( $url, $params, $headers );
 	}
@@ -352,7 +352,7 @@ abstract class RestAuthResource {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function post( $url, $params = array(), $headers = array() ) {
+	function _post( $url, $params = array(), $headers = array() ) {
 		$url = $this->prefix . $url;
 		return $this->conn->post( $url, $params, $headers );
 	}
@@ -380,7 +380,7 @@ abstract class RestAuthResource {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function put( $url, $params = array(), $headers = array() ) {
+	function _put( $url, $params = array(), $headers = array() ) {
 		$url = $this->prefix . $url;
 		return $this->conn->put( $url, $params, $headers );
 	}
@@ -405,7 +405,7 @@ abstract class RestAuthResource {
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
-	function delete( $url, $headers = array() ) {
+	function _delete( $url, $headers = array() ) {
 		return $this->conn->delete( $this->prefix . $url, $headers );
 	}
 }

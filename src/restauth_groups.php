@@ -25,88 +25,99 @@ class RestAuthGroupNotFound extends RestAuthResourceNotFound {}
 class RestAuthGroupExists extends RestAuthResourceConflict {}
 
 /**
- * Factory method that creates a new group in RestAuth.
- * 
- * @param RestAuthConnection $conn A connection to a RestAuth service.
- * @param string $name The name of the new group.
- *
- * @param string $name The name of the new group
- * @throws {@link RestAuthGroupExists} If the group already exists.
- * @throws {@link RestAuthBadRequest} When the request body could not be parsed.
- * @throws {@link RestAuthUnauthorized} When service authentication failed.
- * @throws {@link RestAuthForbidden} When service authentication failed and
- *      authorization is not possible from this host.
- * @throws {@link RestAuthInternalServerError} When the RestAuth service returns
- *      HTTP status code 500
- * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
- */
-function RestAuthCreateGroup( $conn, $name ) {
-	$resp = $conn->post( '/groups/', array( 'group' => $name ) );
-	switch ( $resp->code ) {
-		case 201: return new RestAuthGroup( $conn, $name );
-		case 409: throw new RestAuthGroupExists();
-		default: throw new RestAuthUnknownStatus();
-	}
-}
-
-/**
- * Factory method that gets an existing user from RestAuth.
- * 
- * @param RestAuthConnection $conn A connection to a RestAuth service.
- * @param string $name The name of the new group.
- *
- * @throws {@link RestAuthBadRequest} When the request body could not be parsed.
- * @throws {@link RestAuthUnauthorized} When service authentication failed.
- * @throws {@link RestAuthForbidden} When service authentication failed and
- *      authorization is not possible from this host.
- * @throws {@link RestAuthInternalServerError} When the RestAuth service returns
- *      HTTP status code 500
- * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
- */
-function RestAuthGetGroup( $conn, $name ) {
-}
-
-/**
- * Factory method that gets all groups for this service known to RestAuth.
- *
- * @param RestAuthConnection $conn A connection to a RestAuth service.
- * @param string $user Limit the output to groups where the user with this name
- *	is a member of.
- * @param boolean $recursive Disable recursive group parsing.
- *
- * @throws {@link RestAuthBadRequest} When the request body could not be parsed.
- * @throws {@link RestAuthUnauthorized} When service authentication failed.
- * @throws {@link RestAuthForbidden} When service authentication failed and
- *      authorization is not possible from this host.
- * @throws {@link RestAuthInternalServerError} When the RestAuth service returns
- *      HTTP status code 500
- * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
- */
-function RestAuthGetAllGroups( $conn, $user=NULL, $recursive=true ) {
-	$params = array();
-	if ( $user )
-		$params['user'] = $user;
-	if ( ! $recursive )
-		$params['nonrecursive'] = 1;
-
-	$resp = $conn->get( '/groups/', $params );
-	switch ( $resp->code ) {
-		case 200: 
-			$groups = array();
-			foreach ( json_decode( $resp->body ) as $groupname ) {
-				$groups[] = new RestAuthGroup( $conn, $groupname );
-			}
-			return $groups;
-		default: throw new RestAuthUnknownStatus();
-	}
-}
-
-/**
  * This class acts as a frontend for actions related to groups.
  *
  * @package php-restauth
  */
 class RestAuthGroup extends RestAuthResource {
+	/**
+	 * Factory method that creates a new group in RestAuth.
+	 * 
+	 * @param RestAuthConnection $conn A connection to a RestAuth service.
+	 * @param string $name The name of the new group.
+	 *
+	 * @param string $name The name of the new group
+	 * @throws {@link RestAuthGroupExists} If the group already exists.
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 *	parsed.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
+	public static function create( $conn, $name ) {
+		$resp = $conn->post( '/groups/', array( 'group' => $name ) );
+		switch ( $resp->code ) {
+			case 201: return new RestAuthGroup( $conn, $name );
+			case 409: throw new RestAuthGroupExists();
+			default: throw new RestAuthUnknownStatus();
+		}
+	}
+
+	/**
+	 * Factory method that gets an existing user from RestAuth.
+	 * 
+	 * @param RestAuthConnection $conn A connection to a RestAuth service.
+	 * @param string $name The name of the new group.
+	 *
+	 * @throws {@link RestAuthBadRequest} When the request body could not
+	 *	be parsed.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 * @todo Actually implement this method
+	 */
+	public static function get( $conn, $name ) {
+	}
+
+	/**
+	 * Factory method that gets all groups for this service known to 
+	 * RestAuth.
+	 *
+	 * @param RestAuthConnection $conn A connection to a RestAuth service.
+	 * @param string $user Limit the output to groups where the user with 
+	 *	this name is a member of.
+	 * @param boolean $recursive Disable recursive group parsing.
+	 *
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 *	parsed.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthForbidden} When service authentication failed
+	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
+	public static function get_all( $conn, $user=NULL, $recursive=true ) {
+		$params = array();
+		if ( $user )
+			$params['user'] = $user;
+		if ( ! $recursive )
+			$params['nonrecursive'] = 1;
+	
+		$resp = $conn->get( '/groups/', $params );
+		switch ( $resp->code ) {
+			case 200: 
+				$groups = array();
+				foreach ( json_decode( $resp->body ) as $groupname ) {
+					$groups[] = new RestAuthGroup( $conn, $groupname );
+				}
+				return $groups;
+			default: throw new RestAuthUnknownStatus();
+		}
+	}
+
 	/**
 	 * Constructor that initializes an object representing a group in RestAuth.
 	 * 
@@ -140,7 +151,7 @@ class RestAuthGroup extends RestAuthResource {
 		if ( ! $recursive )
 			$params['nonrecursive'] = 1;
 
-		$resp = $this->get( $this->name, $params );
+		$resp = $this->_get( $this->name, $params );
 		switch ( $resp->code ) {
 			case 200: 
 				$users = array();
@@ -176,7 +187,7 @@ class RestAuthGroup extends RestAuthResource {
 		if ( $autocreate )
 			$params['autocreate'] = 1;
 
-		$resp = $this->post( $this->name, $params );
+		$resp = $this->_post( $this->name, $params );
 		switch ( $resp->code ) {
 			case 200: return;
 			case 404: switch( $resp->headers['Resource'] ) {
@@ -215,7 +226,7 @@ class RestAuthGroup extends RestAuthResource {
 		if ( $autocreate )
 			$params['autocreate'] = 1;
 		
-		$resp = $this->post( $this->name, $params );
+		$resp = $this->_post( $this->name, $params );
 		switch ( $resp->code ) {
 			case 200: return;
 			case 404: switch( $resp->headers['Resource'] ) {
@@ -252,7 +263,7 @@ class RestAuthGroup extends RestAuthResource {
 			$params['nonrecursive'] = 1;
 
 		$url = $this->name . '/' . $user->name;
-		$resp = $this->get( $url, $params );
+		$resp = $this->_get( $url, $params );
 
 		switch ( $resp->code ) {
 			case 200: return true;
@@ -284,7 +295,7 @@ class RestAuthGroup extends RestAuthResource {
 	 *	unknown.
 	 */
 	function remove() {
-		$resp = $this->delete( $this->name );
+		$resp = $this->_delete( $this->name );
 		switch ( $resp->code ) {
 			case 200: return;
 			case 404: throw new RestAuthGroupNotFound();
@@ -308,7 +319,7 @@ class RestAuthGroup extends RestAuthResource {
 	 */
 	function remove_user( $user ) {
 		$url = $this->name . '/' . $user->name;
-		$resp = $this->delete( $url );
+		$resp = $this->_delete( $url );
 
 		switch ( $resp->code ) {
 			case 200: return true;
