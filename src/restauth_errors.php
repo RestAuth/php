@@ -27,8 +27,18 @@ abstract class RestAuthException extends Exception {
  *
  * @package php-restauth
  */
-class RestAuthResourceNotFound extends RestAuthException {
+abstract class RestAuthResourceNotFound extends RestAuthException {
 	protected $code = 404;
+}
+
+/**
+ * Superclass of exceptions thrown when a resource is supposed to be created but
+ * already exists.
+ *
+ * @package php-restauth
+ */
+abstract class RestAuthResourceConflict extends RestAuthException {
+	protected $code = 409;
 }
 
 /**
@@ -36,7 +46,8 @@ class RestAuthResourceNotFound extends RestAuthException {
  *
  * @package php-restauth
  */
-class RestAuthBadResponse extends RestAuthException{}
+class RestAuthBadResponse extends RestAuthException{
+}
 
 /**
  * Superclass for service-related errors.
@@ -51,7 +62,9 @@ class RestAuthInternalException extends RestAuthException {}
  *
  * @package php-restauth
  */
-class RestAuthBadRequest extends RestAuthInternalException {}
+class RestAuthBadRequest extends RestAuthInternalException {
+	protected $code = 400;
+}
 
 /**
  * Thrown when the RestAuth service suffers an internal error. On a protocol
@@ -59,7 +72,9 @@ class RestAuthBadRequest extends RestAuthInternalException {}
  *
  * @package php-restauth
  */
-class RestAuthInternalServerError extends RestAuthInternalException {}
+class RestAuthInternalServerError extends RestAuthInternalException {
+	protected $code = 500;
+}
 
 /**
  * Thrown when an unknown HTTP status code is encountered. This should never
@@ -70,14 +85,6 @@ class RestAuthInternalServerError extends RestAuthInternalException {}
 class RestAuthUnknownStatus extends RestAuthInternalException {}
 
 /**
- * Superclass of exceptions thrown when a resource is supposed to be created but
- * already exists.
- *
- * @package php-restauth
- */
-class RestAuthResourceConflict extends RestAuthException {}
-
-/**
  * Thrown when you send unacceptable data to the RestAuth service, i.e. a
  * password that is too short.
  *
@@ -86,28 +93,15 @@ class RestAuthResourceConflict extends RestAuthException {}
 class RestAuthDataUnacceptable extends RestAuthException {}
 
 /**
- * Superclass for exceptions related to access for this service.
- *
- * @package php-restauth
- */
-class RestAuthServiceAuthorizationException extends RestAuthException {}
-
-/**
  * Thrown when the user/password does not match the registered service.
  *
  * On a protocol level, this corresponds to the HTTP status code 401.
  *
  * @package php-restauth
  */
-class RestAuthUnauthorized extends RestAuthServiceAuthorizationException {}
+class RestAuthUnauthorized extends RestAuthException {
+	protected $code = 401;
+}
 
-/**
- * Thrown when service authentication failed and is not possible from this host.
- *
- * On a protocol level, this corresponds to the HTTP status code 403.
- *
- * @package php-restauth
- */
-class RestAuthForbidden extends RestAuthServiceAuthorizationException {}
 
 ?>
