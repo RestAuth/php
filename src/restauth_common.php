@@ -325,7 +325,7 @@ abstract class RestAuthResource {
 	 *	suffers from an internal error.
 	 */
 	function _get( $url, $params = array(), $headers = array() ) {
-		$url = $this->prefix . $url;
+		$url = static::prefix . $url;
 		return $this->conn->get( $url, $params, $headers );
 	}
 
@@ -353,7 +353,7 @@ abstract class RestAuthResource {
 	 *	suffers from an internal error.
 	 */
 	function _post( $url, $params = array(), $headers = array() ) {
-		$url = $this->prefix . $url;
+		$url = static::prefix . $url;
 		return $this->conn->post( $url, $params, $headers );
 	}
 
@@ -381,7 +381,7 @@ abstract class RestAuthResource {
 	 *	suffers from an internal error.
 	 */
 	function _put( $url, $params = array(), $headers = array() ) {
-		$url = $this->prefix . $url;
+		$url = static::prefix . $url;
 		return $this->conn->put( $url, $params, $headers );
 	}
 
@@ -406,7 +406,7 @@ abstract class RestAuthResource {
 	 *	suffers from an internal error.
 	 */
 	function _delete( $url, $headers = array() ) {
-		return $this->conn->delete( $this->prefix . $url, $headers );
+		return $this->conn->delete( static::prefix . $url, $headers );
 	}
 }
 ?>

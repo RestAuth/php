@@ -30,6 +30,8 @@ class RestAuthGroupExists extends RestAuthResourceConflict {}
  * @package php-restauth
  */
 class RestAuthGroup extends RestAuthResource {
+	const prefix = '/groups/';
+
 	/**
 	 * Factory method that creates a new group in RestAuth.
 	 * 

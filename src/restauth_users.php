@@ -49,6 +49,8 @@ class RestAuthPropertyExists extends RestAuthResourceConflict {
  * @package php-restauth
  */
 class RestAuthUser extends RestAuthResource {
+	const prefix = '/users/';
+
 	/**
 	 * Factory method that creates a new user in the RestAuth database and
 	 * throws {@link RestAuthUserExists} if the user already exists.
@@ -151,7 +153,6 @@ class RestAuthUser extends RestAuthResource {
 	 * @param string $name The name of this user.
 	 */
 	function __construct( $conn, $name ) {
-		$this->prefix = '/users/';
 		$this->conn = $conn;
 		$this->name = $name;
 	}
