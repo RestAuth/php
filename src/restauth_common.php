@@ -148,25 +148,29 @@ class RestAuthConnection {
 		# finally set http headers:
 		curl_setopt( $curl_session, CURLOPT_HTTPHEADER, $headers );
 		
-		$resp = curl_exec( $curl_session );
+		$curl_resp = curl_exec( $curl_session );
 
 		# parse response
 		$header_size = curl_getinfo( $curl_session, CURLINFO_HEADER_SIZE );
 		$resp_code = curl_getinfo( $curl_session, CURLINFO_HTTP_CODE );
 
+		$resp_headers = trim(substr( $curl_resp, 0, $header_size ));
+		$resp_body = trim( substr( $curl_resp, $header_size ) );
+		
+		# create response object:
+		$response = new HttpResponse( $resp_code, $resp_body, $resp_headers );
+		
 		# handle error status codes
 		switch ( $resp_code ) {
-			case 400: throw new RestAuthBadRequest( $resp );
-			case 401: throw new RestAuthUnauthorized( $resp );
-			case 403: throw new RestAuthForbidden( $resp );
-			case 500: throw new RestAuthInternalServerError( $resp );
+			case 400: throw new RestAuthBadRequest( $response );
+			case 401: throw new RestAuthUnauthorized( $response );
+			case 403: throw new RestAuthForbidden( $response );
+			case 500: throw new RestAuthInternalServerError( $response );
 		}
 
-		$resp_headers = trim(substr( $resp, 0, $header_size ));
-		$resp_body = trim( substr( $resp, $header_size ) );
 		
 		curl_close( $curl_session );
-		return new HttpResponse( $resp_code, $resp_body, $resp_headers );
+		return $response;
 	}
 
 	/**
