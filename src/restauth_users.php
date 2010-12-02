@@ -65,7 +65,7 @@ class RestAuthUser extends RestAuthResource {
 	 *	failed.
 	 * @throws {@link RestAuthForbidden} When service authentication failed
 	 * 	and authorization is not possible from this host.
-	 * @throws {@link RestAuthDataUnacceptable} When username or password is
+	 * @throws {@link RestAuthPreconditionFailed} When username or password is
 	 *	invalid.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
@@ -78,7 +78,7 @@ class RestAuthUser extends RestAuthResource {
 		switch ( $resp->code ) {
 			case 201: return new RestAuthUser( $conn, $name );
 			case 409: throw new RestAuthUserExists( $resp );
-			case 412: throw new RestAuthDataUnacceptable( $resp );
+			case 412: throw new RestAuthPreconditionFailed( $resp );
 			default:  throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -107,7 +107,7 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $conn->get( '/users/' . $name . '/' );
 
 		switch ( $resp->code ) {
-			case 200: return new RestAuthUser( $conn, $name );
+			case 204: return new RestAuthUser( $conn, $name );
 			case 404: throw new RestAuthUserNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
@@ -177,8 +177,9 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $this->_put( $this->name, array( 'password' => $password ) );
 
 		switch ( $resp->code ) {
-			case 200: return;
+			case 204: return;
 			case 404: throw new RestAuthUserNotFound( $resp );
+			case 412: throw new RestAuthPreconditionFailed( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -205,7 +206,7 @@ class RestAuthUser extends RestAuthResource {
 	public function verify_password( $password ) {
 		$resp = $this->_post( $this->name, array( 'password' => $password ) );
 		switch ( $resp->code ) {
-			case 200: return true;
+			case 204: return true;
 			case 404: return false;
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
@@ -226,7 +227,7 @@ class RestAuthUser extends RestAuthResource {
 	public function remove() {
 		$resp = $this->_delete( $this->name );
 		switch ( $resp->code ) {
-			case 200: return;
+			case 204: return;
 			case 404: throw new RestAuthUserNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
@@ -283,7 +284,8 @@ class RestAuthUser extends RestAuthResource {
 		$params = array( 'value' => $value );
 		$resp = $this->_put( $url, $params );
 		switch ( $resp->code ) {
-			case 200: return;
+			case 200: return $resp->body;
+			case 201: return;
 			case 404: throw new RestAuthUserNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
@@ -316,7 +318,7 @@ class RestAuthUser extends RestAuthResource {
 		$params = array( 'prop' => $name, 'value' =>$value );
 		$resp = $this->_post( $url, $params );
 		switch ( $resp->code ) {
-			case 200: return;
+			case 201: return;
 			case 404: throw new RestAuthUserNotFound( $resp );
 			case 409: throw new RestAuthPropertyExists( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
@@ -379,7 +381,7 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $this->_delete( $url );
 
 		switch ( $resp->code ) {
-			case 200: return;
+			case 204: return;
 			case 404: throw new RestAuthUserNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}

@@ -139,7 +139,7 @@ class RestAuthConnection {
 		curl_setopt( $curl_session, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		curl_setopt( $curl_session, CURLOPT_USERPWD, $this->auth_field );
 
-		# set body
+		# set body and add Content-Length header
 		if ( $body ) {
 			curl_setopt( $curl_session, CURLOPT_POSTFIELDS, $body );
 			$headers[] = 'Content-Length: ' . strlen($body);
@@ -148,6 +148,7 @@ class RestAuthConnection {
 		# finally set http headers:
 		curl_setopt( $curl_session, CURLOPT_HTTPHEADER, $headers );
 		
+		# actually make request:
 		$curl_resp = curl_exec( $curl_session );
 
 		# parse response
@@ -162,9 +163,8 @@ class RestAuthConnection {
 		
 		# handle error status codes
 		switch ( $resp_code ) {
-			case 400: throw new RestAuthBadRequest( $response );
 			case 401: throw new RestAuthUnauthorized( $response );
-			case 403: throw new RestAuthForbidden( $response );
+			case 406: throw new RestAuthNotAcceptable( $response );
 			case 500: throw new RestAuthInternalServerError( $response );
 		}
 
@@ -226,7 +226,14 @@ class RestAuthConnection {
 
 		$headers[] = 'Content-Type: application/json';
 		$body = json_encode( $params );
-		return $this->send( 'POST', $url, $body, $headers );
+		$response = $this->send( 'POST', $url, $body, $headers );
+		switch ( $response->code ) {
+			case 400: throw new RestAuthBadRequest( $response );
+			case 411: throw new Exception( 
+				"Request did not send a Content-Length header!" );
+			case 415: throw new RestAuthUnsupportedMediaType( $response );
+		}
+		return $response;
 	}
 
 	/**
@@ -248,7 +255,14 @@ class RestAuthConnection {
 
 		$headers[] = 'Content-Type: application/json';
 		$body = json_encode( $params );
-		return $this->send( 'PUT', $url, $body, $headers );
+		$response = $this->send( 'PUT', $url, $body, $headers );
+		switch ( $response->code ) {
+			case 400: throw new RestAuthBadRequest( $response );
+			case 411: throw new Exception( 
+				"Request did not send a Content-Length header!" );
+			case 415: throw new RestAuthUnsupportedMediaType( $response );
+		}
+		return $response;
 	}
 
 	/**

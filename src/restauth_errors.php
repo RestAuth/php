@@ -90,7 +90,9 @@ class RestAuthUnknownStatus extends RestAuthInternalException {}
  *
  * @package php-restauth
  */
-class RestAuthDataUnacceptable extends RestAuthException {}
+class RestAuthPreconditionFailed extends RestAuthException {
+	protected $code = 412;
+}
 
 /**
  * Thrown when the user/password does not match the registered service.
@@ -101,6 +103,14 @@ class RestAuthDataUnacceptable extends RestAuthException {}
  */
 class RestAuthUnauthorized extends RestAuthException {
 	protected $code = 401;
+}
+
+class RestAuthNotAcceptable extends RestAuthInternalException {
+	protected $code = 406;
+}
+
+class RestAuthUnsupportedMediaType extends RestAuthInternalException {
+	protected $code = 415;
 }
 
 
