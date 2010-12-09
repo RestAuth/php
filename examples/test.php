@@ -68,7 +68,7 @@ foreach( $all_users as $user ) {
 
 function verify_property( $user, $key, $value ) {
 	if ( $user->get_property( $key ) !== $value )
-		die( "Error: $user->name property $key is wrong!" );
+		die( "Error: $user->name property $key is wrong: '$value'/'$recv_value'\n" );
 
 	$props = $user->get_properties();
 	if ( $props[$key] !== $value )
