@@ -349,7 +349,7 @@ class RestAuthUser extends RestAuthResource {
 
 		switch ( $resp->code ) {
 			case 200:
-				return $resp->body;
+				return json_decode( $resp->body );
 			case 404:
 				switch( $resp->headers['Resource'] ) {
 					case 'User':
