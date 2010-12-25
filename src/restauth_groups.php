@@ -197,14 +197,14 @@ class RestAuthGroup extends RestAuthResource {
 		$resp = $this->_post( $this->name . '/users/', $params );
 		switch ( $resp->code ) {
 			case 204: return;
-			case 404: switch( $resp->headers['Resource'] ) {
+			case 404: switch( $resp->headers['Resource-Type'] ) {
 				case 'User':
 					throw new RestAuthUserNotFound( $resp );
 				case 'Group': 
 					throw new RestAuthGroupNotFound( $resp );
 				default: 
 					throw new RestAuthBadResponse( $resp,
-						"Received 404 without Resource header" );
+						"Received 404 without Resource-Type header" );
 				}
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
@@ -238,14 +238,14 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->code ) {
 			case 204: return true;
 			case 404:
-				switch( $resp->headers['Resource'] ) {
+				switch( $resp->headers['Resource-Type'] ) {
 					case 'User':
 						return false;
 					case 'Group': 
 						throw new RestAuthGroupNotFound( $resp );
 					default: 
 						throw new RestAuthBadResponse( $resp,
-							"Received 404 without Resource header" );
+							"Received 404 without Resource-Type header" );
 				}
 			default:
 				throw new RestAuthUnknownStatus( $resp );
@@ -294,14 +294,14 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->code ) {
 			case 204: return;
 			case 404:
-				switch( $resp->headers['Resource'] ) {
+				switch( $resp->headers['Resource-Type'] ) {
 					case 'User':
 						throw new RestAuthUserNotFound( $resp );
 					case 'Group': 
 						throw new RestAuthGroupNotFound( $resp );
 					default: 
 						throw new RestAuthBadResponse( $resp,
-							"Received 404 without Resource header" );
+							"Received 404 without Resource-Type header" );
 				}
 			default:
 				throw new RestAuthUnknownStatus( $resp );
@@ -334,12 +334,12 @@ class RestAuthGroup extends RestAuthResource {
 		$resp = $this->_post( $this->name . '/groups/', $params );
 		switch ( $resp->code ) {
 			case 204: return;
-			case 404: switch( $resp->headers['Resource'] ) {
+			case 404: switch( $resp->headers['Resource-Type'] ) {
 				case 'Group': 
 					throw new RestAuthGroupNotFound( $resp );
 				default: 
 					throw new RestAuthBadResponse( $resp,
-						"Received 404 without Resource header" );
+						"Received 404 without Resource-Type header" );
 				}
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
