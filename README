@@ -1,5 +1,42 @@
-=== Installation ===
-This library requires pecl_http. You can install the library via PEAR using:
+= ABOUT =
+php-restauth is a client library for the RestAuth protocol [1]. It provides an
+interface for all features supported by the protocol. It exclusivly uses JSON as
+data format. The library requires the pecl_http extension (see INSTALLATION).
+
+Full API docs are available online at [2] or can be generated using the source
+code (see Generating documentation).
+
+[1] https://fs.fsinf.at/wiki/RestAuth
+[2] https://fs.fsinf.at/doc/php-restauth
+
+= INSTALLATION =
+This library requires pecl_http [1]. You can install the library via PEAR using:
 	pecl install pecl_http
 
+[1] http://php.net/manual/en/book.http.php
 
+Other than that this library should just be copied to a directory of your
+choice. Creating a PEAR module for this is a TODO.
+
+=== On Debian/Ubuntu ===
+There is an APT repository providing debian packages for all restauth software.
+Please see
+	https://fs.fsinf.at/wiki/RestAuth/APT_repositories
+for more information on how to add the repository to your system.
+
+The packages for this library are called php-restauth and php-restauth-doc.
+
+=== Generating documentation ===
+Generating the documentation requires phpDocumentor[1]. If you have it
+installed, you can generate documentation simply by running:
+	make doc
+
+[1] http://www.phpdoc.org/
+
+= USAGE =
+Please see examples/test.php for an extensive example script.
+
+= LICENCE =
+This library is licenced under the GPLv3 or later. The newest version of the GPL
+can be viewed at:
+	http://www.gnu.org/licenses/gpl.html
