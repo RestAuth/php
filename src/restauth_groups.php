@@ -53,7 +53,7 @@ class RestAuthGroup extends RestAuthResource {
 	 */
 	public static function create( $conn, $name ) {
 		$resp = $conn->post( '/groups/', array( 'group' => $name ) );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 201: return new RestAuthGroup( $conn, $name );
 			case 409: throw new RestAuthGroupExists( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
@@ -79,7 +79,7 @@ class RestAuthGroup extends RestAuthResource {
 	 */
 	public static function get( $conn, $name ) {
 		$resp = $conn->get( '/groups/' . $name . '/' );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return new RestAuthGroup( $conn, $name );
 			case 404: throw new RestAuthGroupNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
@@ -114,10 +114,10 @@ class RestAuthGroup extends RestAuthResource {
 #			$params['nonrecursive'] = 1;
 	
 		$resp = $conn->get( '/groups/', $params );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 200: 
 				$groups = array();
-				foreach ( json_decode( $resp->body ) as $groupname ) {
+				foreach ( json_decode( $resp->getBody() ) as $groupname ) {
 					$groups[] = new RestAuthGroup( $conn, $groupname );
 				}
 				return $groups;
@@ -159,10 +159,10 @@ class RestAuthGroup extends RestAuthResource {
 #			$params['nonrecursive'] = 1;
 
 		$resp = $this->_get( $this->name . '/users/', $params );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 200: 
 				$users = array();
-				foreach( json_decode( $resp->body ) as $username ) {
+				foreach( json_decode( $resp->getBody() ) as $username ) {
 					$users[] = new RestAuthUser( $this->conn, $username );
 				}
 				return $users;
@@ -195,9 +195,9 @@ class RestAuthGroup extends RestAuthResource {
 #			$params['autocreate'] = 1;
 
 		$resp = $this->_post( $this->name . '/users/', $params );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return;
-			case 404: switch( $resp->headers['Resource-Type'] ) {
+			case 404: switch ( $resp->getHeader( 'Resource-Type' ) ) {
 				case 'User':
 					throw new RestAuthUserNotFound( $resp );
 				case 'Group': 
@@ -235,10 +235,10 @@ class RestAuthGroup extends RestAuthResource {
 		$url = $this->name . '/users/' . $user->name;
 		$resp = $this->_get( $url, $params );
 
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return true;
 			case 404:
-				switch( $resp->headers['Resource-Type'] ) {
+				switch ( $resp->getHeader( 'Resource-Type' ) ) {
 					case 'User':
 						return false;
 					case 'Group': 
@@ -266,7 +266,7 @@ class RestAuthGroup extends RestAuthResource {
 	 */
 	public function remove() {
 		$resp = $this->_delete( $this->name );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthGroupNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
@@ -291,10 +291,10 @@ class RestAuthGroup extends RestAuthResource {
 		$url = $this->name . '/users/' . $user->name;
 		$resp = $this->_delete( $url );
 
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404:
-				switch( $resp->headers['Resource-Type'] ) {
+				switch ( $resp->getHeader( 'Resource-Type' ) ) {
 					case 'User':
 						throw new RestAuthUserNotFound( $resp );
 					case 'Group': 
@@ -332,9 +332,9 @@ class RestAuthGroup extends RestAuthResource {
 #			$params['autocreate'] = 1;
 		
 		$resp = $this->_post( $this->name . '/groups/', $params );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return;
-			case 404: switch( $resp->headers['Resource-Type'] ) {
+			case 404: switch ( $resp->getHeader( 'Resource-Type' ) ) {
 				case 'Group': 
 					throw new RestAuthGroupNotFound( $resp );
 				default: 
@@ -347,10 +347,10 @@ class RestAuthGroup extends RestAuthResource {
 
 	public function get_groups() {
 		$resp = $this->_get( $this->name . '/groups/' );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 200: 
 				$users = array();
-				foreach( json_decode( $resp->body ) as $username ) {
+				foreach( json_decode( $resp->getBody() ) as $username ) {
 					$users[] = new RestAuthUser( $this->conn, $username );
 				}
 				return $users;
@@ -361,7 +361,7 @@ class RestAuthGroup extends RestAuthResource {
 
 	public function remove_group( $group ) {
 		$resp = $this->_get( $this->name . '/groups/' . $group->name . '/' );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthGroupNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );

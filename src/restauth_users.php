@@ -75,7 +75,7 @@ class RestAuthUser extends RestAuthResource {
 	public static function create( $conn, $name, $password ) {
 		$params = array( 'user' => $name, 'password' => $password );
 		$resp = $conn->post( '/users/', $params );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 201: return new RestAuthUser( $conn, $name );
 			case 409: throw new RestAuthUserExists( $resp );
 			case 412: throw new RestAuthPreconditionFailed( $resp );
@@ -106,7 +106,7 @@ class RestAuthUser extends RestAuthResource {
 	public static function get( $conn, $name ) {
 		$resp = $conn->get( '/users/' . $name . '/' );
 
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return new RestAuthUser( $conn, $name );
 			case 404: throw new RestAuthUserNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
@@ -131,10 +131,10 @@ class RestAuthUser extends RestAuthResource {
 	public static function get_all( $conn ) {
 		$resp = $conn->get( '/users/' );
 
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 200:
 				$response = array();
-				foreach( json_decode( $resp->body ) as $name ) {
+				foreach( json_decode( $resp->getBody() ) as $name ) {
 					$response[] = new RestAuthUser( $conn, $name );
 				}
 				return $response;
@@ -176,7 +176,7 @@ class RestAuthUser extends RestAuthResource {
 	public function set_password( $password ) {
 		$resp = $this->_put( $this->name, array( 'password' => $password ) );
 
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthUserNotFound( $resp );
 			case 412: throw new RestAuthPreconditionFailed( $resp );
@@ -205,7 +205,7 @@ class RestAuthUser extends RestAuthResource {
 	 */
 	public function verify_password( $password ) {
 		$resp = $this->_post( $this->name, array( 'password' => $password ) );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return true;
 			case 404: return false;
 			default: throw new RestAuthUnknownStatus( $resp );
@@ -226,7 +226,7 @@ class RestAuthUser extends RestAuthResource {
 	 */
 	public function remove() {
 		$resp = $this->_delete( $this->name );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthUserNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
@@ -253,9 +253,9 @@ class RestAuthUser extends RestAuthResource {
 		$url = "$this->name/props/";
 		$resp = $this->_get( $url );
 		
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 200:
-				$props = (array) json_decode( $resp->body );
+				$props = (array) json_decode( $resp->getBody() );
 				return $props;
 			case 404: throw new RestAuthUserNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
@@ -283,8 +283,8 @@ class RestAuthUser extends RestAuthResource {
 		$url = "$this->name/props/$name";
 		$params = array( 'value' => $value );
 		$resp = $this->_put( $url, $params );
-		switch ( $resp->code ) {
-			case 200: return $resp->body;
+		switch ( $resp->getResponseCode() ) {
+			case 200: return $resp->getBody();
 			case 201: return;
 			case 404: throw new RestAuthUserNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
@@ -317,7 +317,7 @@ class RestAuthUser extends RestAuthResource {
 		$url = "$this->name/props/";
 		$params = array( 'prop' => $name, 'value' =>$value );
 		$resp = $this->_post( $url, $params );
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 201: return;
 			case 404: throw new RestAuthUserNotFound( $resp );
 			case 409: throw new RestAuthPropertyExists( $resp );
@@ -347,11 +347,11 @@ class RestAuthUser extends RestAuthResource {
 		$url = "$this->name/props/$name";
 		$resp = $this->_get( $url );
 
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 200:
-				return json_decode( $resp->body );
+				return json_decode( $resp->getBody() );
 			case 404:
-				switch( $resp->headers['Resource-Type'] ) {
+				switch ( $resp->getHeader( 'Resource-Type' ) ) {
 					case 'User':
 						throw new RestAuthUserNotFound( $resp );
 					case 'Property':
@@ -380,7 +380,7 @@ class RestAuthUser extends RestAuthResource {
 		$url = "$this->name/props/$name";
 		$resp = $this->_delete( $url );
 
-		switch ( $resp->code ) {
+		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthUserNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );

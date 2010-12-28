@@ -1,0 +1,5 @@
+=== Installation ===
+This library requires pecl_http. You can install the library via PEAR using:
+	pecl install pecl_http
+
+

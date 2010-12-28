@@ -1,7 +1,7 @@
 <?php
 require_once( 'restauth.php' );
 
-$conn = new RestAuthConnection( 'localhost', 8000, 'vowi', 'vowi', false );
+$conn = new RestAuthConnection( 'http://localhost:8000', 'vowi', 'vowi' );
 
 # verify initial state:
 $all_users = RestAuthUser::get_all( $conn );
