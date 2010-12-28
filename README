@@ -13,10 +13,10 @@ code (see Generating documentation).
 This library requires pecl_http [1]. You can install the library via PEAR using:
 	pecl install pecl_http
 
-[1] http://php.net/manual/en/book.http.php
-
 Other than that this library should just be copied to a directory of your
 choice. Creating a PEAR module for this is a TODO.
+
+[1] http://php.net/manual/en/book.http.php
 
 === On Debian/Ubuntu ===
 There is an APT repository providing debian packages for all restauth software.
