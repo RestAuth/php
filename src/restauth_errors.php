@@ -13,12 +13,8 @@
  * @package php-restauth
  */
 abstract class RestAuthException extends Exception {
-	public function __construct( $response, $message = '' ) {
-		if ( $message ) {
-			$this->message = $message;
-		} else {
-			$this->message = $response->body;
-		}
+	public function __construct( $response ) {
+		$this->message = $response->getBody();
 	}
 }
 
@@ -82,7 +78,12 @@ class RestAuthInternalServerError extends RestAuthInternalException {
  *
  * @package php-restauth
  */
-class RestAuthUnknownStatus extends RestAuthInternalException {}
+class RestAuthUnknownStatus extends RestAuthInternalException {
+	public function __construct( $response ) {
+		$this->message = $response->getBody();
+		$this->code = $response->getResponseCode();
+	}
+}
 
 /**
  * Thrown when you send unacceptable data to the RestAuth service, i.e. a
