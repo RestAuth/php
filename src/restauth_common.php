@@ -26,9 +26,10 @@ class RestAuthConnection {
 	 * @param string $user The service name to use for authenticating with RestAuth
 	 * @param string $password The password to use for authenticating with RestAuth.
 	 */
-	public function __construct( $host, $user, $password  ) {
+	public function __construct( $host, $user, $password, $use_cookies=true  ) {
 		$this->host = rtrim( $host, '/' );
 		$this->set_credentials( $user, $password );
+		$this->use_cookies = $use_cookies;
 	}
 
 	/**
@@ -50,10 +51,11 @@ class RestAuthConnection {
 	 * @param boolean true if the currently set cookie is valid, false
 	 *	otherwise.
 	 */
-	public function has_valid_session() {
-		if ( ! $this->cookie ) {
+	public function use_cookie() {
+		if ( ! $this->cookie || ! $this->use_cookies ) {
 			return false;
 		}
+
 		$now = time();
 		if ( $this->cookie->expires < $now ) {
 			return false;
@@ -92,10 +94,12 @@ class RestAuthConnection {
 	public function send( $request ) { 
 		# add headers present with all methods:
 		$headers = array( 'Accept' => 'application/json' );
-		if ( $this->cookie && $this->has_valid_session() ) {
-			$headers['Cookie'] = 'sessionid=' . $this->cookie->cookies['sessionid'];
+		if ( $this->use_cookie() ) {
+			$headers['Cookie'] = 'sessionid=' . 
+				$this->cookie->cookies['sessionid'];
 		} else {
-			$headers['Authorization'] = 'Basic ' . $this->auth_header;
+			$headers['Authorization'] = 'Basic ' . 
+				$this->auth_header;
 		}
 		$request->addHeaders( $headers );
 
