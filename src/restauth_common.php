@@ -15,6 +15,8 @@
  * @package php-restauth
  */
 class RestAuthConnection {
+	public static $connection;
+
 	/**
 	 * A simple constructor.
 	 *
@@ -30,6 +32,21 @@ class RestAuthConnection {
 		$this->host = rtrim( $host, '/' );
 		$this->set_credentials( $user, $password );
 		$this->use_cookies = $use_cookies;
+	}
+
+	/**
+	 * Factory method to reuse existing connection objects. This is
+	 * particular useful if your connection uses cookies. The parameters
+	 * of this method are not used at all if the connection is already
+	 * defined, otherwise they are passed unmodified to
+	 * {@link RestAuthConnection::__construct __construct}.
+	 */
+	public static function get_connection( $host='', $user='', $password='', $use_cookies=true ) {
+		if ( ! isset( self::$connection ) ) {
+			self::$connection = new RestAuthConnection(
+				$host, $user, $password, $use_cookies );
+		}
+		return self::$connection;
 	}
 
 	/**
