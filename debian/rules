@@ -22,8 +22,6 @@ ARCHIVE=../${SRC_PACKAGE}_${VERSION}.orig.tar.gz
 
 ${ARCHIVE}:
 	svn export https://svn.fsinf.at/fs/RestAuth/${SVN_DIR} ${SRC_PACKAGE}
-	VERSION=$(shell cd ${SRC_PACKAGE} && python setup.py -q version)
-	echo ${VERSION} > ${SRC_PACKAGE}/.version
 	tar czf ${ARCHIVE} ${SRC_PACKAGE}
 	rm -rf ${SRC_PACKAGE}
 
