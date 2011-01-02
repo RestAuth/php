@@ -1,0 +1,12 @@
+php-restauth (391-1) maverick; urgency=low
+
+  * bump from upstream. 
+  * Add php5-pecl-http to dependencies
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Sat, 01 Jan 2011 22:51:33 +0100
+
+restauth (382-1) maverick; urgency=low
+
+  * initial version of package specific changelog
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Sat, 25 Dec 2010 21:00:40 +0100
