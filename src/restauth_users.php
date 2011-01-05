@@ -352,9 +352,9 @@ class RestAuthUser extends RestAuthResource {
 				return json_decode( $resp->getBody() );
 			case 404:
 				switch ( $resp->getHeader( 'Resource-Type' ) ) {
-					case 'User':
+					case 'user':
 						throw new RestAuthUserNotFound( $resp );
-					case 'Property':
+					case 'property':
 						throw new RestAuthPropertyNotFound( $resp );
 				}
 				throw new RestAuthBadResponse( $resp,

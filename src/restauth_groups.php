@@ -198,9 +198,9 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: switch ( $resp->getHeader( 'Resource-Type' ) ) {
-				case 'User':
+				case 'user':
 					throw new RestAuthUserNotFound( $resp );
-				case 'Group': 
+				case 'group': 
 					throw new RestAuthGroupNotFound( $resp );
 				default: 
 					throw new RestAuthBadResponse( $resp,
@@ -239,9 +239,9 @@ class RestAuthGroup extends RestAuthResource {
 			case 204: return true;
 			case 404:
 				switch ( $resp->getHeader( 'Resource-Type' ) ) {
-					case 'User':
+					case 'user':
 						return false;
-					case 'Group': 
+					case 'group': 
 						throw new RestAuthGroupNotFound( $resp );
 					default: 
 						throw new RestAuthBadResponse( $resp,
@@ -295,9 +295,9 @@ class RestAuthGroup extends RestAuthResource {
 			case 204: return;
 			case 404:
 				switch ( $resp->getHeader( 'Resource-Type' ) ) {
-					case 'User':
+					case 'user':
 						throw new RestAuthUserNotFound( $resp );
-					case 'Group': 
+					case 'group': 
 						throw new RestAuthGroupNotFound( $resp );
 					default: 
 						throw new RestAuthBadResponse( $resp,
@@ -335,7 +335,7 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: switch ( $resp->getHeader( 'Resource-Type' ) ) {
-				case 'Group': 
+				case 'group': 
 					throw new RestAuthGroupNotFound( $resp );
 				default: 
 					throw new RestAuthBadResponse( $resp,
