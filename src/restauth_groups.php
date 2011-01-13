@@ -12,12 +12,6 @@ require_once( 'restauth_common.php' );
 require_once( 'restauth_users.php' );
 
 /**
- * Thrown when a group is not found.
- *
- * @package php-restauth
- */
-class RestAuthGroupNotFound extends RestAuthResourceNotFound {}
-/**
  * Thrown when a group that is supposed to be created already exists.
  *
  * @package php-restauth
@@ -81,7 +75,7 @@ class RestAuthGroup extends RestAuthResource {
 		$resp = $conn->get( '/groups/' . $name . '/' );
 		switch ( $resp->getResponseCode() ) {
 			case 204: return new RestAuthGroup( $conn, $name );
-			case 404: throw new RestAuthGroupNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -93,7 +87,6 @@ class RestAuthGroup extends RestAuthResource {
 	 * @param RestAuthConnection $conn A connection to a RestAuth service.
 	 * @param string $user Limit the output to groups where the user with 
 	 *	this name is a member of.
-	 * @param boolean $recursive Disable recursive group parsing.
 	 *
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
@@ -106,12 +99,10 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	public static function get_all( $conn, $user=NULL, $recursive=true ) {
+	public static function get_all( $conn, $user=NULL ) {
 		$params = array();
 		if ( $user )
 			$params['user'] = $user;
-#		if ( ! $recursive )
-#			$params['nonrecursive'] = 1;
 	
 		$resp = $conn->get( '/groups/', $params );
 		switch ( $resp->getResponseCode() ) {
@@ -140,8 +131,6 @@ class RestAuthGroup extends RestAuthResource {
 	/**
 	 * Get all members of this group.
 	 *
-	 * @param boolean $recursive Set to false to disable recurive group
-	 *	parsing.
 	 * @return array Array of {@link RestAuthUser users}.
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
@@ -153,10 +142,8 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	public function get_members( $recursive = true ) {
+	public function get_members() {
 		$params = array();
-#		if ( ! $recursive )
-#			$params['nonrecursive'] = 1;
 
 		$resp = $this->_get( $this->name . '/users/', $params );
 		switch ( $resp->getResponseCode() ) {
@@ -166,7 +153,7 @@ class RestAuthGroup extends RestAuthResource {
 					$users[] = new RestAuthUser( $this->conn, $username );
 				}
 				return $users;
-			case 404: throw new RestAuthGroupNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -189,23 +176,13 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	public function add_user( $user, $autocreate = true ) {
+	public function add_user( $user ) {
 		$params = array( 'user' => $user->name );
-#		if ( $autocreate )
-#			$params['autocreate'] = 1;
 
 		$resp = $this->_post( $this->name . '/users/', $params );
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
-			case 404: switch ( $resp->getHeader( 'Resource-Type' ) ) {
-				case 'user':
-					throw new RestAuthUserNotFound( $resp );
-				case 'group': 
-					throw new RestAuthGroupNotFound( $resp );
-				default: 
-					throw new RestAuthBadResponse( $resp,
-						"Received 404 without Resource-Type header" );
-				}
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -214,8 +191,6 @@ class RestAuthGroup extends RestAuthResource {
 	 * Check if the named user is a member.
 	 *
 	 * @param RestAuthUser $user The user in question.
-	 * @param boolean $recursive Set to false to disable recurive group
-	 *	parsing.
 	 * @return boolean true if the user is a member, false if not
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
@@ -227,10 +202,8 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	public function is_member( $user, $recursive = true ) {
+	public function is_member( $user ) {
 		$params = array();
-		if ( ! $recursive )
-			$params['nonrecursive'] = 1;
 
 		$url = $this->name . '/users/' . $user->name;
 		$resp = $this->_get( $url, $params );
@@ -241,11 +214,8 @@ class RestAuthGroup extends RestAuthResource {
 				switch ( $resp->getHeader( 'Resource-Type' ) ) {
 					case 'user':
 						return false;
-					case 'group': 
-						throw new RestAuthGroupNotFound( $resp );
 					default: 
-						throw new RestAuthBadResponse( $resp,
-							"Received 404 without Resource-Type header" );
+						throw new RestAuthResourceNotFound( $resp );
 				}
 			default:
 				throw new RestAuthUnknownStatus( $resp );
@@ -268,7 +238,7 @@ class RestAuthGroup extends RestAuthResource {
 		$resp = $this->_delete( $this->name );
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
-			case 404: throw new RestAuthGroupNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -293,16 +263,7 @@ class RestAuthGroup extends RestAuthResource {
 
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
-			case 404:
-				switch ( $resp->getHeader( 'Resource-Type' ) ) {
-					case 'user':
-						throw new RestAuthUserNotFound( $resp );
-					case 'group': 
-						throw new RestAuthGroupNotFound( $resp );
-					default: 
-						throw new RestAuthBadResponse( $resp,
-							"Received 404 without Resource-Type header" );
-				}
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default:
 				throw new RestAuthUnknownStatus( $resp );
 		}
@@ -326,21 +287,13 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	public function add_group( $group, $autocreate = true ) {
+	public function add_group( $group ) {
 		$params = array( 'group' => $group->name );
-#		if ( $autocreate )
-#			$params['autocreate'] = 1;
 		
 		$resp = $this->_post( $this->name . '/groups/', $params );
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
-			case 404: switch ( $resp->getHeader( 'Resource-Type' ) ) {
-				case 'group': 
-					throw new RestAuthGroupNotFound( $resp );
-				default: 
-					throw new RestAuthBadResponse( $resp,
-						"Received 404 without Resource-Type header" );
-				}
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -354,7 +307,7 @@ class RestAuthGroup extends RestAuthResource {
 					$users[] = new RestAuthUser( $this->conn, $username );
 				}
 				return $users;
-			case 404: throw new RestAuthGroupNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -363,7 +316,7 @@ class RestAuthGroup extends RestAuthResource {
 		$resp = $this->_get( $this->name . '/groups/' . $group->name . '/' );
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
-			case 404: throw new RestAuthGroupNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}

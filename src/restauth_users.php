@@ -10,22 +10,6 @@ require_once( 'restauth_errors.php' );
 require_once( 'restauth_common.php' );
 
 /**
- * Thrown when a user queried is not found.
- * 
- * @package php-restauth
- */
-class RestAuthUserNotFound extends RestAuthResourceNotFound {
-}
-
-/**
- * Thrown when a property queried is not found.
- * 
- * @package php-restauth
- */
-class RestAuthPropertyNotFound extends RestAuthResourceNotFound {
-}
-
-/**
  * Thrown when a user is supposed to be created but already exists.
  * 
  * @package php-restauth
@@ -85,12 +69,12 @@ class RestAuthUser extends RestAuthResource {
 
 	/**
 	 * Factory method that gets an existing user from RestAuth. This method
-	 * verifies that the user exists and throws {@link RestAuthUserNotFound}
+	 * verifies that the user exists and throws {@link RestAuthResourceNotFound}
 	 * if not.
 	 *
 	 * @param RestAuthConnection $conn The connection to a RestAuth service.
 	 * @param string $name The name of this user.
-	 * @throws {@link RestAuthUserNotFound} If the user does not exist in
+	 * @throws {@link RestAuthResourceNotFound} If the user does not exist in
 	 *	RestAuth.
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
@@ -108,7 +92,7 @@ class RestAuthUser extends RestAuthResource {
 
 		switch ( $resp->getResponseCode() ) {
 			case 204: return new RestAuthUser( $conn, $name );
-			case 404: throw new RestAuthUserNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -162,7 +146,7 @@ class RestAuthUser extends RestAuthResource {
 	 *
 	 * @param string $password The new password.
 	 *
-	 * @throws {@link RestAuthUserNotFound} When the user does exist
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
@@ -178,7 +162,7 @@ class RestAuthUser extends RestAuthResource {
 
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
-			case 404: throw new RestAuthUserNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			case 412: throw new RestAuthPreconditionFailed( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
@@ -215,7 +199,7 @@ class RestAuthUser extends RestAuthResource {
 	/**
 	 * Delete this user.
 	 * 
-	 * @throws {@link RestAuthUserNotFound} When the user does exist
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
 	 * @throws {@link RestAuthForbidden} When service authentication failed
@@ -228,7 +212,7 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $this->_delete( $this->name );
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
-			case 404: throw new RestAuthUserNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -240,7 +224,7 @@ class RestAuthUser extends RestAuthResource {
 	 * a much better solution when fetching multiple properties.
 	 * 
 	 * @return array A key/value array of the properties defined for this user.
-	 * @throws {@link RestAuthUserNotFound} When the user does exist
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
 	 * @throws {@link RestAuthForbidden} When service authentication failed
@@ -257,7 +241,7 @@ class RestAuthUser extends RestAuthResource {
 			case 200:
 				$props = (array) json_decode( $resp->getBody() );
 				return $props;
-			case 404: throw new RestAuthUserNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -268,7 +252,7 @@ class RestAuthUser extends RestAuthResource {
 	 *
 	 * @param string $name The property to set.
 	 * @param string $value The new value of the property.
-	 * @throws {@link RestAuthUserNotFound} When the user does exist
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
@@ -286,7 +270,7 @@ class RestAuthUser extends RestAuthResource {
 		switch ( $resp->getResponseCode() ) {
 			case 200: return $resp->getBody();
 			case 201: return;
-			case 404: throw new RestAuthUserNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -301,7 +285,7 @@ class RestAuthUser extends RestAuthResource {
 	 * @param string $name The property to set.
 	 * @param string $value The new value of the property.
 	 *
-	 * @throws {@link RestAuthUserNotFound} When the user does exist
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
@@ -319,7 +303,7 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $this->_post( $url, $params );
 		switch ( $resp->getResponseCode() ) {
 			case 201: return;
-			case 404: throw new RestAuthUserNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			case 409: throw new RestAuthPropertyExists( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
@@ -334,7 +318,7 @@ class RestAuthUser extends RestAuthResource {
 	 *
 	 * @param string $name Name of the property we should get.
 	 * @return string The value of the property.
-	 * @throws {@link RestAuthUserNotFound} When the user does exist
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
 	 * @throws {@link RestAuthForbidden} When service authentication failed
@@ -348,17 +332,8 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $this->_get( $url );
 
 		switch ( $resp->getResponseCode() ) {
-			case 200:
-				return json_decode( $resp->getBody() );
-			case 404:
-				switch ( $resp->getHeader( 'Resource-Type' ) ) {
-					case 'user':
-						throw new RestAuthUserNotFound( $resp );
-					case 'property':
-						throw new RestAuthPropertyNotFound( $resp );
-				}
-				throw new RestAuthBadResponse( $resp,
-					"Received 404 without Resource-Type header" );
+			case 200: return json_decode( $resp->getBody() );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}
@@ -367,7 +342,7 @@ class RestAuthUser extends RestAuthResource {
 	 * Delete the named property.
 	 *
 	 * @param string $name Name of the property that should be deleted.
-	 * @throws {@link RestAuthUserNotFound} When the user does exist
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
 	 * @throws {@link RestAuthForbidden} When service authentication failed
@@ -382,7 +357,7 @@ class RestAuthUser extends RestAuthResource {
 
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
-			case 404: throw new RestAuthUserNotFound( $resp );
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 	}

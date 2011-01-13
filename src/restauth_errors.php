@@ -15,6 +15,7 @@
 abstract class RestAuthException extends Exception {
 	public function __construct( $response ) {
 		$this->message = $response->getBody();
+		$this->response = $response;
 	}
 }
 
@@ -23,8 +24,12 @@ abstract class RestAuthException extends Exception {
  *
  * @package php-restauth
  */
-abstract class RestAuthResourceNotFound extends RestAuthException {
+class RestAuthResourceNotFound extends RestAuthException {
 	protected $code = 404;
+
+	public function get_type() {
+		return $this->response->getHeader( 'Resource-Type' );
+	}
 }
 
 /**
