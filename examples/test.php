@@ -1,5 +1,5 @@
 <?php
-require_once( 'restauth.php' );
+require_once( 'src/restauth.php' );
 
 $conn = new RestAuthConnection( 'http://localhost:8000', 'vowi', 'vowi' );
 
