@@ -3,6 +3,11 @@ DOCDIR=doc/
 HTMLDIR=${DOCDIR}/html
 
 test:
+	phpunit tests/users.php
+#	phpunit tests/properties.php
+#	phpunit tests/groups.php
+
+examples:
 	php examples/test.php
 
 doc:

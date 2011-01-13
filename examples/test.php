@@ -51,7 +51,7 @@ foreach( $all_users as $user ) {
 try {
 	RestAuthUser::get( $conn, 'wrong_user' );
 	die( "Error: Successfully got wrong user!" );
-} catch ( RestAuthUserNotFound $e ) {
+} catch ( RestAuthResourceNotFound $e ) {
 }
 
 # update passwords, try to verify old/new ones
@@ -106,7 +106,7 @@ foreach( $all_users as $user ) {
 	try {
 		$user->get_property( 'wrong property' );
 		die( "Error: Successfully got a non-existing property!" );
-	} catch ( RestAuthPropertyNotFound $e ) {
+	} catch ( RestAuthResourceNotFound $e ) {
 	}
 
 	# delete a property and verify that its gone:
@@ -118,7 +118,7 @@ foreach( $all_users as $user ) {
 
 		$user->get_property( 'new property' );
 		die( "Error: Deleted property got by get_property()" );
-	} catch ( RestAuthPropertyNotFound $e ) {
+	} catch ( RestAuthResourceNotFound $e ) {
 	}
 }
 
