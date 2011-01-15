@@ -42,15 +42,18 @@ class RestAuthUser extends RestAuthResource {
 	 * @param RestAuthConnection $conn The connection to a RestAuth service.
 	 * @param string $name The name of this user.
 	 * @param string $password The password for the new user
-	 * @throws {@link RestAuthUserExists} If the user already exists.
+	 *
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 * 	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 * 	and authorization is not possible from this host.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthUserExists} If the user already exists.
 	 * @throws {@link RestAuthPreconditionFailed} When username or password is
 	 *	invalid.
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -76,14 +79,13 @@ class RestAuthUser extends RestAuthResource {
 	 *
 	 * @param RestAuthConnection $conn The connection to a RestAuth service.
 	 * @param string $name The name of this user.
-	 * @throws {@link RestAuthResourceNotFound} If the user does not exist in
-	 *	RestAuth.
-	 * @throws {@link RestAuthBadRequest} When the request body could not be
-	 *	parsed.
+
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthResourceNotFound} If the user does not exist in
+	 *	RestAuth.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -105,12 +107,11 @@ class RestAuthUser extends RestAuthResource {
 	 * Factory method that gets all users known to RestAuth.
 	 *
 	 * @param RestAuthConnection $conn The connection to a RestAuth service.
-	 * @throws {@link RestAuthBadRequest} When the request body could not be
-	 *	parsed.
+
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -152,13 +153,15 @@ class RestAuthUser extends RestAuthResource {
 	 *
 	 * @param string $password The new password.
 	 *
-	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *      and authorization is not possible from this host.
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -185,12 +188,15 @@ class RestAuthUser extends RestAuthResource {
 	 * @param string $password The password to verify.
 	 * @return boolean true if the password is correct, false if the
 	 * 	password is wrong or the user does not exist.
+
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *      and authorization is not possible from this host.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -209,11 +215,11 @@ class RestAuthUser extends RestAuthResource {
 	/**
 	 * Delete this user.
 	 * 
-	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *      and authorization is not possible from this host.
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -236,11 +242,12 @@ class RestAuthUser extends RestAuthResource {
 	 * a much better solution when fetching multiple properties.
 	 * 
 	 * @return array A key/value array of the properties defined for this user.
-	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *      and authorization is not possible from this host.
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -266,13 +273,16 @@ class RestAuthUser extends RestAuthResource {
 	 *
 	 * @param string $name The property to set.
 	 * @param string $value The new value of the property.
-	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 *
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *      and authorization is not possible from this host.
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -301,14 +311,16 @@ class RestAuthUser extends RestAuthResource {
 	 * @param string $name The property to set.
 	 * @param string $value The new value of the property.
 	 *
-	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *      and authorization is not possible from this host.
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthPropertyExists} When the property already exists
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -336,11 +348,12 @@ class RestAuthUser extends RestAuthResource {
 	 *
 	 * @param string $name Name of the property we should get.
 	 * @return string The value of the property.
-	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *      and authorization is not possible from this host.
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -362,11 +375,12 @@ class RestAuthUser extends RestAuthResource {
 	 * Delete the named property.
 	 *
 	 * @param string $name Name of the property that should be deleted.
-	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *      failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *      and authorization is not possible from this host.
+	 * @throws {@link RestAuthResourceNotFound} When the user does exist
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+         *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.

@@ -291,8 +291,8 @@ abstract class RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 * 	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
@@ -322,8 +322,10 @@ abstract class RestAuthResource {
 	 *	parsed. This should only happen with POST or PUT requests.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 * 	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+	 *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 * 	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
@@ -353,8 +355,10 @@ abstract class RestAuthResource {
 	 *	parsed. This should only happen with POST or PUT requests.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 * 	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+	 *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 * 	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */
@@ -381,8 +385,8 @@ abstract class RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 * 	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
 	 */

@@ -33,15 +33,16 @@ class RestAuthGroup extends RestAuthResource {
 	 * @param string $name The name of the new group.
 	 *
 	 * @param string $name The name of the new group
-	 * @throws {@link RestAuthGroupExists} If the group already exists.
+	 *
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthGroupExists} If the group already exists.
 	 * @throws {@link RestAuthPreconditionFailed} When username or password is
 	 *	invalid.
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -60,17 +61,14 @@ class RestAuthGroup extends RestAuthResource {
 	}
 
 	/**
-	 * Factory method that gets an existing user from RestAuth.
+	 * Factory method that creates a {@link RestAuthGroup} and verifies that
+	 * it exists.
 	 * 
 	 * @param RestAuthConnection $conn A connection to a RestAuth service.
 	 * @param string $name The name of the new group.
 	 *
-	 * @throws {@link RestAuthBadRequest} When the request body could not
-	 *	be parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *	and authorization is not possible from this host.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -95,12 +93,10 @@ class RestAuthGroup extends RestAuthResource {
 	 * @param string $user Limit the output to groups where the user with 
 	 *	this name is a member of.
 	 *
-	 * @throws {@link RestAuthBadRequest} When the request body could not be
-	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -108,8 +104,9 @@ class RestAuthGroup extends RestAuthResource {
 	 */
 	public static function get_all( $conn, $user=NULL ) {
 		$params = array();
-		if ( $user )
+		if ( $user ) {
 			$params['user'] = $user;
+		}
 	
 		$resp = $conn->get( '/groups/', $params );
 		switch ( $resp->getResponseCode() ) {
@@ -126,7 +123,8 @@ class RestAuthGroup extends RestAuthResource {
 	}
 
 	/**
-	 * Constructor that initializes an object representing a group in RestAuth.
+	 * Constructor that initializes an object representing a group in
+	 * RestAuth. The constructor does not make sure the group exists. 
 	 * 
 	 * @param RestAuthConnection $conn A connection to a RestAuth service.
 	 * @param string $name The name of the new group.
@@ -144,8 +142,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 * 	and authorization is not possible from this host.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -172,7 +170,8 @@ class RestAuthGroup extends RestAuthResource {
 	/**
 	 * Add a user to this group.
 	 *
-	 * @param RestAuthUser $user The user to add
+	 * @param mixed $user The user to add. Either a {@link RestAuthUser} or
+	 *	a string.
 	 * @param boolean $autocreate Set to false if you don't want to
 	 *	automatically create the group if it doesn't exist.
 	 *
@@ -180,15 +179,19 @@ class RestAuthGroup extends RestAuthResource {
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 * 	and authorization is not possible from this host.
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
 	public function add_user( $user ) {
-		$params = array( 'user' => $user->name );
+		if ( is_string( $user ) ) {
+			$params = array( 'user' => $user );
+		} else {
+			$params = array( 'user' => $user->name );
+		}
 
 		$resp = $this->_post( $this->name . '/users/', $params );
 		switch ( $resp->getResponseCode() ) {
@@ -203,23 +206,26 @@ class RestAuthGroup extends RestAuthResource {
 	/**
 	 * Check if the named user is a member.
 	 *
-	 * @param RestAuthUser $user The user in question.
+	 * @param mixed $user The user to test. Either a  {@link RestAuthUser}
+	 *	or a string representing the username.
 	 * @return boolean true if the user is a member, false if not
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 * 	and authorization is not possible from this host.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
 	public function is_member( $user ) {
-		$params = array();
+		if ( is_string( $user ) ) {
+			$username = $user;
+		} else {
+			$username = $user->name;
+		}
 
-		$url = $this->name . '/users/' . $user->name;
-		$resp = $this->_get( $url, $params );
+		$url = $this->name . '/users/' . $username;
+		$resp = $this->_get( $url );
 
 		switch ( $resp->getResponseCode() ) {
 			case 204: return true;
@@ -242,8 +248,6 @@ class RestAuthGroup extends RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 * 	and authorization is not possible from this host.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -263,19 +267,24 @@ class RestAuthGroup extends RestAuthResource {
 	/**
 	 * Remove the given user from the group.
 	 *
-	 * @param RestAuthUser $user The user to remove
+	 * @param mixed $user The user to remove. Either a {@link RestAuthUser}
+	 *	or a string the username.
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 * 	and authorization is not possible from this host.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
 	public function remove_user( $user ) {
-		$url = $this->name . '/users/' . $user->name;
+		if ( is_string( $user ) ) {
+			$username = $user;
+		} else {
+			$username = $user->name;
+		}
+
+		$url = $this->name . '/users/' . $username;
 		$resp = $this->_delete( $url );
 
 		switch ( $resp->getResponseCode() ) {
@@ -291,7 +300,8 @@ class RestAuthGroup extends RestAuthResource {
 	/**
 	 * Add a group to this group.
 	 *
-	 * @param RestAuthGroup $group The group to add
+	 * @param mixed $group The group to add. Either a {@link RestAuthGroup}
+	 *	or a string representing the groupname.
 	 * @param boolean $autocreate Set to false if you don't want to
 	 *	automatically create the group if it doesn't exist.
 	 *
@@ -299,15 +309,21 @@ class RestAuthGroup extends RestAuthResource {
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
-	 * @throws {@link RestAuthForbidden} When service authentication failed
-	 * 	and authorization is not possible from this host.
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
 	public function add_group( $group ) {
-		$params = array( 'group' => $group->name );
+		if ( is_string( $group ) ) {
+			$groupname = $group;
+		} else {
+			$groupname = $group->name;
+		}
+
+		$params = array( 'group' => $groupname );
 		
 		$resp = $this->_post( $this->name . '/groups/', $params );
 		switch ( $resp->getResponseCode() ) {
@@ -319,6 +335,20 @@ class RestAuthGroup extends RestAuthResource {
 		// @codeCoverageIgnoreEnd
 	}
 
+	/**
+	 * Get a list of subgroups of this groups.
+	 *
+	 * @return array Array of {@link RestAuthGroup groups}.
+	 *
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+	 *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 * 	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
 	public function get_groups() {
 		$resp = $this->_get( $this->name . '/groups/' );
 		switch ( $resp->getResponseCode() ) {
@@ -335,8 +365,27 @@ class RestAuthGroup extends RestAuthResource {
 		// @codeCoverageIgnoreEnd
 	}
 
+	/**
+	 * Remove a subgroup from this group.
+	 *
+	 * @param mixed $group The group to remove. Either a 
+	 *	{@link RestAuthGroup} or a string representing the groupname.
+	 *
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 * 	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
 	public function remove_group( $group ) {
-		$url = $this->name . '/groups/' . $group->name . '/';
+		if ( is_string( $group ) ) {
+			$groupname = $group;
+		} else {
+			$groupname = $group->name;
+		}
+
+		$url = $this->name . '/groups/' . $groupname . '/';
 		$resp = $this->_delete( $url );
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
