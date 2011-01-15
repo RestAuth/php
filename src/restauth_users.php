@@ -268,7 +268,7 @@ class RestAuthUser extends RestAuthResource {
 		$params = array( 'value' => $value );
 		$resp = $this->_put( $url, $params );
 		switch ( $resp->getResponseCode() ) {
-			case 200: return $resp->getBody();
+			case 200: return json_decode( $resp->getBody() );
 			case 201: return;
 			case 404: throw new RestAuthResourceNotFound( $resp );
 			default: throw new RestAuthUnknownStatus( $resp );
@@ -351,7 +351,7 @@ class RestAuthUser extends RestAuthResource {
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
 	 */
-	public function del_property( $name ) {
+	public function remove_property( $name ) {
 		$url = "$this->name/props/$name";
 		$resp = $this->_delete( $url );
 
