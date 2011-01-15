@@ -208,8 +208,6 @@ class RestAuthConnection {
 
 		switch ( $response->getResponseCode() ) {
 			case 400: throw new RestAuthBadRequest( $response );
-			case 411: throw new Exception( 
-				"Request did not send a Content-Length header!" );
 			case 415: throw new RestAuthUnsupportedMediaType( $response );
 		}
 		return $response;
@@ -252,8 +250,6 @@ class RestAuthConnection {
 
 		switch ( $response->getResponseCode() ) {
 			case 400: throw new RestAuthBadRequest( $response );
-			case 411: throw new Exception( 
-				"Request did not send a Content-Length header!" );
 			case 415: throw new RestAuthUnsupportedMediaType( $response );
 		}
 		return $response;
