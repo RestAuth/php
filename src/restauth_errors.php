@@ -84,10 +84,6 @@ class RestAuthInternalServerError extends RestAuthInternalException {
  * @package php-restauth
  */
 class RestAuthUnknownStatus extends RestAuthInternalException {
-	public function __construct( $response ) {
-		$this->message = $response->getBody();
-		$this->code = $response->getResponseCode();
-	}
 }
 
 /**
