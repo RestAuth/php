@@ -40,6 +40,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *	failed.
 	 * @throws {@link RestAuthForbidden} When service authentication failed
 	 *	and authorization is not possible from this host.
+	 * @throws {@link RestAuthPreconditionFailed} When username or password is
+	 *	invalid.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -50,8 +52,11 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->getResponseCode() ) {
 			case 201: return new RestAuthGroup( $conn, $name );
 			case 409: throw new RestAuthGroupExists( $resp );
+			case 412: throw new RestAuthPreconditionFailed( $resp );
+			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -76,8 +81,10 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->getResponseCode() ) {
 			case 204: return new RestAuthGroup( $conn, $name );
 			case 404: throw new RestAuthResourceNotFound( $resp );
+			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -112,8 +119,10 @@ class RestAuthGroup extends RestAuthResource {
 					$groups[] = new RestAuthGroup( $conn, $groupname );
 				}
 				return $groups;
+			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -154,8 +163,10 @@ class RestAuthGroup extends RestAuthResource {
 				}
 				return $users;
 			case 404: throw new RestAuthResourceNotFound( $resp );
+			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -183,8 +194,10 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthResourceNotFound( $resp );
+			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -217,9 +230,11 @@ class RestAuthGroup extends RestAuthResource {
 					default: 
 						throw new RestAuthResourceNotFound( $resp );
 				}
+			// @codeCoverageIgnoreStart
 			default:
 				throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -239,8 +254,10 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthResourceNotFound( $resp );
+			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -264,9 +281,11 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthResourceNotFound( $resp );
+			// @codeCoverageIgnoreStart
 			default:
 				throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	/**
@@ -294,8 +313,10 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthResourceNotFound( $resp );
+			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	public function get_groups() {
@@ -308,8 +329,10 @@ class RestAuthGroup extends RestAuthResource {
 				}
 				return $users;
 			case 404: throw new RestAuthResourceNotFound( $resp );
+			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 
 	public function remove_group( $group ) {
@@ -317,9 +340,11 @@ class RestAuthGroup extends RestAuthResource {
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthResourceNotFound( $resp );
+			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
+		// @codeCoverageIgnoreEnd
 	}
 }
 
-?>
+>
