@@ -325,7 +325,7 @@ class RestAuthGroup extends RestAuthResource {
 			case 200: 
 				$users = array();
 				foreach( json_decode( $resp->getBody() ) as $username ) {
-					$users[] = new RestAuthUser( $this->conn, $username );
+					$users[] = new RestAuthGroup( $this->conn, $username );
 				}
 				return $users;
 			case 404: throw new RestAuthResourceNotFound( $resp );
