@@ -107,10 +107,22 @@ class RestAuthUnauthorized extends RestAuthException {
 	protected $code = 401;
 }
 
+/**
+ * Thrown when the RestAuth server cannot generate a response in the requested
+ * format.
+ *
+ * @package php-restauth
+ */
 class RestAuthNotAcceptable extends RestAuthInternalException {
 	protected $code = 406;
 }
 
+/**
+ * Thrown when the RestAuth server does not understand the content-type sent by
+ * this library.
+ *
+ * @package php-restauth
+ */
 class RestAuthUnsupportedMediaType extends RestAuthInternalException {
 	protected $code = 415;
 }
