@@ -111,10 +111,9 @@ class GroupTest extends PHPUnit_Framework_TestCase {
 	public function testAddInvalidUser() {
 		global $conn, $username3, $groupname1;
 		$group = RestAuthGroup::create( $conn, $groupname1 );
-		$user = new RestAuthUser( $conn, $username3 );
 
 		try {
-			$group->add_user( $user );
+			$group->add_user( $username3 );
 			$this->fail();
 		} catch ( RestAuthResourceNotFound $e ) {
 			$this->assertEquals( "user", $e->get_type() );
@@ -139,9 +138,8 @@ class GroupTest extends PHPUnit_Framework_TestCase {
 	public function testIsMemberInvalidUser() {
 		global $conn, $username3, $groupname1;
 		$group = RestAuthGroup::create( $conn, $groupname1 );
-		$user = new RestAuthUser( $conn, $username3 );
 
-		$this->assertFalse( $group->is_member( $user ) );
+		$this->assertFalse( $group->is_member( $username3 ) );
 	}
 
 	public function testIsMemberInvalidGroup() {
@@ -183,10 +181,9 @@ class GroupTest extends PHPUnit_Framework_TestCase {
 	public function testRemoveInvalidUser() {
 		global $conn, $username3, $groupname1;
 		$group = RestAuthGroup::create( $conn, $groupname1 );
-		$user = new RestAuthUser( $conn, $username3 );
 		
 		try {
-			$group->remove_user( $user );
+			$group->remove_user( $username3 );
 			$this->fail();
 		} catch ( RestAuthResourceNotFound $e ) {
 			$this->assertEquals( "user", $e->get_type() );
