@@ -336,7 +336,8 @@ class RestAuthGroup extends RestAuthResource {
 	}
 
 	public function remove_group( $group ) {
-		$resp = $this->_get( $this->name . '/groups/' . $group->name . '/' );
+		$url = $this->name . '/groups/' . $group->name . '/';
+		$resp = $this->_delete( $url );
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
 			case 404: throw new RestAuthResourceNotFound( $resp );
