@@ -347,4 +347,4 @@ class RestAuthGroup extends RestAuthResource {
 	}
 }
 
->
+?>
