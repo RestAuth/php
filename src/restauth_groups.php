@@ -39,7 +39,7 @@ class RestAuthGroup extends RestAuthResource {
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
 	 * @throws {@link RestAuthGroupExists} If the group already exists.
-	 * @throws {@link RestAuthPreconditionFailed} When username or password is
+	 * @throws {@link RestAuthPreconditionFailed} When the groupname is
 	 *	invalid.
 	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
 	 *	support the content type used by this connection.
@@ -69,6 +69,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the group does
+	 *	not exist.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -144,6 +146,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *	failed.
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
 	 *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthResourceNotFound} When the group does not
+	 *	exist.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -179,6 +183,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the group does not
+	 *	exist.
 	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
 	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -212,6 +218,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the group does not
+	 *	exist.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -248,6 +256,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the group does not
+	 *	exist.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -272,6 +282,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the group or user does
+	 *	not exist.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -309,6 +321,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When either this group or
+	 *	the subgroup does not exist.
 	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
 	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -344,6 +358,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *	failed.
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
 	 *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthResourceNotFound} When the group does
+	 *	not exist.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -373,6 +389,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the group or subgroup 
+	 *	does not exist.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 * 	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is

@@ -160,6 +160,7 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
          *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthPreconditionFailed} When password is invalid.
 	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
 	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
