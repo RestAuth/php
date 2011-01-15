@@ -10,8 +10,7 @@ $password = "pass 愑";
 $propKey = "key 愒";
 $propVal = "val 愓";
  
-class UserTests extends PHPUnit_Framework_TestCase {
-
+class PropertyTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		global $username, $user, $password, $conn;
 
@@ -194,4 +193,5 @@ class UserTests extends PHPUnit_Framework_TestCase {
 		}
 	}
 }
+
 ?>

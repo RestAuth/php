@@ -7,9 +7,8 @@ $username = "mati 愐";
 $password = "pass 愑";
 $propKey = "key 愒";
 $propVal = "val 愓";
- 
-class UserTests extends PHPUnit_Framework_TestCase {
 
+class UserTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$host = 'http://localhost:8000';
 		$user = 'vowi';
@@ -161,4 +160,5 @@ class UserTests extends PHPUnit_Framework_TestCase {
 
 	}
 }
+
 ?>
