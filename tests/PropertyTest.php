@@ -180,13 +180,26 @@ class PropertyTest extends PHPUnit_Framework_TestCase {
 		}
 	}
 
-	public function testGetPropertiesInvalidUser() {
+	public function testGetPropertyInvalidUser() {
 		global $conn, $user, $propKey, $propVal;
 		$username = "invalid name";
 
 		$invalidUser = new RestAuthUser( $conn, $username );
 		try {
 			$invalidUser->get_property( $propKey ); 
+			$this->fail();
+		} catch ( RestAuthResourceNotFound $e ) {
+			$this->assertEquals( "user", $e->get_type() );
+		}
+	}
+
+	public function testGetPropertiesInvalidUser() {
+		global $conn, $user, $propKey, $propVal;
+		$username = "invalid name";
+
+		$invalidUser = new RestAuthUser( $conn, $username );
+		try {
+			$invalidUser->get_properties( $propKey ); 
 			$this->fail();
 		} catch ( RestAuthResourceNotFound $e ) {
 			$this->assertEquals( "user", $e->get_type() );
