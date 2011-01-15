@@ -107,11 +107,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( array(), $group2->get_groups() );
 	}
 
-	public function testInvalidGroup() {
+	public function testAddInvalidGroup() {
 		global $conn, $group1, $groupname5;
-		$group5 = new RestAuthGroup( $conn, $groupname5 );
+
 		try {
-			$group1->add_group( $group5 );
+			$group1->add_group( $groupname5 );
 			$this->fail();
 		} catch ( RestAuthResourceNotFound $e ) {
 			$this->assertEquals( "group", $e->get_type() );
@@ -181,10 +181,9 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase {
 
 	public function testRemoveInvalidGroup() {
 		global $conn, $group1, $groupname5;
-		$group5 = new RestAuthGroup( $conn, $groupname5 );
 
 		try {
-			$group1->remove_group( $group5 );
+			$group1->remove_group( $groupname5 );
 			$this->fail();
 		} catch ( RestAuthResourceNotFound $e ) {
 			$this->assertEquals( "group", $e->get_type() );
