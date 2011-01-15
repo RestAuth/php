@@ -28,23 +28,21 @@ class RestAuthConnection {
 	 * @param string $user The service name to use for authenticating with RestAuth
 	 * @param string $password The password to use for authenticating with RestAuth.
 	 */
-	public function __construct( $host, $user, $password, $use_cookies=true  ) {
+	public function __construct( $host, $user, $password ) {
 		$this->host = rtrim( $host, '/' );
 		$this->set_credentials( $user, $password );
-		$this->use_cookies = $use_cookies;
 	}
 
 	/**
-	 * Factory method to reuse existing connection objects. This is
-	 * particular useful if your connection uses cookies. The parameters
+	 * Factory method to reuse existing connection objects. The parameters
 	 * of this method are not used at all if the connection is already
 	 * defined, otherwise they are passed unmodified to
 	 * {@link RestAuthConnection::__construct __construct}.
 	 */
-	public static function get_connection( $host='', $user='', $password='', $use_cookies=true ) {
+	public static function get_connection( $host='', $user='', $password='' ) {
 		if ( ! isset( self::$connection ) ) {
 			self::$connection = new RestAuthConnection(
-				$host, $user, $password, $use_cookies );
+				$host, $user, $password );
 		}
 		return self::$connection;
 	}
@@ -58,34 +56,7 @@ class RestAuthConnection {
 	 * @param string $password The password to use
 	 */
 	public function set_credentials( $user, $password ) {
-		$this->cookie = false; // invalidate any old cookie
 		$this->auth_header = base64_encode( $user . ':' . $password );
-	}
-
-	/**
-	 * See if we currently have a valid session.
-	 *
-	 * @param boolean true if the currently set cookie is valid, false
-	 *	otherwise.
-	 */
-	public function use_cookie() {
-		if ( ! $this->cookie || ! $this->use_cookies ) {
-			return false;
-		}
-
-		$now = time();
-		if ( $this->cookie->expires < $now ) {
-			return false;
-		}
-		
-		if (  array_key_exists( 'Max-Age', $this->cookie->cookies ) ) {
-			$max_age = $this->cookie->cookies['Max-Age'];
-			if ( $this->cookie_stamp + $max_age < $now ) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	/**
@@ -110,27 +81,13 @@ class RestAuthConnection {
 	 */
 	public function send( $request ) { 
 		# add headers present with all methods:
-		$headers = array( 'Accept' => 'application/json' );
-		if ( $this->use_cookie() ) {
-			$headers['Cookie'] = 'sessionid=' . 
-				$this->cookie->cookies['sessionid'];
-		} else {
-			$headers['Authorization'] = 'Basic ' . 
-				$this->auth_header;
-		}
-		$request->addHeaders( $headers );
+		$request->addHeaders( array(
+			'Accept' => 'application/json',
+			'Authorization' => 'Basic ' . $this->auth_header ) );
 
 		$response = $request->send();
 		$response_headers = $response->getHeaders();
 
-		# handle cookie
-		if ( array_key_exists( 'Set-Cookie', $response_headers ) ) {
-			$this->cookie = http_parse_cookie( 
-				$response_headers['Set-Cookie'] );
-			$this->cookie_stamp = time();
-		}
-		
-		
 		# handle error status codes
 		switch ( $response->getResponseCode() ) {
 			case 401: throw new RestAuthUnauthorized( $response );
