@@ -409,6 +409,8 @@ class RestAuthUser extends RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the user does not
+	 *	exist.
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
 	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -440,7 +442,7 @@ class RestAuthUser extends RestAuthResource {
 	 *	unknown.
 	 */
 	public function in_group( $group ) {
-		if ( is_string( $group ) {
+		if ( is_string( $group ) ) {
 			$group = new RestAuthGroup( $this->conn, $group );
 		}
 		
@@ -470,7 +472,7 @@ class RestAuthUser extends RestAuthResource {
 	 *	unknown.
 	 */
 	public function add_group( $group ) {
-		if ( is_string( $group ) {
+		if ( is_string( $group ) ) {
 			$group = new RestAuthGroup( $this->conn, $group );
 		}
 		
@@ -497,7 +499,7 @@ class RestAuthUser extends RestAuthResource {
 	 *	unknown.
 	 */
 	public function remove_group( $group ) {
-		if ( is_string( $group ) {
+		if ( is_string( $group ) ) {
 			$group = new RestAuthGroup( $this->conn, $group );
 		}
 		
