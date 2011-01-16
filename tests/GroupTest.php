@@ -19,7 +19,8 @@ class GroupTest extends PHPUnit_Framework_TestCase {
 		$host = 'http://localhost:8000';
 		$user = 'vowi';
 		$pass = 'vowi';
-		$conn = new RestAuthConnection( $host, $user, $pass );
+		$conn = RestAuthConnection::get_connection( 
+			$host, $user, $pass );
 
 		$users = RestAuthUser::get_all( $conn );
 		if ( count( $users ) ) {
@@ -261,7 +262,6 @@ class GroupTest extends PHPUnit_Framework_TestCase {
 		global $username1;
 
 		$conn = RestAuthConnection::get_connection();
-		print( "host: " . $conn->host );
 		$this->assertEquals( array(), 
 			RestAuthGroup::get_all( $conn, $username1 ) );
 	}
