@@ -2,6 +2,8 @@ SRCDIR=src/
 DOCDIR=doc/
 HTMLDIR=${DOCDIR}/html
 
+all: 
+
 test:
 	phpunit tests
 
