@@ -92,8 +92,11 @@ class RestAuthGroup extends RestAuthResource {
 	 * RestAuth.
 	 *
 	 * @param RestAuthConnection $conn A connection to a RestAuth service.
-	 * @param string $user Limit the output to groups where the user with 
-	 *	this name is a member of.
+	 * @param mixed $user Limit the output to groups where the given user is
+	 *	a member of. Either a {@link RestAuthUser} or a string
+	 *	representing the name of that user.
+	 *
+	 * @return array Array of {@link RestAuthGroup groups}.
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
@@ -107,7 +110,11 @@ class RestAuthGroup extends RestAuthResource {
 	public static function get_all( $conn, $user=NULL ) {
 		$params = array();
 		if ( $user ) {
-			$params['user'] = $user;
+			if ( is_string( $user ) ) {
+				$params['user'] = $user;
+			} else {
+				$params['user'] = $user->name;
+			}
 		}
 	
 		$resp = $conn->get( '/groups/', $params );
@@ -176,8 +183,6 @@ class RestAuthGroup extends RestAuthResource {
 	 *
 	 * @param mixed $user The user to add. Either a {@link RestAuthUser} or
 	 *	a string.
-	 * @param boolean $autocreate Set to false if you don't want to
-	 *	automatically create the group if it doesn't exist.
 	 *
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
@@ -314,8 +319,6 @@ class RestAuthGroup extends RestAuthResource {
 	 *
 	 * @param mixed $group The group to add. Either a {@link RestAuthGroup}
 	 *	or a string representing the groupname.
-	 * @param boolean $autocreate Set to false if you don't want to
-	 *	automatically create the group if it doesn't exist.
 	 *
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
