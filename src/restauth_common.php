@@ -31,6 +31,8 @@ class RestAuthConnection {
 	public function __construct( $host, $user, $password ) {
 		$this->host = rtrim( $host, '/' );
 		$this->set_credentials( $user, $password );
+
+		self::$connection = $this;
 	}
 
 	/**
