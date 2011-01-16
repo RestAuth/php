@@ -256,6 +256,15 @@ class GroupTest extends PHPUnit_Framework_TestCase {
 			$this->assertEquals( "group", $e->get_type() );
 		}
 	}
+
+	public function testGetGroupsForUser() {
+		global $username1;
+
+		$conn = RestAuthConnection::get_connection();
+		print( "host: " . $conn->host );
+		$this->assertEquals( array(), 
+			RestAuthGroup::get_all( $conn, $username1 ) );
+	}
 }
 
 
