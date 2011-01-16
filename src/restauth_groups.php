@@ -100,6 +100,8 @@ class RestAuthGroup extends RestAuthResource {
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the user does not
+	 *	exist.
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
 	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -125,6 +127,7 @@ class RestAuthGroup extends RestAuthResource {
 					$groups[] = new RestAuthGroup( $conn, $groupname );
 				}
 				return $groups;
+			case 404: throw new RestAuthResourceNotFound( $resp );
 			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
