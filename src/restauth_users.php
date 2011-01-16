@@ -8,6 +8,7 @@
  */
 require_once( 'restauth_errors.php' );
 require_once( 'restauth_common.php' );
+require_once( 'restauth_groups.php' );
 
 /**
  * Thrown when a user is supposed to be created but already exists.
@@ -48,7 +49,7 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthUserExists} If the user already exists.
 	 * @throws {@link RestAuthPreconditionFailed} When username or password is
 	 *	invalid.
@@ -85,7 +86,7 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthResourceNotFound} If the user does not exist in
 	 *	RestAuth.
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -111,7 +112,7 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnauthorized} When service authentication
 	 *	failed.
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
@@ -156,10 +157,10 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
-	 *      failed.
+	 *	failed.
 	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthPreconditionFailed} When password is invalid.
 	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
 	 *	support the content type used by this connection.
@@ -193,9 +194,9 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
-	 *      failed.
+	 *	failed.
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
 	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -217,10 +218,10 @@ class RestAuthUser extends RestAuthResource {
 	 * Delete this user.
 	 * 
 	 * @throws {@link RestAuthUnauthorized} When service authentication
-	 *      failed.
+	 *	failed.
 	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -245,10 +246,10 @@ class RestAuthUser extends RestAuthResource {
 	 * @return array A key/value array of the properties defined for this user.
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
-	 *      failed.
+	 *	failed.
 	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -278,10 +279,10 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
-	 *      failed.
+	 *	failed.
 	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
 	 *	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -315,10 +316,10 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
 	 * @throws {@link RestAuthUnauthorized} When service authentication
-	 *      failed.
+	 *	failed.
 	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthPropertyExists} When the property already exists
 	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
 	 *	support the content type used by this connection.
@@ -351,10 +352,10 @@ class RestAuthUser extends RestAuthResource {
 	 * @return string The value of the property.
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
-	 *      failed.
+	 *	failed.
 	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -378,10 +379,10 @@ class RestAuthUser extends RestAuthResource {
 	 * @param string $name Name of the property that should be deleted.
 	 *
 	 * @throws {@link RestAuthUnauthorized} When service authentication
-	 *      failed.
+	 *	failed.
 	 * @throws {@link RestAuthResourceNotFound} When the user does exist
 	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-         *	a response in the content type used by this connection.
+	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
@@ -397,6 +398,110 @@ class RestAuthUser extends RestAuthResource {
 			default: throw new RestAuthUnknownStatus( $resp );
 		}
 		// @codeCoverageIgnoreEnd
+	}
+
+	/**
+	 * Get all groups that this user is a member of.
+	 *
+	 * This method is just a shortcut for {@link RestAuthGroup::get_all()}.
+	 * 
+	 * @return array Array of {@link RestAuthGroup groups}.
+	 *
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthNotAcceptable} When the server cannot generate
+	 *	a response in the content type used by this connection.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
+	public function get_groups() {
+		return RestAuthGroup::get_all( $this->conn, $this );
+	}
+
+	/**
+	 * Check if the user is a member in the given group.
+	 *
+	 * This method is just a shortcut for {@link
+	 * RestAuthGroup::is_member()}.
+	 *
+	 * @param mixed $group The group to test. Either a  {@link RestAuthGroup}
+	 *	or a string representing the groupname.
+	 * @return boolean true if the user is a member, false if not
+	 *
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the group does not
+	 *	exist.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
+	public function in_group( $group ) {
+		if ( is_string( $group ) {
+			$group = new RestAuthGroup( $this->conn, $group );
+		}
+		
+		return $group->is_member( $this );
+	}
+
+	/**
+	 * Make this user a member of the given group.
+	 *
+	 * This method is just a shortcut for {@link RestAuthGroup::add_user()}.
+	 *
+	 * @param mixed $group The group the user should become a member of. 
+	 *	Either a  {@link RestAuthGroup} or a string representing the
+	 *	groupname.
+	 *
+	 * @throws {@link RestAuthBadRequest} When the request body could not be
+	 *	parsed.
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the group does not
+	 *	exist.
+	 * @throws {@link RestAuthUnsupportedMediaType} The server does not
+	 *	support the content type used by this connection.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
+	public function add_group( $group ) {
+		if ( is_string( $group ) {
+			$group = new RestAuthGroup( $this->conn, $group );
+		}
+		
+		return $group->add_user( $this );
+	}
+
+	/**
+	 * Remove the users membership from the given group.
+	 *
+	 * This method is just a shortcut for {@link 
+	 * RestAuthGroup::remove_user()}.
+	 *
+	 * @param mixed $group The group the user should no longer be a member
+	 *	of. Either a  {@link RestAuthGroup} or a string representing the
+	 *	groupname.
+	 *
+	 * @throws {@link RestAuthUnauthorized} When service authentication
+	 *	failed.
+	 * @throws {@link RestAuthResourceNotFound} When the group or user does
+	 *	not exist.
+	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
+	 *	returns HTTP status code 500
+	 * @throws {@link RestAuthUnknownStatus} If the response status is
+	 *	unknown.
+	 */
+	public function remove_group( $group ) {
+		if ( is_string( $group ) {
+			$group = new RestAuthGroup( $this->conn, $group );
+		}
+		
+		return $group->remove_user( $this );
 	}
 }
 ?>
