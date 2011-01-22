@@ -45,6 +45,8 @@ cleanup: clean
 %:
 	dh ${DH_ARGS} $@
 
+override_dh_auto_test:
+
 override_dh_auto_build: $(PYVERS:%=build-python%)
 	dh_auto_build -O --with-quilt
 
