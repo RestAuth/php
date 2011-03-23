@@ -16,7 +16,7 @@ class GroupTest extends PHPUnit_Framework_TestCase {
 		global $conn, $username1, $username2, $groupname1, $groupname2;
 		global $user1, $group1, $group2;
 
-		$host = 'http://localhost:8000';
+		$host = 'http://[::1]:8000';
 		$user = 'vowi';
 		$pass = 'vowi';
 		$conn = RestAuthConnection::get_connection( 

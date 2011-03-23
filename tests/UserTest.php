@@ -10,7 +10,7 @@ $propVal = "val 愓";
 
 class UserTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
-		$host = 'http://localhost:8000';
+		$host = 'http://[::1]:8000';
 		$user = 'vowi';
 		$pass = 'vowi';
 

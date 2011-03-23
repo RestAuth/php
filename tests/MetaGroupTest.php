@@ -28,7 +28,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase {
 		global $user1, $user2, $user3, $user4;
 		global $group1, $group2, $group3, $group4;
 
-		$host = 'http://localhost:8000';
+		$host = 'http://[::1]:8000';
 		$user = 'vowi';
 		$pass = 'vowi';
 		$conn = new RestAuthConnection( $host, $user, $pass );

@@ -14,7 +14,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		global $username, $user, $password, $conn;
 
-		$host = 'http://localhost:8000';
+		$host = 'http://[::1]:8000';
 		$user = 'vowi';
 		$pass = 'vowi';
 
