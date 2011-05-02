@@ -505,5 +505,15 @@ class RestAuthUser extends RestAuthResource {
 		
 		return $group->remove_user( $this );
 	}
+
+	public static function cmp( $a, $b ) {
+		$aName = $a->name;
+		$bName = $b->name;
+		if ( $aName == $bName ) {
+			return 0;
+		} else {
+			return ($aName > $bName) ? +1 : -1;
+		}
+	}
 }
 ?>
