@@ -2,18 +2,11 @@
 
 require_once( 'src/restauth.php' );
 
-$conn = null;
-$user = null;
-$group = null;
-$username = "mati 愐";
-$username2 = "mati 愑";
-$groupname = "group 愒";
-$groupname2 = "group 愓";
-$groupname3 = "group a";
+# variables are defined in UserTest.php
  
 class SimpleUserGroupTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
-		global $conn, $user, $username, $group, $groupname;
+		global $conn, $user, $username1, $group, $groupname1;
 
 		$host = 'http://[::1]:8000';
 		$user = 'vowi';
@@ -29,8 +22,8 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase {
 			throw new Exception( "Found " . count( $groups ) . " left over users." );
 		}
 
-		$user = RestAuthUser::create( $conn, $username, "foobar" );
-		$group = RestAuthGroup::create( $conn, $groupname );
+		$user = RestAuthUser::create( $conn, $username1, "foobar" );
+		$group = RestAuthGroup::create( $conn, $groupname1 );
 	}
 
 	public function tearDown() {
@@ -47,32 +40,32 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddGroup() {
-		global $user, $group, $groupname;
-		$user->add_group( $groupname );
+		global $user, $group, $groupname1;
+		$user->add_group( $groupname1 );
 		$this->assertEquals( array($group), $user->get_groups() );
-		$this->assertTrue( $user->in_group( $groupname ) );
+		$this->assertTrue( $user->in_group( $groupname1 ) );
 	}
 
 	public function testInGroup() {
-		global $user, $group, $groupname;
-		$this->assertFalse( $user->in_group( $groupname ) );
-		$user->add_group( $groupname );
+		global $user, $group, $groupname1;
+		$this->assertFalse( $user->in_group( $groupname1 ) );
+		$user->add_group( $groupname1 );
 		$this->assertEquals( array($group), $user->get_groups() );
-		$this->assertTrue( $user->in_group( $groupname ) );
+		$this->assertTrue( $user->in_group( $groupname1 ) );
 	}
 
 	public function testRemoveGroup() {
-		global $user, $group, $groupname;
+		global $user, $group, $groupname1;
 
-		$this->assertFalse( $user->in_group( $groupname ) );
+		$this->assertFalse( $user->in_group( $groupname1 ) );
 		$this->assertEquals( array(), $user->get_groups() );
 
-		$user->add_group( $groupname );
-		$this->assertTrue( $user->in_group( $groupname ) );
+		$user->add_group( $groupname1 );
+		$this->assertTrue( $user->in_group( $groupname1 ) );
 		$this->assertEquals( array($group), $user->get_groups() );
 
-		$user->remove_group( $groupname );
-		$this->assertFalse( $user->in_group( $groupname ) );
+		$user->remove_group( $groupname1 );
+		$this->assertFalse( $user->in_group( $groupname1 ) );
 		$this->assertEquals( array(), $user->get_groups() );
 	}
 

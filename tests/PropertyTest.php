@@ -3,29 +3,18 @@
 require_once( 'PHPUnit/Framework.php' );
 require_once( 'src/restauth.php' );
 
-$user = null;
-$conn = null;
-$username = "mati 愐";
-$password = "pass 愑";
-$propKey = "key 愒";
-$propVal = "val 愓";
- 
+# variables are defined in UserTest.php
+
 class PropertyTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
-		global $username, $user, $password, $conn;
-
-		$host = 'http://[::1]:8000';
-		$user = 'vowi';
-		$pass = 'vowi';
-
-		$conn = new RestAuthConnection( $host, $user, $pass );
+		global $username1, $user, $password1, $conn;
 
 		$users = RestAuthUser::get_all( $conn );
 		if ( count( $users ) ) {
 			throw new Exception( "Found " . count( $users ) . " left over users." );
 		}
 
-		$user = RestAuthUser::create( $conn, $username, $password );
+		$user = RestAuthUser::create( $conn, $username1, $password1 );
 	}
 	public function tearDown() {
 		global $conn;

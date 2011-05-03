@@ -3,130 +3,150 @@
 require_once( 'PHPUnit/Framework.php' );
 require_once( 'src/restauth.php' );
 
-$username = "mati 愐";
-$password = "pass 愑";
-$propKey = "key 愒";
-$propVal = "val 愓";
+# setup the connection:
+$RestAuthHost = 'http://[::1]:8000';
+$RestAuthUser = 'vowi';
+$RestAuthPass = 'vowi';
+$conn = new RestAuthConnection( $RestAuthHost, $RestAuthUser, $RestAuthPass );
+
+# various test data. 
+$username1 = "user ɨʄɔ"; # IPA (\u0268\u0284\u0254)
+$username2 = "user θσξ"; # Greek (\u03b8\u03c3\u03be)
+$username3 = "user わたし"; # Hiranga (\u308f\u305f\u3057)
+$username4 = "user 조선글"; # Chosongul (North Korea) (\uc870\uc120\uae00)
+$username5 = "user 한글"; # Hangul (South Korea) (\ud55c\uae00)
+
+# we have: \u03b8\u03c3\u03be
+
+$password1 = 'foo bar';
+$password2 = 'bla hugo';
+
+$groupname1 = "group بشك"; # Arabic
+$groupname2 = "group 漢字働働"; #Kanji
+$groupname3 = "group אָלֶף־בֵּית עִבְרִי"; # hebrew
+$groupname4 = "group अऋआऐ";
+$groupname5 = "group ӁӜӚ"; # cyrillic
+
+$propKey = "property 漢字"; # traditional chinese
+$propVal = "value 汉字"; # simplified chinese
 
 class UserTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
-		$host = 'http://[::1]:8000';
-		$user = 'vowi';
-		$pass = 'vowi';
+		global $conn;
 
-		$this->conn = new RestAuthConnection( $host, $user, $pass );
-
-		$users = RestAuthUser::get_all( $this->conn );
+		$users = RestAuthUser::get_all( $conn );
 		if ( count( $users ) ) {
 			throw new Exception( "Found " . count( $users ) . " left over users." );
 		}
 	}
 	public function tearDown() {
-		$users = RestAuthUser::get_all( $this->conn );
+		global $conn;
+
+		$users = RestAuthUser::get_all( $conn );
 		foreach ( $users as $user ) {
 			$user->remove();
 		}
 	}
 
 	public function testCreateUser() {
-		global $username, $password;
+		global $conn, $username1, $password1;
 
-		$user = RestAuthUser::create( $this->conn, $username, $password );
+		$user = RestAuthUser::create( $conn, $username1, $password1 );
 
 		$this->assertEquals( 
-			array( $user ), RestAuthUser::get_all( $this->conn ) );
+			array( $user ), RestAuthUser::get_all( $conn ) );
 		$this->assertEquals( 
-			$user, RestAuthUser::get( $this->conn, $username ) );
+			$user, RestAuthUser::get( $conn, $username1 ) );
 	}
 
 	public function testCreateInvalidUser() {
-		global $username, $password;
+		global $conn, $username1, $password1;
 
 		try {
-			RestAuthUser::create( $this->conn, "foo/bar", "don't care" );
+			RestAuthUser::create( $conn, "foo/bar", "don't care" );
 			$this->fail();
 		} catch ( RestAuthPreconditionFailed $e ) {
-			$this->assertEquals( array(), RestAuthUser::get_all( $this->conn ) );
+			$this->assertEquals( array(), RestAuthUser::get_all( $conn ) );
 		}
 	}
 	public function testCreateUserTwice() {
-		global $username, $password;
-		$new_pass = "new " . $password;
+		global $conn, $username1, $password1;
+		$new_pass = "new " . $password1;
 
-		$user = RestAuthUser::create( $this->conn, $username, $password );
+		$user = RestAuthUser::create( $conn, $username1, $password1 );
 		$this->assertEquals( 
-			$user, RestAuthUser::get( $this->conn, $username ) );
+			$user, RestAuthUser::get( $conn, $username1 ) );
 
 		try {
-			RestAuthUser::create( $this->conn, $username, $new_pass );
+			RestAuthUser::create( $conn, $username1, $new_pass );
 			$this->fail();
 		} catch ( RestAuthUserExists $e ) {
-			$this->assertTrue( $user->verify_password( $password ) );
+			$this->assertTrue( $user->verify_password( $password1 ) );
 			$this->assertFalse( $user->verify_password( $new_pass ) );
 		}
 	}
 	public function testVerifyPassword() {
-		global $username, $password;
-		$user = RestAuthUser::create( $this->conn, $username, $password );
+		global $conn, $username1, $password1;
+		$user = RestAuthUser::create( $conn, $username1, $password1 );
 
-		$this->assertTrue( $user->verify_password( $password ) );
+		$this->assertTrue( $user->verify_password( $password1 ) );
 		$this->assertFalse( $user->verify_password( "something else" ) );
 	}
 
 	public function testVerifyPasswordInvalidUser() {
-		global $username, $password;
+		global $conn, $username1, $password1;
 		
-		$user = new RestAuthUser( $this->conn, $username );
+		$user = new RestAuthUser( $conn, $username1 );
 
 		$this->assertFalse( $user->verify_password( "foobar" ) );
 	}
 
 	public function testSetPassword() {
-		global $username, $password;
+		global $conn, $username1, $password1;
 		$new_pass = "something else";
 
 
-		$user = RestAuthUser::create( $this->conn, $username, $password );
-		$this->assertTrue( $user->verify_password( $password ) );
+		$user = RestAuthUser::create( $conn, $username1, $password1 );
+		$this->assertTrue( $user->verify_password( $password1 ) );
 		$this->assertFalse( $user->verify_password( $new_pass ) );
 
 		$user->set_password( $new_pass );
 
-		$this->assertFalse( $user->verify_password( $password ) );
+		$this->assertFalse( $user->verify_password( $password1 ) );
 		$this->assertTrue( $user->verify_password( $new_pass ) );
 	}
 
 	public function testSetPasswordInvalidUser() {
-		global $username, $password;
+		global $conn, $username1, $password1;
 		
-		$user = new RestAuthUser( $this->conn, $username );
+		$user = new RestAuthUser( $conn, $username1 );
 		try {
-			$user->set_password( $password );
+			$user->set_password( $password1 );
 			$this->fail();
 		} catch ( RestAuthResourceNotFound $e ) {
 			$this->assertEquals( "user", $e->get_type() );
-			$this->assertEquals( array(), RestAuthUser::get_all( $this->conn ) );
+			$this->assertEquals( array(), RestAuthUser::get_all( $conn ) );
 		}
 	}
 
 	public function testSetTooShortPasswort() {
-		global $username, $password;
+		global $conn, $username1, $password1;
 		
-		$user = RestAuthUser::create( $this->conn, $username, $password );
+		$user = RestAuthUser::create( $conn, $username1, $password1 );
 		try {
 			$user->set_password( "x" );
 			$this->fail();
 		} catch ( RestAuthPreconditionFailed $e ) {
 			$this->assertFalse( $user->verify_password( "x" ) );
-			$this->assertTrue( $user->verify_password( $password ) );
+			$this->assertTrue( $user->verify_password( $password1 ) );
 		}
 	}
 
 	public function testGetInvalidUser() {
-		global $username, $password;
+		global $conn, $username1, $password1;
 
 		try {
-			RestAuthUser::get( $this->conn, $username );
+			RestAuthUser::get( $conn, $username1 );
 			$this->fail();
 		} catch ( RestAuthResourceNotFound $e ) {
 			$this->assertEquals( "user", $e->get_type() );
@@ -134,13 +154,13 @@ class UserTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testRemoveUser() {
-		global $username, $password;
-		$user = RestAuthUser::create( $this->conn, $username, $password );
+		global $conn, $username1, $password1;
+		$user = RestAuthUser::create( $conn, $username1, $password1 );
 	
 		$user->remove();
-		$this->assertEquals( array(), RestAuthUser::get_all( $this->conn ) );
+		$this->assertEquals( array(), RestAuthUser::get_all( $conn ) );
 		try {
-			RestAuthUser::get( $this->conn, $username );
+			RestAuthUser::get( $conn, $username1 );
 			$this->fail();
 		} catch ( RestAuthResourceNotFound $e ) {
 			$this->assertEquals( "user", $e->get_type() );
@@ -148,9 +168,9 @@ class UserTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testRemoveInvalidUser() {
-		global $username, $password;
+		global $conn, $username1, $password1;
 		
-		$user = new RestAuthUser( $this->conn, $username );
+		$user = new RestAuthUser( $conn, $username1 );
 		try {
 			$user->remove();
 			$this->fail();

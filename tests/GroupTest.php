@@ -3,14 +3,8 @@
 require_once( 'PHPUnit/Framework.php' );
 require_once( 'src/restauth.php' );
 
-$user1 = null;
-$conn = null;
-$username1 = "mati 1 愐";
-$username2 = "mati 2 愑";
-$username3 = "mati 3";
-$groupname1 = "group 愒";
-$groupname2 = "group 愓";
- 
+# variables are defined in UserTest.php
+
 class GroupTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		global $conn, $username1, $username2, $groupname1, $groupname2;
@@ -100,7 +94,7 @@ class GroupTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( array( $user1 ), $group1->get_members() );
 		$testArray = $group2->get_members();
 		usort( $testArray, array( "RestAuthUser", "cmp" ) );
-		$this->assertEquals( array( $user3, $user2 ), 
+		$this->assertEquals( array( $user2, $user3 ), 
 			 $testArray );
 
 		$this->assertTrue( $group1->is_member( $user1 ) );

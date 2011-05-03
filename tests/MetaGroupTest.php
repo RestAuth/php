@@ -2,25 +2,8 @@
 
 require_once( 'src/restauth.php' );
 
-$conn = null;
-$user1 = null;
-$user2 = null;
-$user4 = null;
-$group1 = null;
-$group2 = null;
-$group3 = null;
-$group4 = null;
-$username1 = "mati 愐";
-$username2 = "mati 愑";
-$username3 = "mati a";
-$username4 = "mati b";
-$username4 = "mati c"; // not created by setUp
-$groupname1 = "group 愒";
-$groupname2 = "group 愓";
-$groupname3 = "group a";
-$groupname4 = "group b";
-$groupname5 = "group c"; // not created by setUp
- 
+# variables are defined in UserTest.php
+
 class MetaGroupTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
 		global $conn, $username1, $username2, $username3, $username4;
@@ -78,25 +61,33 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase {
 		$group2->add_user( $user4 );
 
 		// verify initial state
+		$testArray = $group1->get_members();
+		usort( $testArray, array( "RestAuthUser", "cmp" ) );
 		$this->assertEquals( array( $user1, $user2 ),
-			$group1->get_members() );
+			$testArray );
+		$testArray = $group2->get_members();
+		usort( $testArray, array( "RestAuthUser", "cmp" ) );
 		$this->assertEquals( array( $user2, $user3, $user4 ),
-			$group2->get_members() );
+			$testArray );
 
 		// make group2 a subgroup of group1
 		$group1->add_group( $group2 );
 
 		// verify that group1 hasn't changed
+		$testArray = $group1->get_members();
+		usort( $testArray, array( "RestAuthUser", "cmp" ) );
 		$this->assertEquals( array( $user1, $user2 ),
-			$group1->get_members() );
+			$testArray );
 		$this->assertTrue( $group1->is_member( $user1 ) );
 		$this->assertTrue( $group1->is_member( $user2 ) );
 		$this->assertFalse( $group1->is_member( $user3 ) );
 		$this->assertFalse( $group1->is_member( $user4 ) );
 
 		// verify that group2 now inherits memberships from group1:
+		$testArray = $group2->get_members();
+		usort( $testArray, array( "RestAuthUser", "cmp" ) );
 		$this->assertEquals( array( $user1, $user2, $user3, $user4 ),
-			$group2->get_members() );
+			$testArray );
 		$this->assertTrue( $group2->is_member( $user1 ) );
 		$this->assertTrue( $group2->is_member( $user2 ) );
 		$this->assertTrue( $group2->is_member( $user3 ) );
@@ -150,8 +141,10 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase {
 
 		// verify state now:
 		$this->assertEquals( array( $user1 ), $group1->get_members() );
+		$testArray = $group2->get_members();
+		usort( $testArray, array( "RestAuthUser", "cmp" ) );
 		$this->assertEquals( array( $user1, $user2 ), 
-			$group2->get_members() );
+			$testArray );
 		$this->assertTrue( $group1->is_member( $user1 ) );
 		$this->assertTrue( $group2->is_member( $user1 ) );
 		$this->assertTrue( $group2->is_member( $user2 ) );
