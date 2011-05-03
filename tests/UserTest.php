@@ -16,8 +16,6 @@ $username3 = "user わたし"; # Hiranga (\u308f\u305f\u3057)
 $username4 = "user 조선글"; # Chosongul (North Korea) (\uc870\uc120\uae00)
 $username5 = "user 한글"; # Hangul (South Korea) (\ud55c\uae00)
 
-# we have: \u03b8\u03c3\u03be
-
 $password1 = 'foo bar';
 $password2 = 'bla hugo';
 
