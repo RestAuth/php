@@ -161,7 +161,7 @@ class RestAuthConnection {
 		$options = array( 'headers' => $headers );
 
 		$request = new HttpRequest( $url, HTTP_METH_POST, $options );
-		$request->setRawPostData( json_encode( $params ) );
+		$request->setRawPostData( json_encode( $params, JSON_FORCE_OBJECT ) );
 
 		$response = $this->send( $request );
 
@@ -204,7 +204,7 @@ class RestAuthConnection {
 		$options = array( 'headers' => $headers );
 
 		$request = new HttpRequest( $url, HTTP_METH_PUT, $options );
-		$request->setPutData( json_encode( $params ) );
+		$request->setPutData( json_encode( $params, JSON_FORCE_OBJECT ) );
 		$response = $this->send( $request );
 
 		switch ( $response->getResponseCode() ) {
