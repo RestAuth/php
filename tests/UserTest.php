@@ -57,6 +57,36 @@ class UserTest extends PHPUnit_Framework_TestCase {
 			$user, RestAuthUser::get( $conn, $username1 ) );
 	}
 
+	public function testCreateUserNoPassword() {
+		global $conn, $username1, $username2, $username3, $password1;
+
+		$user = RestAuthUser::create( $conn, $username1 );
+		$this->assertEquals( 
+			array( $user ), RestAuthUser::get_all( $conn ) );
+		$this->assertEquals( 
+			$user, RestAuthUser::get( $conn, $username1 ) );
+
+		$this->assertFalse( $user->verify_password( $password1 ) );
+		$this->assertFalse( $user->verify_password( '' ) );
+		$this->assertFalse( $user->verify_password( NULL ) );
+
+		$user = RestAuthUser::create( $conn, $username2, '' );
+		$this->assertEquals( 
+			$user, RestAuthUser::get( $conn, $username2 ) );
+
+		$this->assertFalse( $user->verify_password( $password1 ) );
+		$this->assertFalse( $user->verify_password( '' ) );
+		$this->assertFalse( $user->verify_password( NULL ) );
+
+		$user = RestAuthUser::create( $conn, $username3, NULL );
+		$this->assertEquals( 
+			$user, RestAuthUser::get( $conn, $username3 ) );
+
+		$this->assertFalse( $user->verify_password( $password1 ) );
+		$this->assertFalse( $user->verify_password( '' ) );
+		$this->assertFalse( $user->verify_password( NULL ) );
+	}
+
 	public function testCreateInvalidUser() {
 		global $conn, $username1, $password1;
 
@@ -112,6 +142,27 @@ class UserTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertFalse( $user->verify_password( $password1 ) );
 		$this->assertTrue( $user->verify_password( $new_pass ) );
+	}
+
+	public function testDisablePassword() {
+		global $conn, $username1, $password1;
+		$user = RestAuthUser::create( $conn, $username1, $password1 );
+		$this->assertTrue( $user->verify_password( $password1 ) );
+		$this->assertFalse( $user->verify_password( '' ) );
+		$this->assertFalse( $user->verify_password( NULL ) );
+
+		$user->set_password();
+		$this->assertFalse( $user->verify_password( $password1 ) );
+		$this->assertFalse( $user->verify_password( '' ) );
+		$this->assertFalse( $user->verify_password( NULL ) );
+		$user->set_password( NULL );
+		$this->assertFalse( $user->verify_password( $password1 ) );
+		$this->assertFalse( $user->verify_password( '' ) );
+		$this->assertFalse( $user->verify_password( NULL ) );
+		$user->set_password( '' );
+		$this->assertFalse( $user->verify_password( $password1 ) );
+		$this->assertFalse( $user->verify_password( '' ) );
+		$this->assertFalse( $user->verify_password( NULL ) );
 	}
 
 	public function testSetPasswordInvalidUser() {

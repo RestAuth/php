@@ -42,7 +42,8 @@ class RestAuthUser extends RestAuthResource {
 	 *
 	 * @param RestAuthConnection $conn The connection to a RestAuth service.
 	 * @param string $name The name of this user.
-	 * @param string $password The password for the new user
+	 * @param string $password The password for the new user. If ommitted or
+	 *	an empty string, the account is created but disabled.
 	 *
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 * 	parsed.
@@ -60,8 +61,11 @@ class RestAuthUser extends RestAuthResource {
 	 * @throws {@link RestAuthUnknownStatus} If the response status is
 	 *	unknown.
 	 */
-	public static function create( $conn, $name, $password ) {
-		$params = array( 'user' => $name, 'password' => $password );
+	public static function create( $conn, $name, $password=NULL ) {
+		$params = array( 'user' => $name );
+		if ( ! (is_null($password) || $password === '' ) ) {
+			$params['password'] = $password;
+		}
 		$resp = $conn->post( '/users/', $params );
 		switch ( $resp->getResponseCode() ) {
 			case 201: return new RestAuthUser( $conn, $name );
@@ -152,7 +156,8 @@ class RestAuthUser extends RestAuthResource {
 	/**
 	 * Set the password of this user.
 	 *
-	 * @param string $password The new password.
+	 * @param string $password The new password. If ommitted or an empty
+	 *	string, the account is disabled.
 	 *
 	 * @throws {@link RestAuthBadRequest} When the request body could not be
 	 *	parsed.
@@ -168,8 +173,12 @@ class RestAuthUser extends RestAuthResource {
 	 *	returns HTTP status code 500
 	 * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
 	 */
-	public function set_password( $password ) {
-		$resp = $this->_put( $this->name, array( 'password' => $password ) );
+	public function set_password( $password=NULL ) {
+		$params = array();
+		if ( ! (is_null($password) || $password === '' ) ) {
+			$params['password'] = $password;
+		}
+		$resp = $this->_put( $this->name, $params);
 
 		switch ( $resp->getResponseCode() ) {
 			case 204: return;
