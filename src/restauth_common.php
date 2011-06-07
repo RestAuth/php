@@ -6,6 +6,27 @@
  * @package php-restauth
  */
 
+abstract class ContentHandler {
+	abstract function unmarshal_str( $obj );
+	abstract function unmarshal_list( $obj );
+	abstract function unmarshal_dict( $obj );
+	abstract function get_mime_type();
+}
+
+class RestAuthJsonHandler extends ContentHandler {
+	public function unmarshal_str( $obj ) {
+		$arr = json_decode( $obj );
+		return $arr[0];
+	}
+	
+	public function unmarshal_list( $obj ){}
+	public function unmarshal_dict( $obj ){}
+	
+	public function get_mime_type(){
+		return 'application/json';
+	}
+}
+
 /**
  * An instance of this class represents a connection to a RestAuth service. 
  *
@@ -31,6 +52,7 @@ class RestAuthConnection {
 	public function __construct( $host, $user, $password ) {
 		$this->host = rtrim( $host, '/' );
 		$this->set_credentials( $user, $password );
+		$this->handler = new RestAuthJsonHandler();
 
 		self::$connection = $this;
 	}
@@ -84,7 +106,7 @@ class RestAuthConnection {
 	public function send( $request ) { 
 		# add headers present with all methods:
 		$request->addHeaders( array(
-			'Accept' => 'application/json',
+			'Accept' => $this->handler->get_mime_type(),
 			'Authorization' => 'Basic ' . $this->auth_header ) );
 
 		$response = $request->send();
@@ -155,7 +177,7 @@ class RestAuthConnection {
 	 *	suffers from an internal error.
 	 */
 	public function post( $url, $params, $headers = array() ) {
-		$headers['Content-Type'] = 'application/json';
+		$headers['Content-Type'] = $this->handler->get_mime_type();
 
 		$url = $this->host . $this->sanitize_url( $url );
 		$options = array( 'headers' => $headers );

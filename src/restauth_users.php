@@ -303,7 +303,8 @@ class RestAuthUser extends RestAuthResource {
 		$params = array( 'value' => $value );
 		$resp = $this->_put( $url, $params );
 		switch ( $resp->getResponseCode() ) {
-			case 200: return json_decode( $resp->getBody() );
+			// todo: 200 is never tested!!!
+			case 200: return $this->conn->handler->unmarshal_str( $resp->getBody() );
 			case 201: return;
 			case 404: throw new RestAuthResourceNotFound( $resp );
 			// @codeCoverageIgnoreStart
@@ -374,7 +375,7 @@ class RestAuthUser extends RestAuthResource {
 		$resp = $this->_get( $url );
 
 		switch ( $resp->getResponseCode() ) {
-			case 200: return json_decode( $resp->getBody() );
+			case 200: return $this->conn->handler->unmarshal_str( $resp->getBody() );
 			case 404: throw new RestAuthResourceNotFound( $resp );
 			// @codeCoverageIgnoreStart
 			default: throw new RestAuthUnknownStatus( $resp );
