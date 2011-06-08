@@ -127,5 +127,15 @@ class RestAuthUnsupportedMediaType extends RestAuthInternalException {
 	protected $code = 415;
 }
 
+class RestAuthHttpException extends RestAuthException {
+	public function __construct( $http_exception ) {
+		$this->cause = $http_exception;
+		$this->message = $http_exception->getMessage();
+	}
+	
+	public function get_cause() {
+		return $this->cause;
+	}
+}
 
 ?>

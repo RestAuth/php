@@ -102,6 +102,7 @@ class RestAuthConnection {
 	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
+	 * @throws {@link RestAuthRuntimeException} When some HTTP related error occurs.
 	 */
 	public function send( $request ) { 
 		# add headers present with all methods:
@@ -109,7 +110,11 @@ class RestAuthConnection {
 			'Accept' => $this->handler->get_mime_type(),
 			'Authorization' => 'Basic ' . $this->auth_header ) );
 
-		$response = $request->send();
+		try {
+			$response = $request->send();
+		} catch (HttpException $ex) {
+			throw new RestAuthHttpException( $ex );
+		}
 		$response_headers = $response->getHeaders();
 
 		# handle error status codes
@@ -142,6 +147,7 @@ class RestAuthConnection {
 	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
+	 * @throws {@link RestAuthRuntimeException} When some HTTP related error occurs.
 	 */
 	public function get( $url, $params = array(), $headers = array() ) {
 		$url = $this->host . $this->sanitize_url( $url );
@@ -175,6 +181,7 @@ class RestAuthConnection {
 	 * 	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
+	 * @throws {@link RestAuthRuntimeException} When some HTTP related error occurs.
 	 */
 	public function post( $url, $params, $headers = array() ) {
 		$headers['Content-Type'] = $this->handler->get_mime_type();
@@ -218,6 +225,7 @@ class RestAuthConnection {
 	 * 	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
+	 * @throws {@link RestAuthRuntimeException} When some HTTP related error occurs.
 	 */
 	public function put( $url, $params, $headers = array() ) {
 		$headers['Content-Type'] = 'application/json';
@@ -319,6 +327,7 @@ abstract class RestAuthResource {
 	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
+	 * @throws {@link RestAuthRuntimeException} When some HTTP related error occurs.
 	 */
 	protected function _get( $url, $params = array(), $headers = array() ) {
 		$url = static::prefix . $url;
@@ -352,6 +361,7 @@ abstract class RestAuthResource {
 	 * 	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
+	 * @throws {@link RestAuthRuntimeException} When some HTTP related error occurs.
 	 */
 	protected function _post( $url, $params = array(), $headers = array() ) {
 		$url = static::prefix . $url;
@@ -385,6 +395,7 @@ abstract class RestAuthResource {
 	 * 	support the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
+	 * @throws {@link RestAuthRuntimeException} When some HTTP related error occurs.
 	 */
 	protected function _put( $url, $params = array(), $headers = array() ) {
 		$url = static::prefix . $url;
@@ -413,6 +424,7 @@ abstract class RestAuthResource {
 	 *	a response in the content type used by this connection.
 	 * @throws {@link RestAuthInternalServerError} When the RestAuth service
 	 *	suffers from an internal error.
+	 * @throws {@link RestAuthRuntimeException} When some HTTP related error occurs.
 	 */
 	protected function _delete( $url, $headers = array() ) {
 		return $this->conn->delete( static::prefix . $url, $headers );
