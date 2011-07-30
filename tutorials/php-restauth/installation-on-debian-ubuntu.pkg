@@ -1,0 +1,17 @@
+<refentry id="{@id}">
+ <refnamediv>
+  <refname>Installation on Debian/Ubuntu</refname>
+  <refpurpose>How-to install on Debian/Ubuntu</refpurpose>
+ </refnamediv>
+ <refsynopsisdiv>
+  <author>
+   Mathias Ertl
+   <authorblurb>
+    {@link mailto:mati@restauth.net mati@restauth.net}
+   </authorblurb>
+  </author>
+ </refsynopsisdiv>
+ <refsect1 id="{@id intro}">
+  <para>page 1.</para>
+ </refsect1>
+</refentry>

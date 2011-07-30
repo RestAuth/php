@@ -1,0 +1,58 @@
+<refentry id="{@id}">
+ <refnamediv>
+  <refname>User Guide for php-restauth</refname>
+  <refpurpose>Documentation for the RestAuth client library written in PHP</refpurpose>
+ </refnamediv>
+ <refsynopsisdiv>
+  <author>
+   Mathias Ertl
+   <authorblurb>
+    {@link mailto:mati@fsinf.at Mathias Ertl}
+   </authorblurb>
+  </author>
+ </refsynopsisdiv>
+ {@toc}
+ <refsect1 id="{@id intro}">
+  <title>php-restauth user guide</title>
+  <para>
+   Welcome to the homepage of <emphasis>php-restauth</emphasis>, a client library for
+   {@link https://restauth.net RestAuth}. The library allows systems to share user authentication,
+   authorization and preferences on a {@link https://restauth.net/wiki/Servers RestAuth server}. The
+   <emphasis>php-restauth</emphasis> library hides all protocol and network details from the
+   programmer, enabling fast, efficient and easy-to-maintain integration into existing services.
+  </para>
+  <para><emphasis>php-restauth</emphasis> is written in pure PHP. <emphasis>php-restauth</emphasis>
+   is free software and licenced under the {@link http://www.gnu.org/licenses/gpl.html GNU
+   General Public Licence, version 3}, so please feel free to {@tutorial contribute.pkg contribute}. 
+  </para>
+ </refsect1>
+ <refsect1 id="{@id installation}">
+  <title>Installation</title>
+  <para>
+   <itemizedlist>
+    <listitem>{@tutorial installation-from-source.pkg From source}</listitem>
+    <listitem>{@tutorial installation-on-debian-ubuntu.pkg On Debian/Ubuntu}</listitem>
+   </itemizedlist>
+  </para>
+ </refsect1>
+ <refsect1 id="{@id guide}">
+  <title>Guide</title>
+  <para>
+   <itemizedlist>
+    <listitem>{@tutorial guide.pkg Guide}</listitem>
+    <listitem>{@tutorial errors.pkg Error handling}</listitem>
+   </itemizedlist>
+  </para>
+ </refsect1>
+ <refsect1 id="{@id api}">
+  <title>API documentation</title>
+  <para>
+   The most important classes are:
+   <itemizedlist>
+    <listitem>{@link RestAuthConnection}</listitem>
+    <listitem>{@link RestAuthUser}</listitem>
+    <listitem>{@link RestAuthGroup}</listitem>
+   </itemizedlist>
+  </para>
+ </refsect1>
+</refentry>
