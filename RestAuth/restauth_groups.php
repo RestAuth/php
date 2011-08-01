@@ -27,7 +27,7 @@ class RestAuthGroupExists extends RestAuthResourceConflict
  */
 class RestAuthGroup extends RestAuthResource
 {
-    const prefix = '/groups/';
+    const PREFIX = '/groups/';
 
     /**
      * Factory method that creates a new group in RestAuth.
@@ -155,7 +155,6 @@ class RestAuthGroup extends RestAuthResource
      */
     public function __construct($conn, $name)
     {
-        $this->prefix = '/groups/';
         $this->conn = $conn;
         $this->name = $name;
     }

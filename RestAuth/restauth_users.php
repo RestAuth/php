@@ -35,7 +35,7 @@ class RestAuthPropertyExists extends RestAuthResourceConflict
  */
 class RestAuthUser extends RestAuthResource
 {
-    const prefix = '/users/';
+    const PREFIX = '/users/';
 
     /**
      * Factory method that creates a new user in the RestAuth database and
