@@ -42,16 +42,6 @@
     can use any of those versions with <code language="bash">git checkout</code>, for example
     <code language="bash">git checkout 1.0</code>. To move back to the newest
     version, use <code language="bash">git checkout master</code>.
-
-    If you ever want to update the source code, just use:
-
-    <para><programlisting language="bash">
-     make clean
-     git pull
-    </programlisting></para>
-
-    ... and do the same as if you where :ref:`doing a new installation install_from-source_installation`.
-   
    </para>
   </refsect2>
   <refsect2 id="{@id get_source_official_releases}">
@@ -101,7 +91,15 @@
    </para>
   </refsect2>
  </refsect1>
- 
+ <refsect1 id="{@id updating}">
+  <title>Updating</title>
+  <para>If you ever want to update the source code, just use:</para>
+    <para><programlisting language="bash">
+     make clean;
+     git pull;
+     pear upgrade -f package.xml;
+    </programlisting></para>
+ </refsect1>
  <refsect1 id="{@id run_tests}">
   <title>Run tests</title>
   <para>
