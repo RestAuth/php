@@ -13,10 +13,10 @@
  * @package php-restauth
  */
 abstract class RestAuthException extends Exception {
-	public function __construct( $response ) {
-		$this->message = $response->getBody();
-		$this->response = $response;
-	}
+    public function __construct( $response ) {
+        $this->message = $response->getBody();
+        $this->response = $response;
+    }
 }
 
 /**
@@ -25,11 +25,11 @@ abstract class RestAuthException extends Exception {
  * @package php-restauth
  */
 class RestAuthResourceNotFound extends RestAuthException {
-	protected $code = 404;
+    protected $code = 404;
 
-	public function get_type() {
-		return $this->response->getHeader( 'Resource-Type' );
-	}
+    public function get_type() {
+        return $this->response->getHeader( 'Resource-Type' );
+    }
 }
 
 /**
@@ -39,7 +39,7 @@ class RestAuthResourceNotFound extends RestAuthException {
  * @package php-restauth
  */
 abstract class RestAuthResourceConflict extends RestAuthException {
-	protected $code = 409;
+    protected $code = 409;
 }
 
 /**
@@ -64,7 +64,7 @@ class RestAuthInternalException extends RestAuthException {}
  * @package php-restauth
  */
 class RestAuthBadRequest extends RestAuthInternalException {
-	protected $code = 400;
+    protected $code = 400;
 }
 
 /**
@@ -74,7 +74,7 @@ class RestAuthBadRequest extends RestAuthInternalException {
  * @package php-restauth
  */
 class RestAuthInternalServerError extends RestAuthInternalException {
-	protected $code = 500;
+    protected $code = 500;
 }
 
 /**
@@ -93,7 +93,7 @@ class RestAuthUnknownStatus extends RestAuthInternalException {
  * @package php-restauth
  */
 class RestAuthPreconditionFailed extends RestAuthException {
-	protected $code = 412;
+    protected $code = 412;
 }
 
 /**
@@ -104,7 +104,7 @@ class RestAuthPreconditionFailed extends RestAuthException {
  * @package php-restauth
  */
 class RestAuthUnauthorized extends RestAuthException {
-	protected $code = 401;
+    protected $code = 401;
 }
 
 /**
@@ -114,7 +114,7 @@ class RestAuthUnauthorized extends RestAuthException {
  * @package php-restauth
  */
 class RestAuthNotAcceptable extends RestAuthInternalException {
-	protected $code = 406;
+    protected $code = 406;
 }
 
 /**
@@ -124,18 +124,18 @@ class RestAuthNotAcceptable extends RestAuthInternalException {
  * @package php-restauth
  */
 class RestAuthUnsupportedMediaType extends RestAuthInternalException {
-	protected $code = 415;
+    protected $code = 415;
 }
 
 class RestAuthHttpException extends RestAuthException {
-	public function __construct( $http_exception ) {
-		$this->cause = $http_exception;
-		$this->message = $http_exception->getMessage();
-	}
-	
-	public function get_cause() {
-		return $this->cause;
-	}
+    public function __construct( $http_exception ) {
+        $this->cause = $http_exception;
+        $this->message = $http_exception->getMessage();
+    }
+    
+    public function get_cause() {
+        return $this->cause;
+    }
 }
 
 ?>
