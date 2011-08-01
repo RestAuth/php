@@ -48,7 +48,8 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public static function create($conn, $name) {
+    public static function create($conn, $name)
+    {
         $resp = $conn->post('/groups/', array('group' => $name));
         switch ($resp->getResponseCode()) {
             case 201:
@@ -80,7 +81,8 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public static function get($conn, $name) {
+    public static function get($conn, $name)
+    {
         $resp = $conn->get('/groups/' . $name . '/');
         switch ($resp->getResponseCode()) {
             case 204:
@@ -114,7 +116,8 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public static function get_all($conn, $user=NULL) {
+    public static function get_all($conn, $user=NULL)
+    {
         $params = array();
         if ($user) {
             if (is_string($user)) {
@@ -150,7 +153,8 @@ class RestAuthGroup extends RestAuthResource
      * @param RestAuthConnection $conn A connection to a RestAuth service.
      * @param string $name The name of the new group.
      */
-    public function __construct($conn, $name) {
+    public function __construct($conn, $name)
+    {
         $this->prefix = '/groups/';
         $this->conn = $conn;
         $this->name = $name;
@@ -169,7 +173,8 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function get_members() {
+    public function get_members()
+    {
         $params = array();
 
         $resp = $this->_get($this->name . '/users/', $params);
@@ -207,7 +212,8 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function add_user($user) {
+    public function add_user($user)
+    {
         if (is_string($user)) {
             $params = array('user' => $user);
         } else {
@@ -242,7 +248,8 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function is_member($user) {
+    public function is_member($user)
+    {
         if (is_string($user)) {
             $username = $user;
         } else {
@@ -281,7 +288,8 @@ class RestAuthGroup extends RestAuthResource
      *     returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function remove() {
+    public function remove()
+    {
         $resp = $this->_delete($this->name);
         switch ($resp->getResponseCode()) {
             case 204:
@@ -310,7 +318,8 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function remove_user($user) {
+    public function remove_user($user)
+    {
         if (is_string($user)) {
             $username = $user;
         } else {
@@ -351,7 +360,8 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function add_group($group) {
+    public function add_group($group)
+    {
         if (is_string($group)) {
             $groupname = $group;
         } else {
@@ -388,7 +398,8 @@ class RestAuthGroup extends RestAuthResource
      *     returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function get_groups() {
+    public function get_groups()
+    {
         $resp = $this->_get($this->name . '/groups/');
         switch ($resp->getResponseCode()) {
             case 200: 
@@ -421,7 +432,8 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function remove_group($group) {
+    public function remove_group($group)
+    {
         if (is_string($group)) {
             $groupname = $group;
         } else {

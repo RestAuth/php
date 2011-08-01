@@ -62,7 +62,8 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public static function create($conn, $name, $password=NULL) {
+    public static function create($conn, $name, $password=NULL)
+    {
         $params = array('user' => $name);
         if (!((is_null($password)) || ($password === ''))) {
             $params['password'] = $password;
@@ -104,7 +105,8 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public static function get($conn, $name) {
+    public static function get($conn, $name)
+    {
         $resp = $conn->get('/users/' . $name . '/');
 
         switch ($resp->getResponseCode()) {
@@ -135,7 +137,8 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public static function get_all($conn) {
+    public static function get_all($conn)
+    {
         $resp = $conn->get('/users/');
 
         switch ($resp->getResponseCode()) {
@@ -163,7 +166,8 @@ class RestAuthUser extends RestAuthResource
      * @param RestAuthConnection $conn The connection to a RestAuth service.
      * @param string $name The name of this user.
      */
-    public function __construct($conn, $name) {
+    public function __construct($conn, $name)
+    {
         $this->conn = $conn;
         $this->name = $name;
     }
@@ -188,7 +192,8 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function set_password($password=NULL) {
+    public function set_password($password=NULL)
+    {
         $params = array();
         if (!((is_null($password)) || ($password === ''))) {
             $params['password'] = $password;
@@ -234,7 +239,8 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function verify_password($password) {
+    public function verify_password($password)
+    {
         $resp = $this->_post($this->name, array('password' => $password));
         switch ($resp->getResponseCode()) {
             case 204:
@@ -262,7 +268,8 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function remove() {
+    public function remove()
+    {
         $resp = $this->_delete($this->name);
         switch ($resp->getResponseCode()) {
             case 204:
@@ -295,7 +302,8 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function get_properties() {
+    public function get_properties()
+    {
         $url = "$this->name/props/";
         $resp = $this->_get($url);
         
@@ -334,7 +342,8 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function set_property($name, $value) {
+    public function set_property($name, $value)
+    {
         $url = "$this->name/props/$name";
         $params = array('value' => $value);
         $resp = $this->_put($url, $params);
@@ -380,7 +389,8 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function create_property($name, $value) {
+    public function create_property($name, $value)
+    {
         $url = "$this->name/props/";
         $params = array('prop' => $name, 'value' =>$value);
         $resp = $this->_post($url, $params);
@@ -420,7 +430,8 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function get_property($name) {
+    public function get_property($name)
+    {
         $url = "$this->name/props/$name";
         $resp = $this->_get($url);
 
@@ -452,7 +463,8 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function remove_property($name) {
+    public function remove_property($name)
+    {
         $url = "$this->name/props/$name";
         $resp = $this->_delete($url);
 
@@ -488,7 +500,8 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public function get_groups() {
+    public function get_groups()
+    {
         return RestAuthGroup::get_all($this->conn, $this);
     }
 
@@ -511,7 +524,8 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public function in_group($group) {
+    public function in_group($group)
+    {
         if (is_string($group)) {
             $group = new RestAuthGroup($this->conn, $group);
         }
@@ -541,7 +555,8 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public function add_group($group) {
+    public function add_group($group)
+    {
         if (is_string($group)) {
             $group = new RestAuthGroup($this->conn, $group);
         }
@@ -568,7 +583,8 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public function remove_group($group) {
+    public function remove_group($group)
+    {
         if (is_string($group)) {
             $group = new RestAuthGroup($this->conn, $group);
         }
@@ -576,7 +592,8 @@ class RestAuthUser extends RestAuthResource
         return $group->remove_user($this);
     }
 
-    public static function cmp($a, $b) {
+    public static function cmp($a, $b)
+    {
         $aName = $a->name;
         $bName = $b->name;
         if ($aName == $bName) {
@@ -586,7 +603,8 @@ class RestAuthUser extends RestAuthResource
         }
     }
     
-    function __toString() {
+    function __toString()
+    {
         return "<User: " . $this->name . ">";
     }
 }

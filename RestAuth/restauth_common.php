@@ -16,15 +16,22 @@ abstract class ContentHandler
 
 class RestAuthJsonHandler extends ContentHandler
 {
-    public function unmarshal_str($obj) {
+    public function unmarshal_str($obj)
+    {
         $arr = json_decode($obj);
         return $arr[0];
     }
     
-    public function unmarshal_list($obj){}
-    public function unmarshal_dict($obj){}
+    public function unmarshal_list($obj)
+    {
+    }
     
-    public function get_mime_type(){
+    public function unmarshal_dict($obj)
+    {
+    }
+    
+    public function get_mime_type()
+    {
         return 'application/json';
     }
 }
@@ -55,7 +62,8 @@ class RestAuthConnection
      * @param string $password The password to use for authenticating with the
      *     RestAuth service.
      */
-    public function __construct($host, $user, $password) {
+    public function __construct($host, $user, $password)
+    {
         $this->host = rtrim($host, '/');
         $this->set_credentials($user, $password);
         $this->handler = new RestAuthJsonHandler();
@@ -69,7 +77,8 @@ class RestAuthConnection
      * otherwise they are passed unmodified to
      * {@link RestAuthConnection::__construct __construct}.
      */
-    public static function get_connection($host='', $user='', $password='') {
+    public static function get_connection($host='', $user='', $password='')
+    {
         if (!isset(self::$connection)) {
             self::$connection = new RestAuthConnection($host, $user, $password);
         }
@@ -84,7 +93,8 @@ class RestAuthConnection
      * @param string $user The username to use
      * @param string $password The password to use
      */
-    public function set_credentials($user, $password) {
+    public function set_credentials($user, $password)
+    {
         $this->auth_header = base64_encode($user . ':' . $password);
     }
 
@@ -110,7 +120,8 @@ class RestAuthConnection
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    public function send($request) { 
+    public function send($request)
+    { 
         # add headers present with all methods:
         $request->addHeaders(
             array(
@@ -164,7 +175,8 @@ class RestAuthConnection
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    public function get($url, $params = array(), $headers = array()) {
+    public function get($url, $params = array(), $headers = array())
+    {
         $url = $this->host . $this->sanitize_url($url);
         $options = array('headers' => $headers);
         $request = new HttpRequest($url, HTTP_METH_GET, $options);
@@ -199,7 +211,8 @@ class RestAuthConnection
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    public function post($url, $params, $headers = array()) {
+    public function post($url, $params, $headers = array())
+    {
         $headers['Content-Type'] = $this->handler->get_mime_type();
 
         $url = $this->host . $this->sanitize_url($url);
@@ -247,7 +260,8 @@ class RestAuthConnection
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    public function put($url, $params, $headers = array()) {
+    public function put($url, $params, $headers = array())
+    {
         $headers['Content-Type'] = 'application/json';
         
         $url = $this->host . $this->sanitize_url($url);
@@ -289,7 +303,8 @@ class RestAuthConnection
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
      *    suffers from an internal error.
      */
-    public function delete($url, $headers = array()) {
+    public function delete($url, $headers = array())
+    {
         $url = $this->host . $this->sanitize_url($url);
         $options = array('headers' => $headers);
         $request = new HttpRequest($url, HTTP_METH_DELETE, $options);
@@ -305,7 +320,8 @@ class RestAuthConnection
      * @return string The sanitized path segmet of an URL
      * @todo rename to sanitize_path
      */
-    public function sanitize_url($url) {
+    public function sanitize_url($url)
+    {
         if (substr($url, -1) !== '/') {
             $url .= '/';
         }
@@ -356,7 +372,8 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function _get($url, $params = array(), $headers = array()) {
+    protected function _get($url, $params = array(), $headers = array())
+    {
         $url = static::prefix . $url;
         return $this->conn->get($url, $params, $headers);
     }
@@ -391,7 +408,8 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function _post($url, $params = array(), $headers = array()) {
+    protected function _post($url, $params = array(), $headers = array())
+    {
         $url = static::prefix . $url;
         return $this->conn->post($url, $params, $headers);
     }
@@ -426,7 +444,8 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function _put($url, $params = array(), $headers = array()) {
+    protected function _put($url, $params = array(), $headers = array())
+    {
         $url = static::prefix . $url;
         return $this->conn->put($url, $params, $headers);
     }
@@ -456,7 +475,8 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function _delete($url, $headers = array()) {
+    protected function _delete($url, $headers = array())
+    {
         return $this->conn->delete(static::prefix . $url, $headers);
     }
 }
