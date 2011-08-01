@@ -48,11 +48,18 @@ class RestAuthGroup extends RestAuthResource {
     public static function create( $conn, $name ) {
         $resp = $conn->post( '/groups/', array( 'group' => $name ) );
         switch ( $resp->getResponseCode() ) {
-            case 201: return new RestAuthGroup( $conn, $name );
-            case 409: throw new RestAuthGroupExists( $resp );
-            case 412: throw new RestAuthPreconditionFailed( $resp );
+            case 201:
+                return new RestAuthGroup( $conn, $name );
+                
+            case 409:
+                throw new RestAuthGroupExists( $resp );
+                
+            case 412:
+                throw new RestAuthPreconditionFailed( $resp );
+                
             // @codeCoverageIgnoreStart
-            default: throw new RestAuthUnknownStatus( $resp );
+            default:
+                throw new RestAuthUnknownStatus( $resp );
         }
         // @codeCoverageIgnoreEnd
     }
@@ -73,10 +80,15 @@ class RestAuthGroup extends RestAuthResource {
     public static function get( $conn, $name ) {
         $resp = $conn->get( '/groups/' . $name . '/' );
         switch ( $resp->getResponseCode() ) {
-            case 204: return new RestAuthGroup( $conn, $name );
-            case 404: throw new RestAuthResourceNotFound( $resp );
+            case 204:
+                return new RestAuthGroup( $conn, $name );
+                
+            case 404:
+                throw new RestAuthResourceNotFound( $resp );
+                
             // @codeCoverageIgnoreStart
-            default: throw new RestAuthUnknownStatus( $resp );
+            default:
+                throw new RestAuthUnknownStatus( $resp );
         }
         // @codeCoverageIgnoreEnd
     }
@@ -101,8 +113,8 @@ class RestAuthGroup extends RestAuthResource {
      */
     public static function get_all( $conn, $user=NULL ) {
         $params = array();
-        if ( $user ) {
-            if ( is_string( $user ) ) {
+        if ($user) {
+            if (is_string( $user )) {
                 $params['user'] = $user;
             } else {
                 $params['user'] = $user->name;
@@ -117,9 +129,13 @@ class RestAuthGroup extends RestAuthResource {
                     $groups[] = new RestAuthGroup( $conn, $groupname );
                 }
                 return $groups;
-            case 404: throw new RestAuthResourceNotFound( $resp );
+            
+            case 404:
+                throw new RestAuthResourceNotFound( $resp );
+                
             // @codeCoverageIgnoreStart
-            default: throw new RestAuthUnknownStatus( $resp );
+            default:
+                throw new RestAuthUnknownStatus( $resp );
         }
         // @codeCoverageIgnoreEnd
     }
@@ -161,9 +177,13 @@ class RestAuthGroup extends RestAuthResource {
                     $users[] = new RestAuthUser( $this->conn, $username );
                 }
                 return $users;
-            case 404: throw new RestAuthResourceNotFound( $resp );
+            
+            case 404:
+                throw new RestAuthResourceNotFound( $resp );
+                
             // @codeCoverageIgnoreStart
-            default: throw new RestAuthUnknownStatus( $resp );
+            default:
+                throw new RestAuthUnknownStatus( $resp );
         }
         // @codeCoverageIgnoreEnd
     }
@@ -185,7 +205,7 @@ class RestAuthGroup extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
     public function add_user( $user ) {
-        if ( is_string( $user ) ) {
+        if (is_string( $user )) {
             $params = array( 'user' => $user );
         } else {
             $params = array( 'user' => $user->name );
@@ -193,10 +213,15 @@ class RestAuthGroup extends RestAuthResource {
 
         $resp = $this->_post( $this->name . '/users/', $params );
         switch ( $resp->getResponseCode() ) {
-            case 204: return;
-            case 404: throw new RestAuthResourceNotFound( $resp );
+            case 204:
+                return;
+            
+            case 404:
+                throw new RestAuthResourceNotFound( $resp );
+                
             // @codeCoverageIgnoreStart
-            default: throw new RestAuthUnknownStatus( $resp );
+            default:
+                throw new RestAuthUnknownStatus( $resp );
         }
         // @codeCoverageIgnoreEnd
     }
@@ -215,7 +240,7 @@ class RestAuthGroup extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
     public function is_member( $user ) {
-        if ( is_string( $user ) ) {
+        if (is_string( $user )) {
             $username = $user;
         } else {
             $username = $user->name;
@@ -225,14 +250,18 @@ class RestAuthGroup extends RestAuthResource {
         $resp = $this->_get( $url );
 
         switch ( $resp->getResponseCode() ) {
-            case 204: return true;
+            case 204:
+                return true;
+            
             case 404:
                 switch ( $resp->getHeader( 'Resource-Type' ) ) {
                     case 'user':
                         return false;
+                    
                     default: 
                         throw new RestAuthResourceNotFound( $resp );
                 }
+                
             // @codeCoverageIgnoreStart
             default:
                 throw new RestAuthUnknownStatus( $resp );
@@ -252,10 +281,15 @@ class RestAuthGroup extends RestAuthResource {
     public function remove() {
         $resp = $this->_delete( $this->name );
         switch ( $resp->getResponseCode() ) {
-            case 204: return;
-            case 404: throw new RestAuthResourceNotFound( $resp );
+            case 204:
+                return;
+            
+            case 404:
+                throw new RestAuthResourceNotFound( $resp );
+                
             // @codeCoverageIgnoreStart
-            default: throw new RestAuthUnknownStatus( $resp );
+            default:
+                throw new RestAuthUnknownStatus( $resp );
         }
         // @codeCoverageIgnoreEnd
     }
@@ -274,7 +308,7 @@ class RestAuthGroup extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
     public function remove_user( $user ) {
-        if ( is_string( $user ) ) {
+        if (is_string( $user )) {
             $username = $user;
         } else {
             $username = $user->name;
@@ -284,8 +318,12 @@ class RestAuthGroup extends RestAuthResource {
         $resp = $this->_delete( $url );
 
         switch ( $resp->getResponseCode() ) {
-            case 204: return;
-            case 404: throw new RestAuthResourceNotFound( $resp );
+            case 204:
+                return;
+            
+            case 404:
+                throw new RestAuthResourceNotFound( $resp );
+                
             // @codeCoverageIgnoreStart
             default:
                 throw new RestAuthUnknownStatus( $resp );
@@ -311,7 +349,7 @@ class RestAuthGroup extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
     public function add_group( $group ) {
-        if ( is_string( $group ) ) {
+        if (is_string( $group )) {
             $groupname = $group;
         } else {
             $groupname = $group->name;
@@ -321,10 +359,15 @@ class RestAuthGroup extends RestAuthResource {
         
         $resp = $this->_post( $this->name . '/groups/', $params );
         switch ( $resp->getResponseCode() ) {
-            case 204: return;
-            case 404: throw new RestAuthResourceNotFound( $resp );
+            case 204:
+                return;
+            
+            case 404:
+                throw new RestAuthResourceNotFound( $resp );
+                
             // @codeCoverageIgnoreStart
-            default: throw new RestAuthUnknownStatus( $resp );
+            default:
+                throw new RestAuthUnknownStatus( $resp );
         }
         // @codeCoverageIgnoreEnd
     }
@@ -351,9 +394,13 @@ class RestAuthGroup extends RestAuthResource {
                     $users[] = new RestAuthGroup( $this->conn, $username );
                 }
                 return $users;
-            case 404: throw new RestAuthResourceNotFound( $resp );
+            
+            case 404:
+                throw new RestAuthResourceNotFound( $resp );
+                
             // @codeCoverageIgnoreStart
-            default: throw new RestAuthUnknownStatus( $resp );
+            default:
+                throw new RestAuthUnknownStatus( $resp );
         }
         // @codeCoverageIgnoreEnd
     }
@@ -372,7 +419,7 @@ class RestAuthGroup extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
     public function remove_group( $group ) {
-        if ( is_string( $group ) ) {
+        if (is_string( $group )) {
             $groupname = $group;
         } else {
             $groupname = $group->name;
@@ -381,10 +428,15 @@ class RestAuthGroup extends RestAuthResource {
         $url = $this->name . '/groups/' . $groupname . '/';
         $resp = $this->_delete( $url );
         switch ( $resp->getResponseCode() ) {
-            case 204: return;
-            case 404: throw new RestAuthResourceNotFound( $resp );
+            case 204:
+                return;
+            
+            case 404:
+                throw new RestAuthResourceNotFound( $resp );
+                
             // @codeCoverageIgnoreStart
-            default: throw new RestAuthUnknownStatus( $resp );
+            default:
+                throw new RestAuthUnknownStatus( $resp );
         }
         // @codeCoverageIgnoreEnd
     }

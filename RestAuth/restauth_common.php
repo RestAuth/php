@@ -67,7 +67,7 @@ class RestAuthConnection {
      * {@link RestAuthConnection::__construct __construct}.
      */
     public static function get_connection( $host='', $user='', $password='' ) {
-        if ( ! isset( self::$connection ) ) {
+        if (!isset( self::$connection )) {
             self::$connection = new RestAuthConnection(
                 $host, $user, $password );
         }
@@ -123,9 +123,14 @@ class RestAuthConnection {
 
         # handle error status codes
         switch ( $response->getResponseCode() ) {
-            case 401: throw new RestAuthUnauthorized( $response );
-            case 406: throw new RestAuthNotAcceptable( $response );
-            case 500: throw new RestAuthInternalServerError( $response );
+            case 401:
+                throw new RestAuthUnauthorized( $response );
+            
+            case 406:
+                throw new RestAuthNotAcceptable( $response );
+                
+            case 500:
+                throw new RestAuthInternalServerError( $response );
         }
 
         return $response;
@@ -201,8 +206,11 @@ class RestAuthConnection {
         $response = $this->send( $request );
 
         switch ( $response->getResponseCode() ) {
-            case 400: throw new RestAuthBadRequest( $response );
-            case 415: throw new RestAuthUnsupportedMediaType( $response );
+            case 400:
+                throw new RestAuthBadRequest( $response );
+            
+            case 415:
+                throw new RestAuthUnsupportedMediaType( $response );
         }
         return $response;
     }
@@ -245,8 +253,13 @@ class RestAuthConnection {
         $response = $this->send( $request );
 
         switch ( $response->getResponseCode() ) {
-            case 400: throw new RestAuthBadRequest( $response );
-            case 415: throw new RestAuthUnsupportedMediaType( $response );
+            case 400:
+                throw new RestAuthBadRequest( $response );
+                break;
+            
+            case 415:
+                throw new RestAuthUnsupportedMediaType( $response );
+                break;
         }
         return $response;
     }
@@ -288,7 +301,7 @@ class RestAuthConnection {
      * @todo rename to sanitize_path
      */
     public function sanitize_url( $url ) {
-        if ( substr( $url, -1 ) !== '/' ) {
+        if (substr( $url, -1 ) !== '/') {
             $url .= '/';
         }
 
