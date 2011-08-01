@@ -1,5 +1,5 @@
 <?php
-require_once( 'RestAuth/restauth.php' );
+require_once('RestAuth/restauth.php');
 
 try {
     // ... some restauth related code...

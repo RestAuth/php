@@ -181,7 +181,7 @@ class RestAuthGroup extends RestAuthResource
         switch ($resp->getResponseCode()) {
             case 200: 
                 $users = array();
-                foreach(json_decode($resp->getBody()) as $username) {
+                foreach (json_decode($resp->getBody()) as $username) {
                     $users[] = new RestAuthUser($this->conn, $username);
                 }
                 return $users;
@@ -404,7 +404,7 @@ class RestAuthGroup extends RestAuthResource
         switch ($resp->getResponseCode()) {
             case 200: 
                 $users = array();
-                foreach(json_decode($resp->getBody()) as $username) {
+                foreach (json_decode($resp->getBody()) as $username) {
                     $users[] = new RestAuthGroup($this->conn, $username);
                 }
                 return $users;

@@ -122,7 +122,7 @@ class RestAuthConnection
      */
     public function send($request)
     { 
-        # add headers present with all methods:
+        // add headers present with all methods:
         $request->addHeaders(
             array(
                 'Accept'        => $this->handler->get_mime_type(),
@@ -137,7 +137,7 @@ class RestAuthConnection
         }
         $response_headers = $response->getHeaders();
 
-        # handle error status codes
+        // handle error status codes
         switch ($response->getResponseCode()) {
             case 401:
                 throw new RestAuthUnauthorized($response);
@@ -327,7 +327,7 @@ class RestAuthConnection
         }
 
         $parts = array();
-        foreach(explode('/', $url) as $part) {
+        foreach (explode('/', $url) as $part) {
             $part = rawurlencode($part);
             $parts[] = $part;
         }

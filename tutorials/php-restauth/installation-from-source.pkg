@@ -81,7 +81,7 @@
     <para>
      You can verify that the installation worked by running this command from your home directory:
      <para><programlisting language="bash">
-      php -r "include( 'RestAuth/restauth.php' );"
+      php -r "include('RestAuth/restauth.php');"
      </programlisting></para>
     </para>
      

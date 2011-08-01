@@ -144,7 +144,7 @@ class RestAuthUser extends RestAuthResource
         switch ($resp->getResponseCode()) {
             case 200:
                 $response = array();
-                foreach(json_decode($resp->getBody()) as $name) {
+                foreach (json_decode($resp->getBody()) as $name) {
                     $response[] = new RestAuthUser($conn, $name);
                 }
                 return $response;

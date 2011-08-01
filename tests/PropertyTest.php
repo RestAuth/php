@@ -1,199 +1,214 @@
 <?php
 
-require_once( 'PHPUnit/Framework.php' );
-require_once( 'RestAuth/restauth.php' );
+require_once('PHPUnit/Framework.php');
+require_once('RestAuth/restauth.php');
 
-# variables are defined in UserTest.php
+// variables are defined in UserTest.php
 
-class PropertyTest extends PHPUnit_Framework_TestCase {
-	public function setUp() {
-		global $username1, $user, $password1, $conn;
+class PropertyTest extends PHPUnit_Framework_TestCase
+{
+    public function setUp()
+    {
+        global $username1, $user, $password1, $conn;
 
-		$users = RestAuthUser::get_all( $conn );
-		if ( count( $users ) ) {
-			throw new Exception( "Found " . count( $users ) . " left over users." );
-		}
+        $users = RestAuthUser::get_all($conn);
+        if (count($users)) {
+            throw new Exception("Found " . count($users) . " left over users.");
+        }
 
-		$user = RestAuthUser::create( $conn, $username1, $password1 );
-	}
-	public function tearDown() {
-		global $conn;
+        $user = RestAuthUser::create($conn, $username1, $password1);
+    }
+    public function tearDown()
+    {
+        global $conn;
 
-		$users = RestAuthUser::get_all( $conn );
-		foreach ( $users as $user ) {
-			$user->remove();
-		}
-	}
+        $users = RestAuthUser::get_all($conn);
+        foreach ($users as $user) {
+            $user->remove();
+        }
+    }
 
-	public function testCreateProperty() {
-		global $conn, $user, $propKey, $propVal;
+    public function testCreateProperty()
+    {
+        global $conn, $user, $propKey, $propVal;
 
-		$user->create_property( $propKey, $propVal );
-		$this->assertEquals( array( $propKey => $propVal ),
-			$user->get_properties() );
-		$this->assertEquals( $propVal, 
-			$user->get_property( $propKey ) );
-	}
+        $user->create_property($propKey, $propVal);
+        $this->assertEquals(array($propKey => $propVal),
+            $user->get_properties());
+        $this->assertEquals($propVal, 
+            $user->get_property($propKey));
+    }
 
-	public function testCreatePropertyTwice() {
-		global $conn, $user, $propKey, $propVal;
+    public function testCreatePropertyTwice()
+    {
+        global $conn, $user, $propKey, $propVal;
 
-		$user->create_property( $propKey, $propVal );
-		try {
-			$user->create_property( $propKey, $propVal . " new" );
-			$this->fail();
-		} catch ( RestAuthPropertyExists $e ) {
-			$this->assertEquals( array( $propKey => $propVal ),
-				$user->get_properties() );
-			$this->assertEquals( $propVal, 
-				$user->get_property( $propKey ) );
-		}
-	}
+        $user->create_property($propKey, $propVal);
+        try {
+            $user->create_property($propKey, $propVal . " new");
+            $this->fail();
+        } catch (RestAuthPropertyExists $e) {
+            $this->assertEquals(array($propKey => $propVal),
+                $user->get_properties());
+            $this->assertEquals($propVal, 
+                $user->get_property($propKey));
+        }
+    }
 
-	public function testCreatePropertyWithInvalidUser() {
-		global $conn, $user, $propKey, $propVal;
-		$username = "invalid name";
+    public function testCreatePropertyWithInvalidUser()
+    {
+        global $conn, $user, $propKey, $propVal;
+        $username = "invalid name";
 
-		$invalidUser = new RestAuthUser( $conn, $username );
-		try {
-			$invalidUser->create_property( $propKey, $propVal );
-			$this->fail();
-		} catch ( RestAuthResourceNotFound $e ) {
-			$this->assertEquals( "user", $e->get_type() );
-			$this->assertEquals( array( $user ), 
-				RestAuthUser::get_all($conn) );
-		}
-	}
+        $invalidUser = new RestAuthUser($conn, $username);
+        try {
+            $invalidUser->create_property($propKey, $propVal);
+            $this->fail();
+        } catch (RestAuthResourceNotFound $e) {
+            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals(array($user), 
+                RestAuthUser::get_all($conn));
+        }
+    }
 
-	public function testSetProperty() {
-		global $conn, $user, $propKey, $propVal;
+    public function testSetProperty()
+    {
+        global $conn, $user, $propKey, $propVal;
 
-		$this->assertNull( $user->set_property( $propKey, $propVal ) );
-		$this->assertEquals( array( $propKey => $propVal ),
-			$user->get_properties() );
-		$this->assertEquals( $propVal, 
-			$user->get_property( $propKey ) );
-	}
+        $this->assertNull($user->set_property($propKey, $propVal));
+        $this->assertEquals(array($propKey => $propVal),
+            $user->get_properties());
+        $this->assertEquals($propVal, 
+            $user->get_property($propKey));
+    }
 
-	public function testSetPropertyTwice() {
-		global $conn, $user, $propKey, $propVal;
-		$newVal = "foobar";
+    public function testSetPropertyTwice()
+    {
+        global $conn, $user, $propKey, $propVal;
+        $newVal = "foobar";
 
-		$this->assertNull( $user->set_property( $propKey, $propVal ) );
-		$this->assertEquals( array( $propKey => $propVal ),
-			$user->get_properties() );
-		$this->assertEquals( $propVal, 
-			$user->get_property( $propKey ) );
+        $this->assertNull($user->set_property($propKey, $propVal));
+        $this->assertEquals(array($propKey => $propVal),
+            $user->get_properties());
+        $this->assertEquals($propVal, 
+            $user->get_property($propKey));
 
-		$this->assertEquals( $propVal, 
-			$user->set_property( $propKey, $newVal ) );
-		$this->assertEquals( array( $propKey => $newVal ),
-			$user->get_properties() );
-		$this->assertEquals( $newVal, 
-			$user->get_property( $propKey ) );
-	}
+        $this->assertEquals($propVal, 
+            $user->set_property($propKey, $newVal));
+        $this->assertEquals(array($propKey => $newVal),
+            $user->get_properties());
+        $this->assertEquals($newVal, 
+            $user->get_property($propKey));
+    }
 
-	public function testSetPropertyWithInvalidUser() {
-		global $conn, $user, $propKey, $propVal;
-		$username = "invalid name";
+    public function testSetPropertyWithInvalidUser()
+    {
+        global $conn, $user, $propKey, $propVal;
+        $username = "invalid name";
 
-		$invalidUser = new RestAuthUser( $conn, $username );
-		try {
-			$invalidUser->set_property( $propKey, $propVal );
-			$this->fail();
-		} catch ( RestAuthResourceNotFound $e ) {
-			$this->assertEquals( "user", $e->get_type() );
-			$this->assertEquals( array( $user ), 
-				RestAuthUser::get_all( $conn ) );
-		}
-	}
+        $invalidUser = new RestAuthUser($conn, $username);
+        try {
+            $invalidUser->set_property($propKey, $propVal);
+            $this->fail();
+        } catch (RestAuthResourceNotFound $e) {
+            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals(array($user), 
+                RestAuthUser::get_all($conn));
+        }
+    }
 
-	public function testRemoveProperty() {
-		global $conn, $user, $propKey, $propVal;
-		
-		$this->assertNull( $user->set_property( $propKey, $propVal ) );
-		$this->assertEquals( array( $propKey => $propVal ),
-			$user->get_properties() );
-		$this->assertEquals( $propVal, 
-			$user->get_property( $propKey ) );
+    public function testRemoveProperty()
+    {
+        global $conn, $user, $propKey, $propVal;
+        
+        $this->assertNull($user->set_property($propKey, $propVal));
+        $this->assertEquals(array($propKey => $propVal),
+            $user->get_properties());
+        $this->assertEquals($propVal, 
+            $user->get_property($propKey));
 
-		$user->remove_property( $propKey );
-		$this->assertEquals( array(), $user->get_properties() );
-	}
+        $user->remove_property($propKey);
+        $this->assertEquals(array(), $user->get_properties());
+    }
 
-	public function testRemoveInvalidProperty() {
-		global $conn, $user, $propKey, $propVal;
-		$user->create_property( $propKey, $propVal );
+    public function testRemoveInvalidProperty()
+    {
+        global $conn, $user, $propKey, $propVal;
+        $user->create_property($propKey, $propVal);
 
-		$wrongKey = $propKey . " foo";
+        $wrongKey = $propKey . " foo";
 
-		try {
-			$user->remove_property( $wrongKey );
-			$this->fail();
-		} catch ( RestAuthResourceNotFound $e ) {
-			$this->assertEquals( "property", $e->get_type() );
-			$this->assertEquals( array( $propKey => $propVal ),
-				$user->get_properties() );
-			$this->assertEquals( $propVal, 
-				$user->get_property( $propKey ) );
-		}
-	}
+        try {
+            $user->remove_property($wrongKey);
+            $this->fail();
+        } catch (RestAuthResourceNotFound $e) {
+            $this->assertEquals("property", $e->get_type());
+            $this->assertEquals(array($propKey => $propVal),
+                $user->get_properties());
+            $this->assertEquals($propVal, 
+                $user->get_property($propKey));
+        }
+    }
 
-	public function testRemovePropertyWithInvalidUser() {
-		global $conn, $user, $propKey, $propVal;
-		$user->set_property( $propKey, $propVal );
-		$username = "invalid name";
+    public function testRemovePropertyWithInvalidUser()
+    {
+        global $conn, $user, $propKey, $propVal;
+        $user->set_property($propKey, $propVal);
+        $username = "invalid name";
 
-		$invalidUser = new RestAuthUser( $conn, $username );
-		try {
-			$invalidUser->remove_property( $propKey );
-			$this->fail();
-		} catch ( RestAuthResourceNotFound $e ) {
-			$this->assertEquals( "user", $e->get_type() );
+        $invalidUser = new RestAuthUser($conn, $username);
+        try {
+            $invalidUser->remove_property($propKey);
+            $this->fail();
+        } catch (RestAuthResourceNotFound $e) {
+            $this->assertEquals("user", $e->get_type());
 
-			$this->assertEquals( array( $propKey => $propVal ),
-				$user->get_properties() );
-			$this->assertEquals( $propVal, 
-				$user->get_property( $propKey ) );
-		}
-	}
+            $this->assertEquals(array($propKey => $propVal),
+                $user->get_properties());
+            $this->assertEquals($propVal, 
+                $user->get_property($propKey));
+        }
+    }
 
-	public function testGetInvalidProperty() {
-		global $conn, $user, $propKey, $propVal;
+    public function testGetInvalidProperty()
+    {
+        global $conn, $user, $propKey, $propVal;
 
-		try {
-			$user->get_property( $propKey ); 
-			$this->fail();
-		} catch ( RestAuthResourceNotFound $e ) {
-			$this->assertEquals( "property", $e->get_type() );
-		}
-	}
+        try {
+            $user->get_property($propKey); 
+            $this->fail();
+        } catch (RestAuthResourceNotFound $e) {
+            $this->assertEquals("property", $e->get_type());
+        }
+    }
 
-	public function testGetPropertyInvalidUser() {
-		global $conn, $user, $propKey, $propVal;
-		$username = "invalid name";
+    public function testGetPropertyInvalidUser()
+    {
+        global $conn, $user, $propKey, $propVal;
+        $username = "invalid name";
 
-		$invalidUser = new RestAuthUser( $conn, $username );
-		try {
-			$invalidUser->get_property( $propKey ); 
-			$this->fail();
-		} catch ( RestAuthResourceNotFound $e ) {
-			$this->assertEquals( "user", $e->get_type() );
-		}
-	}
+        $invalidUser = new RestAuthUser($conn, $username);
+        try {
+            $invalidUser->get_property($propKey); 
+            $this->fail();
+        } catch (RestAuthResourceNotFound $e) {
+            $this->assertEquals("user", $e->get_type());
+        }
+    }
 
-	public function testGetPropertiesInvalidUser() {
-		global $conn, $user, $propKey, $propVal;
-		$username = "invalid name";
+    public function testGetPropertiesInvalidUser()
+    {
+        global $conn, $user, $propKey, $propVal;
+        $username = "invalid name";
 
-		$invalidUser = new RestAuthUser( $conn, $username );
-		try {
-			$invalidUser->get_properties( $propKey ); 
-			$this->fail();
-		} catch ( RestAuthResourceNotFound $e ) {
-			$this->assertEquals( "user", $e->get_type() );
-		}
-	}
+        $invalidUser = new RestAuthUser($conn, $username);
+        try {
+            $invalidUser->get_properties($propKey); 
+            $this->fail();
+        } catch (RestAuthResourceNotFound $e) {
+            $this->assertEquals("user", $e->get_type());
+        }
+    }
 }
 
 ?>
