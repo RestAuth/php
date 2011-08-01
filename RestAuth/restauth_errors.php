@@ -4,16 +4,48 @@
  * This file collects all exceptions not directly related to a RestAuthUser or
  * a RestAuthGroup
  *
- * @package php-restauth
+ * PHP version 5.1
+ *
+ * LICENSE: php-restauth is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * php-restauth is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with php-restauth.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   0.0
+ * @link      https://php.restauth.net
  */
 
 /**
  * Common superclass for all RestAuth related exceptions.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 abstract class RestAuthException extends Exception
 {
+    /**
+     * Constructor
+     *
+     * @param HttpResponse $response The response causing this exception.
+     */
     public function __construct($response)
     {
         $this->message = $response->getBody();
@@ -24,12 +56,23 @@ abstract class RestAuthException extends Exception
 /**
  * Superclass for exceptions thrown when a resource queried is not found.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthResourceNotFound extends RestAuthException
 {
     protected $code = 404;
 
+    /**
+     * Get the value of the Resource-Type header.
+     *
+     * @return str
+     */
     public function get_type()
     {
         return $this->response->getHeader('Resource-Type');
@@ -40,7 +83,13 @@ class RestAuthResourceNotFound extends RestAuthException
  * Superclass of exceptions thrown when a resource is supposed to be created but
  * already exists.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 abstract class RestAuthResourceConflict extends RestAuthException
 {
@@ -50,7 +99,13 @@ abstract class RestAuthResourceConflict extends RestAuthException
 /**
  * Exception thrown when a response was unparsable.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthBadResponse extends RestAuthException
 {
@@ -59,7 +114,13 @@ class RestAuthBadResponse extends RestAuthException
 /**
  * Superclass for service-related errors.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthInternalException extends RestAuthException
 {
@@ -69,7 +130,13 @@ class RestAuthInternalException extends RestAuthException
  * Thrown when the RestAuth service cannot parse the HTTP request. On a protocol
  * level, this corresponds to a HTTP status code 400.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthBadRequest extends RestAuthInternalException
 {
@@ -80,7 +147,13 @@ class RestAuthBadRequest extends RestAuthInternalException
  * Thrown when the RestAuth service suffers an internal error. On a protocol
  * level, this corresponds to a HTTP status code 500.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthInternalServerError extends RestAuthInternalException
 {
@@ -91,7 +164,13 @@ class RestAuthInternalServerError extends RestAuthInternalException
  * Thrown when an unknown HTTP status code is encountered. This should never
  * really happen and usually indicates a bug in the library.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthUnknownStatus extends RestAuthInternalException
 {
@@ -101,7 +180,13 @@ class RestAuthUnknownStatus extends RestAuthInternalException
  * Thrown when you send unacceptable data to the RestAuth service, i.e. a
  * password that is too short.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthPreconditionFailed extends RestAuthException
 {
@@ -113,7 +198,13 @@ class RestAuthPreconditionFailed extends RestAuthException
  *
  * On a protocol level, this corresponds to the HTTP status code 401.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthUnauthorized extends RestAuthException
 {
@@ -124,7 +215,13 @@ class RestAuthUnauthorized extends RestAuthException
  * Thrown when the RestAuth server cannot generate a response in the requested
  * format.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthNotAcceptable extends RestAuthInternalException
 {
@@ -135,21 +232,49 @@ class RestAuthNotAcceptable extends RestAuthInternalException
  * Thrown when the RestAuth server does not understand the content-type sent by
  * this library.
  *
- * @package php-restauth
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthUnsupportedMediaType extends RestAuthInternalException
 {
     protected $code = 415;
 }
 
+/**
+ * Thrown when a connection-related error occurs (i.e. the RestAuth service is
+ * not available).
+ * 
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2011 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
+ */
 class RestAuthHttpException extends RestAuthException
 {
+    /**
+     * Constructor.
+     *
+     * @param Exception $http_exception The exception causing this exception.
+     */
     public function __construct($http_exception)
     {
         $this->cause = $http_exception;
         $this->message = $http_exception->getMessage();
     }
     
+    /**
+     * Get the root cause of this exception.
+     *
+     * @return Exception
+     */
     public function get_cause()
     {
         return $this->cause;
