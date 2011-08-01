@@ -12,6 +12,40 @@
   </author>
  </refsynopsisdiv>
  <refsect1 id="{@id intro}">
-  <para>page 1.</para>
+  <para>
+   <emphasis>php-restauth</emphasis> handles very similar to the Python reference
+   implementation, {@link https://python.restauth.net RestAuthClient}.</para>
+  <para>
+   <itemizedlist>
+    <listitem>
+     A {@link RestAuthConnection} instance represents a connection to a RestAuth service.
+    </listitem>
+    <listitem>
+      {@link RestAuthUser} and {@link RestAuthGroup} instances represent remote users and groups.
+      You can create such instances either by
+     <itemizedlist>
+      <listitem>calling a factory method (to be sure the item exists remotely)</listitem>
+      <listitem>directly instantiating it (saving one call to the RestAuth service)</listitem>
+     </itemizedlist>
+    </listitem>
+    <listitem>
+     All exceptions thrown by this library are subclasses of {@link RestAuthException}, allowing you
+     to handle errors as finely grained as you wish.
+    </listitem>
+   </itemizedlist>
+  </para>
+  <para>The following example should give you a very good idea of how the library works:</para>
+  <para>{@example examples/intro.php}</para>
+ </refsect1>
+ <refsect1 id="{@id error_handling}">
+  <title>Error handling</title>
+  <para>
+   <emphasis>php-restauth</emphasis> features many custom exceptions and the library should not
+   throw any exception that is not a subclass of {@link RestAuthException}. This exception class
+   has several child exception classes, that in turn may have child exceptions. This allows you
+   to easily catch all exceptions and/or individually handle those of interest in this contest.
+  </para>
+  <para>The following code example should give you an idea of how this works:</para>
+  <para>{@example examples/exceptions.php}</para>
  </refsect1>
 </refentry>
