@@ -12,6 +12,56 @@
   </author>
  </refsynopsisdiv>
  <refsect1 id="{@id intro}">
-  <para>page 1.</para>
+  <para>
+   The RestAuth project provides APT repositories for all software it maintains. Repositories are
+   available for all distributions that are currently maintained by the Debian project and Canonical
+   respectively except Debian 5.0 ("<literal>lenny</literal>") and Ubuntu 8.04 (<literal>Hardy
+   Heron</literal>).
+  </para>
  </refsect1>
+ <refsect1 id="{@id intro}">
+  <title>Adding our APT repository</title>
+  <para>To add the repositories, simply add this line to your
+   <literal>/etc/apt/sources.list</literal> file:
+  </para>
+  <para>
+   <programlisting language="bash">
+    deb http://apt.fsinf.at <userinput>&lt;dist&gt;</userinput> restauth
+   </programlisting>
+  </para>
+  <para>
+   ... where <userinput>&lt;dist&gt;</userinput> is any of the supported distributions (currently
+   <literal>lucid</literal>, <literal>maverick</literal>, <literal>natty</literal>,
+   <literal>squeeze</literal> or <literal>wheezy</literal>).
+  </para>
+  <para>
+   Once you added the repository, you have to install the fsinf GPG keyring used for signing the
+   repositories, so you won't get any warnings when updating. You can either install the
+   <literal>fsinf-keyring</literal> package <br />using:
+  </para>
+  <programlisting>
+    apt-get update;
+    apt-get install fsinf-keyring;
+    apt-get update;
+  </programlisting>
+  <para>
+   or download and add the key directly using:
+  </para>
+  <para>
+   <programlisting language="bash">
+    wget -O - http://packages.spectrum.im/keys/apt-repository@fsinf.at | apt-key add -
+   </programlisting>
+  </para>
+ </refsect1>
+
+<refsect1 id="{@id installation}">
+ <title>Installation</title>
+ <para>
+  Once you have added the repositories, installing RestAuthClient is as simple as
+ </para>
+ <para><programlisting language="bash">
+  apt-get install php-restauth
+ </programlisting></para>
+</refsect1>
+ 
 </refentry>
