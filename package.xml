@@ -3,7 +3,7 @@
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
- <name>AUTHENTICATION_RestAuth</name>
+ <name>Authentication_RestAuth</name>
  <channel>pear.php.net</channel>
  <summary>one-line summary</summary>
  <description>longer description.</description>
