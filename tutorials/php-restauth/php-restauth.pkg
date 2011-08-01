@@ -1,6 +1,6 @@
 <refentry id="{@id}">
  <refnamediv>
-  <refname>User Guide for php-restauth</refname>
+  <refname>Documentation</refname>
   <refpurpose>Documentation for the RestAuth client library written in PHP</refpurpose>
  </refnamediv>
  <refsynopsisdiv>
@@ -11,9 +11,7 @@
    </authorblurb>
   </author>
  </refsynopsisdiv>
- {@toc}
  <refsect1 id="{@id intro}">
-  <title>php-restauth user guide</title>
   <para>
    Welcome to the homepage of <emphasis>php-restauth</emphasis>, a client library for
    {@link https://restauth.net RestAuth}. The library allows systems to share user authentication,
