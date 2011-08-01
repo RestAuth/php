@@ -1,4 +1,4 @@
-SRCDIR=src/
+SRCDIR=RestAuth/
 DOCDIR=doc/
 HTMLDIR=${DOCDIR}/html
 
@@ -15,7 +15,10 @@ examples:
 
 doc:
 	mkdir -p ${HTMLDIR}
-	phpdoc --title "php-restauth documentation" -o HTML:Smarty:HandS -dn php-restauth -d ${SRCDIR},tutorials -t ${HTMLDIR}
+	phpdoc --title "php-restauth documentation" -o HTML:Smarty:PHP -dn php-restauth -d ${SRCDIR},tutorials -t ${HTMLDIR}
+
+	# fix the most horrible CSS descisions:
+	sed -i 's/padding-left:\t\t8px;/padding-left:\t\t20px;/' doc/html/media/style.css
 
 clean:
 	rm -rf ${DOCDIR}

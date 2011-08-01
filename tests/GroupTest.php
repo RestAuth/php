@@ -1,7 +1,7 @@
 <?php
 
 require_once( 'PHPUnit/Framework.php' );
-require_once( 'src/restauth.php' );
+require_once( 'RestAuth/restauth.php' );
 
 # variables are defined in UserTest.php
 
