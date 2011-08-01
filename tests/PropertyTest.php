@@ -65,7 +65,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
             $invalidUser->create_property($propKey, $propVal);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
             $this->assertEquals(array($user), 
                 RestAuthUser::get_all($conn));
         }
@@ -111,7 +111,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
             $invalidUser->set_property($propKey, $propVal);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
             $this->assertEquals(array($user), 
                 RestAuthUser::get_all($conn));
         }
@@ -142,7 +142,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
             $user->remove_property($wrongKey);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("property", $e->get_type());
+            $this->assertEquals("property", $e->getType());
             $this->assertEquals(array($propKey => $propVal),
                 $user->get_properties());
             $this->assertEquals($propVal, 
@@ -161,7 +161,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
             $invalidUser->remove_property($propKey);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
 
             $this->assertEquals(array($propKey => $propVal),
                 $user->get_properties());
@@ -178,7 +178,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
             $user->get_property($propKey); 
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("property", $e->get_type());
+            $this->assertEquals("property", $e->getType());
         }
     }
 
@@ -192,7 +192,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
             $invalidUser->get_property($propKey); 
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
         }
     }
 
@@ -206,7 +206,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
             $invalidUser->get_properties($propKey); 
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
         }
     }
 }

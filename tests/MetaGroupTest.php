@@ -110,7 +110,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
             $group1->add_group($groupname5);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
             $this->assertEquals(array(), $group1->get_groups());
         }
     }
@@ -123,7 +123,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
             $group5->add_group($group1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
             $this->assertEquals(array(), $group1->get_groups());
         }
     }
@@ -176,7 +176,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
             $group1->remove_group($group2);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
         }
     }
 
@@ -188,7 +188,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
             $group1->remove_group($groupname5);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
         }
     }
 
@@ -201,7 +201,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
             $group5->get_groups();
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
         }
     }
 }

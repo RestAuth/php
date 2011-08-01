@@ -120,7 +120,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $group->add_user($username3);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
             $this->assertEquals(array(), $group->get_members());
         }
     }
@@ -134,7 +134,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $group->add_user($user1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
             $this->assertEquals(array(), 
                 RestAuthGroup::get_all($conn));
         }
@@ -157,7 +157,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $group->is_member($user1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
         }
     }
 
@@ -183,7 +183,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $group->remove_user($user1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
         }
     }
 
@@ -196,7 +196,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $group->remove_user($username3);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
         }
     }
 
@@ -209,7 +209,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $group->remove_user($user1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
         }
     }
 
@@ -223,7 +223,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $group->remove_user($user);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
         }
     }
 
@@ -244,7 +244,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $group->remove();
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
         }
     }
 
@@ -256,7 +256,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             RestAuthGroup::get($conn, $groupname1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
         }
     }
 
@@ -269,7 +269,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $group->get_members();
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("group", $e->get_type());
+            $this->assertEquals("group", $e->getType());
         }
     }
 

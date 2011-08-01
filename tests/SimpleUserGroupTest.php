@@ -83,7 +83,7 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
             $user->get_groups();
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
         }
     }
 }

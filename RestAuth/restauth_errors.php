@@ -73,7 +73,7 @@ class RestAuthResourceNotFound extends RestAuthException
      *
      * @return str
      */
-    public function get_type()
+    public function getType()
     {
         return $this->response->getHeader('Resource-Type');
     }
@@ -275,7 +275,7 @@ class RestAuthHttpException extends RestAuthException
      *
      * @return Exception
      */
-    public function get_cause()
+    public function getCause()
     {
         return $this->cause;
     }

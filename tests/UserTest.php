@@ -178,7 +178,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             $user->set_password($password1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
             $this->assertEquals(array(), RestAuthUser::get_all($conn));
         }
     }
@@ -205,7 +205,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             RestAuthUser::get($conn, $username1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
         }
     }
 
@@ -220,7 +220,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             RestAuthUser::get($conn, $username1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
         }
     }
 
@@ -233,7 +233,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             $user->remove();
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
-            $this->assertEquals("user", $e->get_type());
+            $this->assertEquals("user", $e->getType());
         }
 
     }
