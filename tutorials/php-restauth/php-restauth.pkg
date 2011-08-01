@@ -38,7 +38,6 @@
   <para>
    <itemizedlist>
     <listitem>{@tutorial guide.pkg Guide}</listitem>
-    <listitem>{@tutorial errors.pkg Error handling}</listitem>
    </itemizedlist>
   </para>
  </refsect1>
