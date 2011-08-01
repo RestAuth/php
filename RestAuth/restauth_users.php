@@ -525,5 +525,9 @@ class RestAuthUser extends RestAuthResource {
 			return ($aName > $bName) ? +1 : -1;
 		}
 	}
+	
+	function __toString() {
+		return "<User: " . $this->name . ">";
+	}
 }
 ?>
