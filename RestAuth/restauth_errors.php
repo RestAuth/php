@@ -13,7 +13,7 @@
  * @package php-restauth
  */
 abstract class RestAuthException extends Exception {
-    public function __construct( $response ) {
+    public function __construct($response) {
         $this->message = $response->getBody();
         $this->response = $response;
     }
@@ -128,7 +128,7 @@ class RestAuthUnsupportedMediaType extends RestAuthInternalException {
 }
 
 class RestAuthHttpException extends RestAuthException {
-    public function __construct( $http_exception ) {
+    public function __construct($http_exception) {
         $this->cause = $http_exception;
         $this->message = $http_exception->getMessage();
     }

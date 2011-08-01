@@ -6,9 +6,9 @@
 /**
  * General includes
  */
-require_once( 'restauth_errors.php' );
-require_once( 'restauth_common.php' );
-require_once( 'restauth_groups.php' );
+require_once('restauth_errors.php');
+require_once('restauth_common.php');
+require_once('restauth_groups.php');
 
 /**
  * Thrown when a user is supposed to be created but already exists.
@@ -61,25 +61,25 @@ class RestAuthUser extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public static function create( $conn, $name, $password=NULL ) {
-        $params = array( 'user' => $name );
+    public static function create($conn, $name, $password=NULL) {
+        $params = array('user' => $name);
         if (!((is_null($password)) || ($password === ''))) {
             $params['password'] = $password;
         }
-        $resp = $conn->post( '/users/', $params );
-        switch ( $resp->getResponseCode() ) {
+        $resp = $conn->post('/users/', $params);
+        switch ($resp->getResponseCode()) {
             case 201:
-                return new RestAuthUser( $conn, $name );
+                return new RestAuthUser($conn, $name);
             
             case 409:
-                throw new RestAuthUserExists( $resp );
+                throw new RestAuthUserExists($resp);
             
             case 412:
-                throw new RestAuthPreconditionFailed( $resp );
+                throw new RestAuthPreconditionFailed($resp);
             
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -103,19 +103,19 @@ class RestAuthUser extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public static function get( $conn, $name ) {
-        $resp = $conn->get( '/users/' . $name . '/' );
+    public static function get($conn, $name) {
+        $resp = $conn->get('/users/' . $name . '/');
 
-        switch ( $resp->getResponseCode() ) {
+        switch ($resp->getResponseCode()) {
             case 204:
-                return new RestAuthUser( $conn, $name );
+                return new RestAuthUser($conn, $name);
             
             case 404:
-                throw new RestAuthResourceNotFound( $resp );
+                throw new RestAuthResourceNotFound($resp);
             
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -134,20 +134,20 @@ class RestAuthUser extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public static function get_all( $conn ) {
-        $resp = $conn->get( '/users/' );
+    public static function get_all($conn) {
+        $resp = $conn->get('/users/');
 
-        switch ( $resp->getResponseCode() ) {
+        switch ($resp->getResponseCode()) {
             case 200:
                 $response = array();
-                foreach( json_decode( $resp->getBody() ) as $name ) {
-                    $response[] = new RestAuthUser( $conn, $name );
+                foreach(json_decode($resp->getBody()) as $name) {
+                    $response[] = new RestAuthUser($conn, $name);
                 }
                 return $response;
             
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -162,7 +162,7 @@ class RestAuthUser extends RestAuthResource {
      * @param RestAuthConnection $conn The connection to a RestAuth service.
      * @param string $name The name of this user.
      */
-    public function __construct( $conn, $name ) {
+    public function __construct($conn, $name) {
         $this->conn = $conn;
         $this->name = $name;
     }
@@ -187,26 +187,26 @@ class RestAuthUser extends RestAuthResource {
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function set_password( $password=NULL ) {
+    public function set_password($password=NULL) {
         $params = array();
         if (!((is_null($password)) || ($password === ''))) {
             $params['password'] = $password;
         }
-        $resp = $this->_put( $this->name, $params);
+        $resp = $this->_put($this->name, $params);
 
-        switch ( $resp->getResponseCode() ) {
+        switch ($resp->getResponseCode()) {
             case 204:
                 return;
             
             case 404:
-                throw new RestAuthResourceNotFound( $resp );
+                throw new RestAuthResourceNotFound($resp);
                 
             case 412:
-                throw new RestAuthPreconditionFailed( $resp );
+                throw new RestAuthPreconditionFailed($resp);
                 
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -233,9 +233,9 @@ class RestAuthUser extends RestAuthResource {
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function verify_password( $password ) {
-        $resp = $this->_post( $this->name, array( 'password' => $password ) );
-        switch ( $resp->getResponseCode() ) {
+    public function verify_password($password) {
+        $resp = $this->_post($this->name, array('password' => $password));
+        switch ($resp->getResponseCode()) {
             case 204:
                 return true;
             
@@ -244,7 +244,7 @@ class RestAuthUser extends RestAuthResource {
             
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -262,17 +262,17 @@ class RestAuthUser extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
     public function remove() {
-        $resp = $this->_delete( $this->name );
-        switch ( $resp->getResponseCode() ) {
+        $resp = $this->_delete($this->name);
+        switch ($resp->getResponseCode()) {
             case 204:
                 return;
             
             case 404:
-                throw new RestAuthResourceNotFound( $resp );
+                throw new RestAuthResourceNotFound($resp);
                 
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -296,19 +296,19 @@ class RestAuthUser extends RestAuthResource {
      */
     public function get_properties() {
         $url = "$this->name/props/";
-        $resp = $this->_get( $url );
+        $resp = $this->_get($url);
         
-        switch ( $resp->getResponseCode() ) {
+        switch ($resp->getResponseCode()) {
             case 200:
-                $props = (array) json_decode( $resp->getBody() );
+                $props = (array) json_decode($resp->getBody());
                 return $props;
             
             case 404:
-                throw new RestAuthResourceNotFound( $resp );
+                throw new RestAuthResourceNotFound($resp);
                 
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -333,24 +333,24 @@ class RestAuthUser extends RestAuthResource {
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function set_property( $name, $value ) {
+    public function set_property($name, $value) {
         $url = "$this->name/props/$name";
-        $params = array( 'value' => $value );
-        $resp = $this->_put( $url, $params );
-        switch ( $resp->getResponseCode() ) {
+        $params = array('value' => $value);
+        $resp = $this->_put($url, $params);
+        switch ($resp->getResponseCode()) {
             // todo: 200 is never tested!!!
             case 200:
-                return $this->conn->handler->unmarshal_str( $resp->getBody() );
+                return $this->conn->handler->unmarshal_str($resp->getBody());
                 
             case 201:
                 return;
             
             case 404:
-                throw new RestAuthResourceNotFound( $resp );
+                throw new RestAuthResourceNotFound($resp);
                 
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -379,23 +379,23 @@ class RestAuthUser extends RestAuthResource {
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function create_property( $name, $value ) {
+    public function create_property($name, $value) {
         $url = "$this->name/props/";
-        $params = array( 'prop' => $name, 'value' =>$value );
-        $resp = $this->_post( $url, $params );
-        switch ( $resp->getResponseCode() ) {
+        $params = array('prop' => $name, 'value' =>$value);
+        $resp = $this->_post($url, $params);
+        switch ($resp->getResponseCode()) {
             case 201:
                 return;
             
             case 404:
-                throw new RestAuthResourceNotFound( $resp );
+                throw new RestAuthResourceNotFound($resp);
                 
             case 409:
-                throw new RestAuthPropertyExists( $resp );
+                throw new RestAuthPropertyExists($resp);
                 
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -419,20 +419,20 @@ class RestAuthUser extends RestAuthResource {
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function get_property( $name ) {
+    public function get_property($name) {
         $url = "$this->name/props/$name";
-        $resp = $this->_get( $url );
+        $resp = $this->_get($url);
 
-        switch ( $resp->getResponseCode() ) {
+        switch ($resp->getResponseCode()) {
             case 200:
-                return $this->conn->handler->unmarshal_str( $resp->getBody() );
+                return $this->conn->handler->unmarshal_str($resp->getBody());
                 
             case 404:
-                throw new RestAuthResourceNotFound( $resp );
+                throw new RestAuthResourceNotFound($resp);
                 
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -451,20 +451,20 @@ class RestAuthUser extends RestAuthResource {
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function remove_property( $name ) {
+    public function remove_property($name) {
         $url = "$this->name/props/$name";
-        $resp = $this->_delete( $url );
+        $resp = $this->_delete($url);
 
-        switch ( $resp->getResponseCode() ) {
+        switch ($resp->getResponseCode()) {
             case 204:
                 return;
             
             case 404:
-                throw new RestAuthResourceNotFound( $resp );
+                throw new RestAuthResourceNotFound($resp);
                 
             // @codeCoverageIgnoreStart
             default:
-                throw new RestAuthUnknownStatus( $resp );
+                throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -488,7 +488,7 @@ class RestAuthUser extends RestAuthResource {
      *    unknown.
      */
     public function get_groups() {
-        return RestAuthGroup::get_all( $this->conn, $this );
+        return RestAuthGroup::get_all($this->conn, $this);
     }
 
     /**
@@ -510,12 +510,12 @@ class RestAuthUser extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public function in_group( $group ) {
-        if (is_string( $group )) {
-            $group = new RestAuthGroup( $this->conn, $group );
+    public function in_group($group) {
+        if (is_string($group)) {
+            $group = new RestAuthGroup($this->conn, $group);
         }
         
-        return $group->is_member( $this );
+        return $group->is_member($this);
     }
 
     /**
@@ -540,12 +540,12 @@ class RestAuthUser extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public function add_group( $group ) {
-        if (is_string( $group )) {
-            $group = new RestAuthGroup( $this->conn, $group );
+    public function add_group($group) {
+        if (is_string($group)) {
+            $group = new RestAuthGroup($this->conn, $group);
         }
         
-        return $group->add_user( $this );
+        return $group->add_user($this);
     }
 
     /**
@@ -567,15 +567,15 @@ class RestAuthUser extends RestAuthResource {
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public function remove_group( $group ) {
-        if (is_string( $group )) {
-            $group = new RestAuthGroup( $this->conn, $group );
+    public function remove_group($group) {
+        if (is_string($group)) {
+            $group = new RestAuthGroup($this->conn, $group);
         }
         
-        return $group->remove_user( $this );
+        return $group->remove_user($this);
     }
 
-    public static function cmp( $a, $b ) {
+    public static function cmp($a, $b) {
         $aName = $a->name;
         $bName = $b->name;
         if ($aName == $bName) {
