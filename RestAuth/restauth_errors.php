@@ -12,7 +12,8 @@
  *
  * @package php-restauth
  */
-abstract class RestAuthException extends Exception {
+abstract class RestAuthException extends Exception
+{
     public function __construct($response) {
         $this->message = $response->getBody();
         $this->response = $response;
@@ -24,7 +25,8 @@ abstract class RestAuthException extends Exception {
  *
  * @package php-restauth
  */
-class RestAuthResourceNotFound extends RestAuthException {
+class RestAuthResourceNotFound extends RestAuthException
+{
     protected $code = 404;
 
     public function get_type() {
@@ -38,7 +40,8 @@ class RestAuthResourceNotFound extends RestAuthException {
  *
  * @package php-restauth
  */
-abstract class RestAuthResourceConflict extends RestAuthException {
+abstract class RestAuthResourceConflict extends RestAuthException
+{
     protected $code = 409;
 }
 
@@ -47,7 +50,8 @@ abstract class RestAuthResourceConflict extends RestAuthException {
  *
  * @package php-restauth
  */
-class RestAuthBadResponse extends RestAuthException{
+class RestAuthBadResponse extends RestAuthException
+{
 }
 
 /**
@@ -55,7 +59,9 @@ class RestAuthBadResponse extends RestAuthException{
  *
  * @package php-restauth
  */
-class RestAuthInternalException extends RestAuthException {}
+class RestAuthInternalException extends RestAuthException
+{
+}
 
 /**
  * Thrown when the RestAuth service cannot parse the HTTP request. On a protocol
@@ -63,7 +69,8 @@ class RestAuthInternalException extends RestAuthException {}
  *
  * @package php-restauth
  */
-class RestAuthBadRequest extends RestAuthInternalException {
+class RestAuthBadRequest extends RestAuthInternalException
+{
     protected $code = 400;
 }
 
@@ -73,7 +80,8 @@ class RestAuthBadRequest extends RestAuthInternalException {
  *
  * @package php-restauth
  */
-class RestAuthInternalServerError extends RestAuthInternalException {
+class RestAuthInternalServerError extends RestAuthInternalException
+{
     protected $code = 500;
 }
 
@@ -83,7 +91,8 @@ class RestAuthInternalServerError extends RestAuthInternalException {
  *
  * @package php-restauth
  */
-class RestAuthUnknownStatus extends RestAuthInternalException {
+class RestAuthUnknownStatus extends RestAuthInternalException
+{
 }
 
 /**
@@ -92,7 +101,8 @@ class RestAuthUnknownStatus extends RestAuthInternalException {
  *
  * @package php-restauth
  */
-class RestAuthPreconditionFailed extends RestAuthException {
+class RestAuthPreconditionFailed extends RestAuthException
+{
     protected $code = 412;
 }
 
@@ -103,7 +113,8 @@ class RestAuthPreconditionFailed extends RestAuthException {
  *
  * @package php-restauth
  */
-class RestAuthUnauthorized extends RestAuthException {
+class RestAuthUnauthorized extends RestAuthException
+{
     protected $code = 401;
 }
 
@@ -113,7 +124,8 @@ class RestAuthUnauthorized extends RestAuthException {
  *
  * @package php-restauth
  */
-class RestAuthNotAcceptable extends RestAuthInternalException {
+class RestAuthNotAcceptable extends RestAuthInternalException
+{
     protected $code = 406;
 }
 
@@ -123,11 +135,13 @@ class RestAuthNotAcceptable extends RestAuthInternalException {
  *
  * @package php-restauth
  */
-class RestAuthUnsupportedMediaType extends RestAuthInternalException {
+class RestAuthUnsupportedMediaType extends RestAuthInternalException
+{
     protected $code = 415;
 }
 
-class RestAuthHttpException extends RestAuthException {
+class RestAuthHttpException extends RestAuthException
+{
     public function __construct($http_exception) {
         $this->cause = $http_exception;
         $this->message = $http_exception->getMessage();

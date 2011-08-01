@@ -6,14 +6,16 @@
  * @package php-restauth
  */
 
-abstract class ContentHandler {
+abstract class ContentHandler
+{
     abstract function unmarshal_str($obj);
     abstract function unmarshal_list($obj);
     abstract function unmarshal_dict($obj);
     abstract function get_mime_type();
 }
 
-class RestAuthJsonHandler extends ContentHandler {
+class RestAuthJsonHandler extends ContentHandler
+{
     public function unmarshal_str($obj) {
         $arr = json_decode($obj);
         return $arr[0];
@@ -35,7 +37,8 @@ class RestAuthJsonHandler extends ContentHandler {
  * 
  * @package php-restauth
  */
-class RestAuthConnection {
+class RestAuthConnection
+{
     public static $connection;
 
     /**
@@ -325,7 +328,8 @@ class RestAuthConnection {
  * 
  * @package php-restauth
  */
-abstract class RestAuthResource {
+abstract class RestAuthResource
+{
     /**
      * Perform a GET request on the connection that was passed via the
      * constructor.

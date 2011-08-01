@@ -16,14 +16,17 @@ require_once('restauth_users.php');
  *
  * @package php-restauth
  */
-class RestAuthGroupExists extends RestAuthResourceConflict {}
+class RestAuthGroupExists extends RestAuthResourceConflict
+{
+}
 
 /**
  * This class acts as a frontend for actions related to groups.
  *
  * @package php-restauth
  */
-class RestAuthGroup extends RestAuthResource {
+class RestAuthGroup extends RestAuthResource
+{
     const prefix = '/groups/';
 
     /**
