@@ -56,7 +56,7 @@
   </refsect2>
   <refsect2 id="{@id get_source_official_releases}">
    <title>Official releases</title>
-   <para>There are no "official releases* yet, hence no tarballs to download ;-).</para>
+   <para>There are no "official releases" yet, hence no tarballs to download ;-).</para>
   </refsect2>
  </refsect1>
 
@@ -79,22 +79,25 @@
    <para>Installation itself is very easy. Just go to the directory where your source is located
     ("php-restauth" in the above example) and just run:
 
-.. code-block:: bash
+    <para><programlisting language="bash">
+     pear install -f package.xml
+    </programlisting></para>
+    
+    <note>
+     <para>On most systems, the <literal>pear install</literal> needs to run with superuser
+     privileges.</para>
+    </note>
 
-   python setup.py build
-   python setup.py install
-
-.. NOTE:: On most systems, the latter command needs to run with superuser privileges.
-
-
-You can verify that the installation worked by running this command from your home directory:
-
-.. code-block:: bash
-
-   cd
-   python -c "import RestAuthClient"
-
-This will throw an ImportError if RestAuthClient was not installed successfully.
+    <para>
+     You can verify that the installation worked by running this command from your home directory:
+     <para><programlisting language="bash">
+      php -r "include( 'RestAuth/restauth.php' );"
+     </programlisting></para>
+    </para>
+     
+    <para>
+     This will throw an error if php-restauth was not installed successfully.
+    </para>
    </para>
   </refsect2>
  </refsect1>
