@@ -354,7 +354,7 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function get_properties()
+    public function getProperties()
     {
         $url = "$this->name/props/";
         $resp = $this->_get($url);
@@ -397,7 +397,7 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function set_property($name, $value)
+    public function setProperty($name, $value)
     {
         $url = "$this->name/props/$name"; 
         $params = array('value' => $value);
@@ -425,7 +425,7 @@ class RestAuthUser extends RestAuthResource
      * Create a new property for this user. 
      * 
      * This method fails if the property already existed. Use {@link
-     * set_property} if you do not care if the property already exists.
+     * setProperty} if you do not care if the property already exists.
      * 
      * @param string $name  The property to set.
      * @param string $value The new value of the property.
@@ -473,7 +473,7 @@ class RestAuthUser extends RestAuthResource
      *
      * <b>Note:</b> Each call to this function causes an HTTP request to 
      * the RestAuth service. If you want to get many properties, consider
-     * using {@link get_properties}.
+     * using {@link getProperties}.
      *
      * @param string $name Name of the property we should get.
      * 
@@ -488,7 +488,7 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function get_property($name)
+    public function getProperty($name)
     {
         $url = "$this->name/props/$name";
         $resp = $this->_get($url);

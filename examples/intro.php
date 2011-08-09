@@ -15,13 +15,13 @@ if ($user->verifyPassword('somepassword')) {
 }
 
 // set a property of that user:
-$user->set_property('mykey', 'myvalue');
+$user->setProperty('mykey', 'myvalue');
 
 // retreive a single property:
-print("property mykey has value '". $user->get_property('mykey') . "'\n");
+print("property mykey has value '". $user->getProperty('mykey') . "'\n");
 
 // retreive all properties:
-$props = $user->get_properties();
+$props = $user->getProperties();
 print("... same when retreiving all properties: '" . $props['mykey'] . "'\n");
 
 // If performance is critical, do not use the factory methods to get user

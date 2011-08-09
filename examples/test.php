@@ -68,17 +68,17 @@ foreach ($all_users as $user) {
 
 function verifyProperty($user, $key, $value)
 {
-    if ($user->get_property($key) !== $value)
+    if ($user->getProperty($key) !== $value)
         die("Error: $user->name property $key is wrong: '$value'/'$recv_value'\n");
 
-    $props = $user->get_properties();
+    $props = $user->getProperties();
     if ($props[$key] !== $value)
-        die("Error: Received wrong value via get_properties()");
+        die("Error: Received wrong value via getProperties()");
 }
 
 // test user properties:
 foreach ($all_users as $user) {
-    $props = $user->get_properties();
+    $props = $user->getProperties();
     if (count($props) != 0)
         die("Error: Left over properties: ".count($props));
 
@@ -96,16 +96,16 @@ foreach ($all_users as $user) {
     verifyProperty($user, 'name test', "name is $user->name");
 
     // next, we overwrite it with a new value and check that:
-    $user->set_property('name test', "new property for $user->name");
+    $user->setProperty('name test', "new property for $user->name");
     verifyProperty($user, 'name test', "new property for $user->name");
 
     // next, we create a new value:
-    $user->set_property('new property', "new property: $user->name");
+    $user->setProperty('new property', "new property: $user->name");
     verifyProperty($user, 'new property', "new property: $user->name");
 
     // get a completely non-existing property:
     try {
-        $user->get_property('wrong property');
+        $user->getProperty('wrong property');
         die("Error: Successfully got a non-existing property!");
     } catch (RestAuthResourceNotFound $e) {
     }
@@ -113,12 +113,12 @@ foreach ($all_users as $user) {
     // delete a property and verify that its gone:
     try {
         $user->remove_property('new property');
-        $props = $user->get_properties();
+        $props = $user->getProperties();
         if (array_key_exists('new property', $props))
-            die("Error: Deleted property is still in get_properties()");
+            die("Error: Deleted property is still in getProperties()");
 
-        $user->get_property('new property');
-        die("Error: Deleted property got by get_property()");
+        $user->getProperty('new property');
+        die("Error: Deleted property got by getProperty()");
     } catch (RestAuthResourceNotFound $e) {
     }
 }
