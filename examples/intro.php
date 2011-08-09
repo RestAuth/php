@@ -8,7 +8,7 @@ $conn = new RestAuthConnection('http://[::1]:8000', 'vowi', 'vowi');
 
 // create a *new* user named 'foobar', and do some interesting things:
 $user = RestAuthUser::create($conn, 'foobar', 'somepassword');
-if ($user->verify_password('somepassword')) {
+if ($user->verifyPassword('somepassword')) {
     print("User has password 'somepassword'.\n");
 } else {
     print("User seems to have a different password.\n");
@@ -28,7 +28,7 @@ print("... same when retreiving all properties: '" . $props['mykey'] . "'\n");
 // objects, instead reference them directly:
 $user = new RestAuthUser($conn, 'foobar');
 // there is no guarantee here that this object exists:
-$user->verify_password('somepassword'); 
+$user->verifyPassword('somepassword'); 
 
 // Groups work in much the same way as users:
 RestAuthGroup::create($conn, 'groupname'); // first create it...

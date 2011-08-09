@@ -67,23 +67,23 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array($user), RestAuthUser::get_all($conn));
         $this->assertEquals($user, RestAuthUser::get($conn, $username1));
 
-        $this->assertFalse($user->verify_password($password1));
-        $this->assertFalse($user->verify_password(''));
-        $this->assertFalse($user->verify_password(NULL));
+        $this->assertFalse($user->verifyPassword($password1));
+        $this->assertFalse($user->verifyPassword(''));
+        $this->assertFalse($user->verifyPassword(NULL));
 
         $user = RestAuthUser::create($conn, $username2, '');
         $this->assertEquals($user, RestAuthUser::get($conn, $username2));
 
-        $this->assertFalse($user->verify_password($password1));
-        $this->assertFalse($user->verify_password(''));
-        $this->assertFalse($user->verify_password(NULL));
+        $this->assertFalse($user->verifyPassword($password1));
+        $this->assertFalse($user->verifyPassword(''));
+        $this->assertFalse($user->verifyPassword(NULL));
 
         $user = RestAuthUser::create($conn, $username3, NULL);
         $this->assertEquals($user, RestAuthUser::get($conn, $username3));
 
-        $this->assertFalse($user->verify_password($password1));
-        $this->assertFalse($user->verify_password(''));
-        $this->assertFalse($user->verify_password(NULL));
+        $this->assertFalse($user->verifyPassword($password1));
+        $this->assertFalse($user->verifyPassword(''));
+        $this->assertFalse($user->verifyPassword(NULL));
     }
 
     public function testCreateInvalidUser()
@@ -109,8 +109,8 @@ class UserTest extends PHPUnit_Framework_TestCase
             RestAuthUser::create($conn, $username1, $new_pass);
             $this->fail();
         } catch (RestAuthUserExists $e) {
-            $this->assertTrue($user->verify_password($password1));
-            $this->assertFalse($user->verify_password($new_pass));
+            $this->assertTrue($user->verifyPassword($password1));
+            $this->assertFalse($user->verifyPassword($new_pass));
         }
     }
     public function testVerifyPassword()
@@ -118,8 +118,8 @@ class UserTest extends PHPUnit_Framework_TestCase
         global $conn, $username1, $password1;
         $user = RestAuthUser::create($conn, $username1, $password1);
 
-        $this->assertTrue($user->verify_password($password1));
-        $this->assertFalse($user->verify_password("something else"));
+        $this->assertTrue($user->verifyPassword($password1));
+        $this->assertFalse($user->verifyPassword("something else"));
     }
 
     public function testVerifyPasswordInvalidUser()
@@ -128,7 +128,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         
         $user = new RestAuthUser($conn, $username1);
 
-        $this->assertFalse($user->verify_password("foobar"));
+        $this->assertFalse($user->verifyPassword("foobar"));
     }
 
     public function testSetPassword()
@@ -138,35 +138,35 @@ class UserTest extends PHPUnit_Framework_TestCase
 
 
         $user = RestAuthUser::create($conn, $username1, $password1);
-        $this->assertTrue($user->verify_password($password1));
-        $this->assertFalse($user->verify_password($new_pass));
+        $this->assertTrue($user->verifyPassword($password1));
+        $this->assertFalse($user->verifyPassword($new_pass));
 
         $user->setPassword($new_pass);
 
-        $this->assertFalse($user->verify_password($password1));
-        $this->assertTrue($user->verify_password($new_pass));
+        $this->assertFalse($user->verifyPassword($password1));
+        $this->assertTrue($user->verifyPassword($new_pass));
     }
 
     public function testDisablePassword()
     {
         global $conn, $username1, $password1;
         $user = RestAuthUser::create($conn, $username1, $password1);
-        $this->assertTrue($user->verify_password($password1));
-        $this->assertFalse($user->verify_password(''));
-        $this->assertFalse($user->verify_password(NULL));
+        $this->assertTrue($user->verifyPassword($password1));
+        $this->assertFalse($user->verifyPassword(''));
+        $this->assertFalse($user->verifyPassword(NULL));
 
         $user->setPassword();
-        $this->assertFalse($user->verify_password($password1));
-        $this->assertFalse($user->verify_password(''));
-        $this->assertFalse($user->verify_password(NULL));
+        $this->assertFalse($user->verifyPassword($password1));
+        $this->assertFalse($user->verifyPassword(''));
+        $this->assertFalse($user->verifyPassword(NULL));
         $user->setPassword(NULL);
-        $this->assertFalse($user->verify_password($password1));
-        $this->assertFalse($user->verify_password(''));
-        $this->assertFalse($user->verify_password(NULL));
+        $this->assertFalse($user->verifyPassword($password1));
+        $this->assertFalse($user->verifyPassword(''));
+        $this->assertFalse($user->verifyPassword(NULL));
         $user->setPassword('');
-        $this->assertFalse($user->verify_password($password1));
-        $this->assertFalse($user->verify_password(''));
-        $this->assertFalse($user->verify_password(NULL));
+        $this->assertFalse($user->verifyPassword($password1));
+        $this->assertFalse($user->verifyPassword(''));
+        $this->assertFalse($user->verifyPassword(NULL));
     }
 
     public function testSetPasswordInvalidUser()
@@ -192,8 +192,8 @@ class UserTest extends PHPUnit_Framework_TestCase
             $user->setPassword("x");
             $this->fail();
         } catch (RestAuthPreconditionFailed $e) {
-            $this->assertFalse($user->verify_password("x"));
-            $this->assertTrue($user->verify_password($password1));
+            $this->assertFalse($user->verifyPassword("x"));
+            $this->assertTrue($user->verifyPassword($password1));
         }
     }
 

@@ -38,11 +38,11 @@ foreach ($all_users as $user) {
         RestAuthUser::create($conn, $user->name, 'wrong password');
         die("Error: Successfully created existing user!");
     } catch (RestAuthUserExists $e) {
-        if ($user->verify_password('wrong password'))
+        if ($user->verifyPassword('wrong password'))
             die("Error: Wrong password verified!");
 
         $real_pass = str_replace('user', 'password', $user->name);
-        if (! $user->verify_password($real_pass))
+        if (! $user->verifyPassword($real_pass))
             die("Error: Real password could not be verified!");
     }
 }
@@ -57,16 +57,16 @@ try {
 // update passwords, try to verify old/new ones
 foreach ($all_users as $user) {
     $orig_pass = str_replace('user', 'password', $user->name);
-    $user->verify_password($orig_pass);
+    $user->verifyPassword($orig_pass);
 
     $user->setPassword("new $orig_pass");
-    if ($user->verify_password($orig_pass))
+    if ($user->verifyPassword($orig_pass))
         die("Error: Original password still verified!");
-    if (! $user->verify_password("new $orig_pass"))
+    if (! $user->verifyPassword("new $orig_pass"))
         die("Error: New password doesn't verify!");
 }
 
-function verify_property($user, $key, $value)
+function verifyProperty($user, $key, $value)
 {
     if ($user->get_property($key) !== $value)
         die("Error: $user->name property $key is wrong: '$value'/'$recv_value'\n");
@@ -83,7 +83,7 @@ foreach ($all_users as $user) {
         die("Error: Left over properties: ".count($props));
 
     $user->create_property('name test', "name is $user->name");
-    verify_property($user, 'name test', "name is $user->name");
+    verifyProperty($user, 'name test', "name is $user->name");
 
     // try to create it again:
     try {
@@ -93,15 +93,15 @@ foreach ($all_users as $user) {
     }
 
     // verify again:
-    verify_property($user, 'name test', "name is $user->name");
+    verifyProperty($user, 'name test', "name is $user->name");
 
     // next, we overwrite it with a new value and check that:
     $user->set_property('name test', "new property for $user->name");
-    verify_property($user, 'name test', "new property for $user->name");
+    verifyProperty($user, 'name test', "new property for $user->name");
 
     // next, we create a new value:
     $user->set_property('new property', "new property: $user->name");
-    verify_property($user, 'new property', "new property: $user->name");
+    verifyProperty($user, 'new property', "new property: $user->name");
 
     // get a completely non-existing property:
     try {
