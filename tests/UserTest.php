@@ -141,7 +141,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($user->verify_password($password1));
         $this->assertFalse($user->verify_password($new_pass));
 
-        $user->set_password($new_pass);
+        $user->setPassword($new_pass);
 
         $this->assertFalse($user->verify_password($password1));
         $this->assertTrue($user->verify_password($new_pass));
@@ -155,15 +155,15 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($user->verify_password(''));
         $this->assertFalse($user->verify_password(NULL));
 
-        $user->set_password();
+        $user->setPassword();
         $this->assertFalse($user->verify_password($password1));
         $this->assertFalse($user->verify_password(''));
         $this->assertFalse($user->verify_password(NULL));
-        $user->set_password(NULL);
+        $user->setPassword(NULL);
         $this->assertFalse($user->verify_password($password1));
         $this->assertFalse($user->verify_password(''));
         $this->assertFalse($user->verify_password(NULL));
-        $user->set_password('');
+        $user->setPassword('');
         $this->assertFalse($user->verify_password($password1));
         $this->assertFalse($user->verify_password(''));
         $this->assertFalse($user->verify_password(NULL));
@@ -175,7 +175,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         
         $user = new RestAuthUser($conn, $username1);
         try {
-            $user->set_password($password1);
+            $user->setPassword($password1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());
@@ -189,7 +189,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         
         $user = RestAuthUser::create($conn, $username1, $password1);
         try {
-            $user->set_password("x");
+            $user->setPassword("x");
             $this->fail();
         } catch (RestAuthPreconditionFailed $e) {
             $this->assertFalse($user->verify_password("x"));

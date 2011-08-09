@@ -241,7 +241,7 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function set_password($password=null)
+    public function setPassword($password=null)
     {
         $params = array();
         if (!((is_null($password)) || ($password === ''))) {

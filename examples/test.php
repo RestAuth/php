@@ -59,7 +59,7 @@ foreach ($all_users as $user) {
     $orig_pass = str_replace('user', 'password', $user->name);
     $user->verify_password($orig_pass);
 
-    $user->set_password("new $orig_pass");
+    $user->setPassword("new $orig_pass");
     if ($user->verify_password($orig_pass))
         die("Error: Original password still verified!");
     if (! $user->verify_password("new $orig_pass"))
