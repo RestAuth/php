@@ -32,7 +32,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
     {
         global $conn, $user, $propKey, $propVal;
 
-        $user->create_property($propKey, $propVal);
+        $user->createProperty($propKey, $propVal);
         $this->assertEquals(array($propKey => $propVal),
             $user->getProperties());
         $this->assertEquals($propVal, 
@@ -43,9 +43,9 @@ class PropertyTest extends PHPUnit_Framework_TestCase
     {
         global $conn, $user, $propKey, $propVal;
 
-        $user->create_property($propKey, $propVal);
+        $user->createProperty($propKey, $propVal);
         try {
-            $user->create_property($propKey, $propVal . " new");
+            $user->createProperty($propKey, $propVal . " new");
             $this->fail();
         } catch (RestAuthPropertyExists $e) {
             $this->assertEquals(array($propKey => $propVal),
@@ -62,7 +62,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
         $invalidUser = new RestAuthUser($conn, $username);
         try {
-            $invalidUser->create_property($propKey, $propVal);
+            $invalidUser->createProperty($propKey, $propVal);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());
@@ -134,7 +134,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
     public function testRemoveInvalidProperty()
     {
         global $conn, $user, $propKey, $propVal;
-        $user->create_property($propKey, $propVal);
+        $user->createProperty($propKey, $propVal);
 
         $wrongKey = $propKey . " foo";
 

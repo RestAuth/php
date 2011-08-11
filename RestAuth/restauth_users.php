@@ -446,7 +446,7 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function create_property($name, $value)
+    public function createProperty($name, $value)
     {
         $url = "$this->name/props/";
         $params = array('prop' => $name, 'value' =>$value);
