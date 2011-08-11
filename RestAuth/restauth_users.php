@@ -190,8 +190,9 @@ class RestAuthUser extends RestAuthResource
 
         switch ($resp->getResponseCode()) {
         case 200:
+            $list = $conn->handler->unmarshalList($resp->getBody());
             $response = array();
-            foreach (json_decode($resp->getBody()) as $name) {
+            foreach ($list as $name) {
                 $response[] = new RestAuthUser($conn, $name);
             }
             return $response;
@@ -361,8 +362,7 @@ class RestAuthUser extends RestAuthResource
         
         switch ($resp->getResponseCode()) {
         case 200:
-            $props = (array) json_decode($resp->getBody());
-            return $props;
+            return $this->conn->handler->unmarshalDict($resp->getBody());
         
         case 404:
             throw new RestAuthResourceNotFound($resp);
@@ -684,7 +684,9 @@ class RestAuthUser extends RestAuthResource
      */
     function __toString()
     {
+        // @codeCoverageIgnoreStart
         return "<User: " . $this->name . ">";
+        // @codeCoverageIgnoreEnd
     }
 }
 ?>

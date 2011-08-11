@@ -164,9 +164,10 @@ class RestAuthGroup extends RestAuthResource
     
         $resp = $conn->get('/groups/', $params);
         switch ($resp->getResponseCode()) {
-        case 200: 
+        case 200:
+            $list = $conn->handler->unmarshalList($resp->getBody());
             $groups = array();
-            foreach (json_decode($resp->getBody()) as $groupname) {
+            foreach ($list as $groupname) {
                 $groups[] = new RestAuthGroup($conn, $groupname);
             }
             return $groups;
@@ -213,9 +214,10 @@ class RestAuthGroup extends RestAuthResource
 
         $resp = $this->getRequest($this->name . '/users/', $params);
         switch ($resp->getResponseCode()) {
-        case 200: 
+        case 200:
+            $list = $this->conn->handler->unmarshalList($resp->getBody());
             $users = array();
-            foreach (json_decode($resp->getBody()) as $username) {
+            foreach ($list as $username) {
                 $users[] = new RestAuthUser($this->conn, $username);
             }
             return $users;
@@ -445,9 +447,10 @@ class RestAuthGroup extends RestAuthResource
     {
         $resp = $this->getRequest($this->name . '/groups/');
         switch ($resp->getResponseCode()) {
-        case 200: 
+        case 200:
+            $list = $this->conn->handler->unmarshalList($resp->getBody());
             $users = array();
-            foreach (json_decode($resp->getBody()) as $username) {
+            foreach ($list as $username) {
                 $users[] = new RestAuthGroup($this->conn, $username);
             }
             return $users;

@@ -110,6 +110,7 @@ class RestAuthJsonHandler extends ContentHandler
      */
     public function unmarshalList($obj)
     {
+        return json_decode($obj);
     }
     
     /**
@@ -121,6 +122,7 @@ class RestAuthJsonHandler extends ContentHandler
      */
     public function unmarshalDict($obj)
     {
+        return (array) json_decode($obj);
     }
     
     /**
@@ -262,9 +264,11 @@ class RestAuthConnection
         case 406:
             throw new RestAuthNotAcceptable($response);
             
+            // @codeCoverageIgnoreStart
         case 500:
             throw new RestAuthInternalServerError($response);
         }
+        // @codeCoverageIgnoreEnd
 
         return $response;
     }
@@ -380,7 +384,7 @@ class RestAuthConnection
      */
     public function put($url, $params, $headers = array())
     {
-        $headers['Content-Type'] = 'application/json';
+        $headers['Content-Type'] = $this->handler->getMimeType();
         
         $url = $this->host . $this->sanitizePath($url);
         $options = array('headers' => $headers);

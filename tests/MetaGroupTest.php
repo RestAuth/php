@@ -8,45 +8,45 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        global $conn, $username1, $username2, $username3, $username4;
+        global $username1, $username2, $username3, $username4;
         global $groupname1, $groupname2, $groupname3, $groupname4;
         global $user1, $user2, $user3, $user4;
         global $group1, $group2, $group3, $group4;
 
-        $host = 'http://[::1]:8000';
-        $user = 'vowi';
-        $pass = 'vowi';
-        $conn = new RestAuthConnection($host, $user, $pass);
+        global $RestAuthHost, $RestAuthUser, $RestAuthPass;
+        $this->conn = RestAuthConnection::getConnection(
+            $RestAuthHost, $RestAuthUser, $RestAuthPass
+        );
 
-        $users = RestAuthUser::getAll($conn);
+        $users = RestAuthUser::getAll($this->conn);
         if (count($users)) {
             throw new Exception("Found " . count($users) . " left over users.");
         }
-        $groups = RestAuthGroup::getAll($conn);
+        $groups = RestAuthGroup::getAll($this->conn);
         if (count($groups)) {
-            throw new Exception("Found " . count($groups) . " left over users.");
+            throw new Exception(
+                "Found " . count($groups) . " left over groups."
+            );
         }
 
-        $user1 = RestAuthUser::create($conn, $username1, "foobar");
-        $user2 = RestAuthUser::create($conn, $username2, "blabla");
-        $user3 = RestAuthUser::create($conn, $username3, "labalaba");
-        $user4 = RestAuthUser::create($conn, $username4, "labalaba");
+        $user1 = RestAuthUser::create($this->conn, $username1, "foobar");
+        $user2 = RestAuthUser::create($this->conn, $username2, "blabla");
+        $user3 = RestAuthUser::create($this->conn, $username3, "labalaba");
+        $user4 = RestAuthUser::create($this->conn, $username4, "labalaba");
 
-        $group1 = RestAuthGroup::create($conn, $groupname1);
-        $group2 = RestAuthGroup::create($conn, $groupname2);
-        $group3 = RestAuthGroup::create($conn, $groupname3);
-        $group4 = RestAuthGroup::create($conn, $groupname4);
+        $group1 = RestAuthGroup::create($this->conn, $groupname1);
+        $group2 = RestAuthGroup::create($this->conn, $groupname2);
+        $group3 = RestAuthGroup::create($this->conn, $groupname3);
+        $group4 = RestAuthGroup::create($this->conn, $groupname4);
     }
 
     public function tearDown()
     {
-        global $conn;
-
-        $users = RestAuthUser::getAll($conn);
+        $users = RestAuthUser::getAll($this->conn);
         foreach ($users as $user) {
             $user->remove();
         }
-        $groups = RestAuthGroup::getAll($conn);
+        $groups = RestAuthGroup::getAll($this->conn);
         foreach ($groups as $group) {
             $group->remove();
         }
@@ -54,7 +54,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
 
     public function testSimpleInheritance()
     {
-        global $conn, $group1, $group2, $group3, $group4;
+        global $group1, $group2, $group3, $group4;
         global $user1, $user2, $user3, $user4;
 
         // add some memberships:
@@ -100,7 +100,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
 
     public function testAddInvalidGroup()
     {
-        global $conn, $group1, $groupname5;
+        global $group1, $groupname5;
 
         try {
             $group1->addGroup($groupname5);
@@ -113,8 +113,8 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
 
     public function testAddGroupToInvalidGroup()
     {
-        global $conn, $group1, $groupname5;
-        $group5 = new RestAuthGroup($conn, $groupname5);
+        global $group1, $groupname5;
+        $group5 = new RestAuthGroup($this->conn, $groupname5);
         try {
             $group5->addGroup($group1);
             $this->fail();
@@ -126,7 +126,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
 
     public function testRemoveGroup()
     {
-        global $conn, $group1, $group2, $user1, $user2;
+        global $group1, $group2, $user1, $user2;
 
         $group1->addUser($user1);
         $group2->addUser($user2);
@@ -165,7 +165,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
 
     public function testRemoveGroupNotMember()
     {
-        global $conn, $group1, $group2;
+        global $group1, $group2;
         
         try {
             $group1->removeGroup($group2);
@@ -177,7 +177,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
 
     public function testRemoveInvalidGroup()
     {
-        global $conn, $group1, $groupname5;
+        global $group1, $groupname5;
 
         try {
             $group1->removeGroup($groupname5);
@@ -189,8 +189,8 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
 
     public function testGetGroupsInvalidGroup()
     {
-        global $conn, $groupname5;
-        $group5 = new RestAuthGroup($conn, $groupname5);
+        global $groupname5;
+        $group5 = new RestAuthGroup($this->conn, $groupname5);
 
         try {
             $group5->getGroups();

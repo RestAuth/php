@@ -8,35 +8,33 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        global $conn, $user, $username1, $group, $groupname1;
+        global $user, $username1, $group, $groupname1;
 
-        $host = 'http://[::1]:8000';
-        $user = 'vowi';
-        $pass = 'vowi';
-        $conn = new RestAuthConnection($host, $user, $pass);
+        global $RestAuthHost, $RestAuthUser, $RestAuthPass;
+        $this->conn = RestAuthConnection::getConnection(
+            $RestAuthHost, $RestAuthUser, $RestAuthPass
+        );
 
-        $users = RestAuthUser::getAll($conn);
+        $users = RestAuthUser::getAll($this->conn);
         if (count($users)) {
             throw new Exception("Found " . count($users) . " left over users.");
         }
-        $groups = RestAuthGroup::getAll($conn);
+        $groups = RestAuthGroup::getAll($this->conn);
         if (count($groups)) {
             throw new Exception("Found " . count($groups) . " left over users.");
         }
 
-        $user = RestAuthUser::create($conn, $username1, "foobar");
-        $group = RestAuthGroup::create($conn, $groupname1);
+        $user = RestAuthUser::create($this->conn, $username1, "foobar");
+        $group = RestAuthGroup::create($this->conn, $groupname1);
     }
 
     public function tearDown()
     {
-        global $conn;
-
-        $users = RestAuthUser::getAll($conn);
+        $users = RestAuthUser::getAll($this->conn);
         foreach ($users as $user) {
             $user->remove();
         }
-        $groups = RestAuthGroup::getAll($conn);
+        $groups = RestAuthGroup::getAll($this->conn);
         foreach ($groups as $group) {
             $group->remove();
         }
@@ -77,8 +75,7 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
 
     public function testGetGroupsInvalidUser()
     {
-        global $conn;
-        $user = new RestAuthUser($conn, "foobar");
+        $user = new RestAuthUser($this->conn, "foobar");
         try {
             $user->getGroups();
             $this->fail();

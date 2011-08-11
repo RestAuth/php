@@ -9,20 +9,23 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        global $username1, $user, $password1, $conn;
+        global $username1, $user, $password1;
+        
+        global $RestAuthHost, $RestAuthUser, $RestAuthPass;
+        $this->conn = RestAuthConnection::getConnection(
+            $RestAuthHost, $RestAuthUser, $RestAuthPass
+        );
 
-        $users = RestAuthUser::getAll($conn);
+        $users = RestAuthUser::getAll($this->conn);
         if (count($users)) {
             throw new Exception("Found " . count($users) . " left over users.");
         }
 
-        $user = RestAuthUser::create($conn, $username1, $password1);
+        $user = RestAuthUser::create($this->conn, $username1, $password1);
     }
     public function tearDown()
     {
-        global $conn;
-
-        $users = RestAuthUser::getAll($conn);
+        $users = RestAuthUser::getAll($this->conn);
         foreach ($users as $user) {
             $user->remove();
         }
@@ -30,7 +33,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
     public function testCreateProperty()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
 
         $user->createProperty($propKey, $propVal);
         $this->assertEquals(
@@ -41,7 +44,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
     public function testCreatePropertyTwice()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
 
         $user->createProperty($propKey, $propVal);
         try {
@@ -57,22 +60,24 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
     public function testCreatePropertyWithInvalidUser()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
         $username = "invalid name";
 
-        $invalidUser = new RestAuthUser($conn, $username);
+        $invalidUser = new RestAuthUser($this->conn, $username);
         try {
             $invalidUser->createProperty($propKey, $propVal);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());
-            $this->assertEquals(array($user), RestAuthUser::getAll($conn));
+            $this->assertEquals(
+                array($user), RestAuthUser::getAll($this->conn)
+            );
         }
     }
 
     public function testSetProperty()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
 
         $this->assertNull($user->setProperty($propKey, $propVal));
         $this->assertEquals(
@@ -83,7 +88,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
     public function testSetPropertyTwice()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
         $newVal = "foobar";
 
         $this->assertNull($user->setProperty($propKey, $propVal));
@@ -99,22 +104,22 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
     public function testSetPropertyWithInvalidUser()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
         $username = "invalid name";
 
-        $invalidUser = new RestAuthUser($conn, $username);
+        $invalidUser = new RestAuthUser($this->conn, $username);
         try {
             $invalidUser->setProperty($propKey, $propVal);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());
-            $this->assertEquals(array($user), RestAuthUser::getAll($conn));
+            $this->assertEquals(array($user), RestAuthUser::getAll($this->conn));
         }
     }
 
     public function testRemoveProperty()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
         
         $this->assertNull($user->setProperty($propKey, $propVal));
         $this->assertEquals(
@@ -128,7 +133,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
     public function testRemoveInvalidProperty()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
         $user->createProperty($propKey, $propVal);
 
         $wrongKey = $propKey . " foo";
@@ -147,11 +152,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
     public function testRemovePropertyWithInvalidUser()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
         $user->setProperty($propKey, $propVal);
         $username = "invalid name";
 
-        $invalidUser = new RestAuthUser($conn, $username);
+        $invalidUser = new RestAuthUser($this->conn, $username);
         try {
             $invalidUser->removeProperty($propKey);
             $this->fail();
@@ -167,7 +172,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
     public function testGetInvalidProperty()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
 
         try {
             $user->getProperty($propKey); 
@@ -179,10 +184,10 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
     public function testGetPropertyInvalidUser()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
         $username = "invalid name";
 
-        $invalidUser = new RestAuthUser($conn, $username);
+        $invalidUser = new RestAuthUser($this->conn, $username);
         try {
             $invalidUser->getProperty($propKey); 
             $this->fail();
@@ -193,10 +198,10 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
     public function testGetPropertiesInvalidUser()
     {
-        global $conn, $user, $propKey, $propVal;
+        global $user, $propKey, $propVal;
         $username = "invalid name";
 
-        $invalidUser = new RestAuthUser($conn, $username);
+        $invalidUser = new RestAuthUser($this->conn, $username);
         try {
             $invalidUser->getProperties($propKey); 
             $this->fail();
