@@ -65,11 +65,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $group2->addUser($user4);
 
         // verify initial state
-        $testArray = $group1->get_members();
+        $testArray = $group1->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
         $this->assertEquals(array($user1, $user2),
             $testArray);
-        $testArray = $group2->get_members();
+        $testArray = $group2->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
         $this->assertEquals(array($user2, $user3, $user4),
             $testArray);
@@ -78,7 +78,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $group1->addGroup($group2);
 
         // verify that group1 hasn't changed
-        $testArray = $group1->get_members();
+        $testArray = $group1->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
         $this->assertEquals(array($user1, $user2),
             $testArray);
@@ -88,7 +88,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($group1->isMember($user4));
 
         // verify that group2 now inherits memberships from group1:
-        $testArray = $group2->get_members();
+        $testArray = $group2->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
         $this->assertEquals(array($user1, $user2, $user3, $user4),
             $testArray);
@@ -136,8 +136,8 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $group2->addUser($user2);
         
         // verify initial state:
-        $this->assertEquals(array($user1), $group1->get_members());
-        $this->assertEquals(array($user2), $group2->get_members());
+        $this->assertEquals(array($user1), $group1->getMembers());
+        $this->assertEquals(array($user2), $group2->getMembers());
         $this->assertTrue($group1->isMember($user1));
         $this->assertTrue($group2->isMember($user2));
         $this->assertFalse($group1->isMember($user2));
@@ -147,8 +147,8 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $group1->addGroup($group2);
 
         // verify state now:
-        $this->assertEquals(array($user1), $group1->get_members());
-        $testArray = $group2->get_members();
+        $this->assertEquals(array($user1), $group1->getMembers());
+        $testArray = $group2->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
         $this->assertEquals(array($user1, $user2), 
             $testArray);
@@ -160,8 +160,8 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $group1->removeGroup($group2);
 
         // verify inital state:
-        $this->assertEquals(array($user1), $group1->get_members());
-        $this->assertEquals(array($user2), $group2->get_members());
+        $this->assertEquals(array($user1), $group1->getMembers());
+        $this->assertEquals(array($user2), $group2->getMembers());
         $this->assertTrue($group1->isMember($user1));
         $this->assertTrue($group2->isMember($user2));
         $this->assertFalse($group1->isMember($user2));

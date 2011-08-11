@@ -36,7 +36,7 @@ RestAuthGroup::create($conn, 'groupname'); // first create it...
 // get verifies that the group exists:
 $group = RestAuthGroup::get($conn, 'groupname'); 
 $group->addUser($user); // may also just be the username!
-$members = $group->get_members(); // returns a list of RestAuthUser instances
+$members = $group->getMembers(); // returns a list of RestAuthUser instances
 print("Users: " . implode(', ', $members) . "\n"); 
 
 // finally, remove group and user so you can call this script multiple times

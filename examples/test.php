@@ -143,7 +143,7 @@ foreach ($all_groups as $group) {
     RestAuthGroup::get($conn, $group->name);
 
     // verify that we have zero members:
-    if (count($group->get_members()) != 0)
+    if (count($group->getMembers()) != 0)
         die("Error: Group seems to have some members?");
 }
 
@@ -151,7 +151,7 @@ function verify_membership($group, $user)
 {
     if (! $group->isMember($user))
         die("Error: $user->name is not a member of $group->name");
-    $members = $group->get_members();
+    $members = $group->getMembers();
     
     if (! in_array($user, $members))
         die("Error: $user->name not in all users of $group->name");
