@@ -149,7 +149,7 @@ foreach ($all_groups as $group) {
 
 function verify_membership($group, $user)
 {
-    if (! $group->is_member($user))
+    if (! $group->isMember($user))
         die("Error: $user->name is not a member of $group->name");
     $members = $group->get_members();
     

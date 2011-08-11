@@ -103,12 +103,12 @@ class GroupTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array($user2, $user3), 
              $testArray);
 
-        $this->assertTrue($group1->is_member($user1));
-        $this->assertTrue($group2->is_member($user2));
-        $this->assertTrue($group2->is_member($user3));
-        $this->assertFalse($group2->is_member($user1));
-        $this->assertFalse($group1->is_member($user2));
-        $this->assertFalse($group1->is_member($user3));
+        $this->assertTrue($group1->isMember($user1));
+        $this->assertTrue($group2->isMember($user2));
+        $this->assertTrue($group2->isMember($user3));
+        $this->assertFalse($group2->isMember($user1));
+        $this->assertFalse($group1->isMember($user2));
+        $this->assertFalse($group1->isMember($user3));
     }
 
     public function testAddInvalidUser()
@@ -145,7 +145,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
         global $conn, $username3, $groupname1;
         $group = RestAuthGroup::create($conn, $groupname1);
 
-        $this->assertFalse($group->is_member($username3));
+        $this->assertFalse($group->isMember($username3));
     }
 
     public function testIsMemberInvalidGroup()
@@ -154,7 +154,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
 
         $group = new RestAuthGroup($conn, $groupname1);
         try {
-            $group->is_member($user1);
+            $group->isMember($user1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("group", $e->getType());
@@ -170,14 +170,14 @@ class GroupTest extends PHPUnit_Framework_TestCase
 
         $group->removeUser($user1);
         $this->assertEquals(array(), $group->get_members());
-        $this->assertFalse($group->is_member($user1));
+        $this->assertFalse($group->isMember($user1));
     }
 
     public function testRemoveUserNotMember()
     {
         global $conn, $user1, $groupname1;
         $group = RestAuthGroup::create($conn, $groupname1);
-        $this->assertFalse($group->is_member($user1));
+        $this->assertFalse($group->isMember($user1));
 
         try {
             $group->removeUser($user1);

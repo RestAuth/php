@@ -569,7 +569,7 @@ class RestAuthUser extends RestAuthResource
      * Check if the user is a member in the given group.
      *
      * This method is just a shortcut for {@link
-     * RestAuthGroup::is_member()}.
+     * RestAuthGroup::isMember()}.
      *
      * @param mixed $group The group to test. Either a  {@link RestAuthGroup}
      *    or a string representing the groupname.
@@ -591,7 +591,7 @@ class RestAuthUser extends RestAuthResource
             $group = new RestAuthGroup($this->conn, $group);
         }
         
-        return $group->is_member($this);
+        return $group->isMember($this);
     }
 
     /**
