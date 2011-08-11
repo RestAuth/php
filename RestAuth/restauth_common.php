@@ -295,7 +295,7 @@ class RestAuthConnection
      */
     public function get($url, $params = array(), $headers = array())
     {
-        $url = $this->host . $this->sanitize_url($url);
+        $url = $this->host . $this->sanitizeUrl($url);
         $options = array('headers' => $headers);
         $request = new HttpRequest($url, HTTP_METH_GET, $options);
         $request->setQueryData($params);
@@ -333,7 +333,7 @@ class RestAuthConnection
     {
         $headers['Content-Type'] = $this->handler->get_mime_type();
 
-        $url = $this->host . $this->sanitize_url($url);
+        $url = $this->host . $this->sanitizeUrl($url);
         $options = array('headers' => $headers);
 
         $request = new HttpRequest($url, HTTP_METH_POST, $options);
@@ -382,7 +382,7 @@ class RestAuthConnection
     {
         $headers['Content-Type'] = 'application/json';
         
-        $url = $this->host . $this->sanitize_url($url);
+        $url = $this->host . $this->sanitizeUrl($url);
         $options = array('headers' => $headers);
 
         $request = new HttpRequest($url, HTTP_METH_PUT, $options);
@@ -423,7 +423,7 @@ class RestAuthConnection
      */
     public function delete($url, $headers = array())
     {
-        $url = $this->host . $this->sanitize_url($url);
+        $url = $this->host . $this->sanitizeUrl($url);
         $options = array('headers' => $headers);
         $request = new HttpRequest($url, HTTP_METH_DELETE, $options);
         return $this->send($request);
@@ -439,7 +439,7 @@ class RestAuthConnection
      * @return string The sanitized path segmet of an URL
      * @todo rename to sanitize_path
      */
-    public function sanitize_url($url)
+    public function sanitizeUrl($url)
     {
         if (substr($url, -1) !== '/') {
             $url .= '/';
