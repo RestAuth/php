@@ -189,7 +189,7 @@ class RestAuthConnection
      *
      * @return RestAuthConnection An instance of a RestAuthConnection.
      */
-    public static function get_connection($host='', $user='', $password='')
+    public static function getConnection($host='', $user='', $password='')
     {
         if (!isset(self::$connection)) {
             self::$connection = new RestAuthConnection($host, $user, $password);
