@@ -523,7 +523,7 @@ class RestAuthUser extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function remove_property($name)
+    public function removeProperty($name)
     {
         $url = "$this->name/props/$name";
         $resp = $this->_delete($url);

@@ -127,7 +127,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($propVal, 
             $user->getProperty($propKey));
 
-        $user->remove_property($propKey);
+        $user->removeProperty($propKey);
         $this->assertEquals(array(), $user->getProperties());
     }
 
@@ -139,7 +139,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         $wrongKey = $propKey . " foo";
 
         try {
-            $user->remove_property($wrongKey);
+            $user->removeProperty($wrongKey);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("property", $e->getType());
@@ -158,7 +158,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
         $invalidUser = new RestAuthUser($conn, $username);
         try {
-            $invalidUser->remove_property($propKey);
+            $invalidUser->removeProperty($propKey);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());

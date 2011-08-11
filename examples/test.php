@@ -112,7 +112,7 @@ foreach ($all_users as $user) {
 
     // delete a property and verify that its gone:
     try {
-        $user->remove_property('new property');
+        $user->removeProperty('new property');
         $props = $user->getProperties();
         if (array_key_exists('new property', $props))
             die("Error: Deleted property is still in getProperties()");
