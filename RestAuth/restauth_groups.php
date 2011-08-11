@@ -248,7 +248,7 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function add_user($user)
+    public function addUser($user)
     {
         if (is_string($user)) {
             $params = array('user' => $user);

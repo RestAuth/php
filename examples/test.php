@@ -157,10 +157,10 @@ function verify_membership($group, $user)
         die("Error: $user->name not in all users of $group->name");
 }
 // verify that we can get them all:
-$group0->add_user($user0);
-$group1->add_user($user1);
-$group2->add_user($user2);
-$group3->add_user($user3);
+$group0->addUser($user0);
+$group1->addUser($user1);
+$group2->addUser($user2);
+$group3->addUser($user3);
 verify_membership($group0, $user0);
 verify_membership($group1, $user1);
 verify_membership($group2, $user2);

@@ -597,7 +597,7 @@ class RestAuthUser extends RestAuthResource
     /**
      * Make this user a member of the given group.
      *
-     * This method is just a shortcut for {@link RestAuthGroup::add_user()}.
+     * This method is just a shortcut for {@link RestAuthGroup::addUser()}.
      *
      * @param mixed $group The group the user should become a member of. 
      *    Either a  {@link RestAuthGroup} or a string representing the
@@ -624,7 +624,7 @@ class RestAuthUser extends RestAuthResource
             $group = new RestAuthGroup($this->conn, $group);
         }
         
-        return $group->add_user($this);
+        return $group->addUser($this);
     }
 
     /**

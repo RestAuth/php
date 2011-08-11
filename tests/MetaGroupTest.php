@@ -58,11 +58,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         global $user1, $user2, $user3, $user4;
 
         // add some memberships:
-        $group1->add_user($user1);
-        $group1->add_user($user2);
-        $group2->add_user($user2); // user2 in both groups!
-        $group2->add_user($user3);
-        $group2->add_user($user4);
+        $group1->addUser($user1);
+        $group1->addUser($user2);
+        $group2->addUser($user2); // user2 in both groups!
+        $group2->addUser($user3);
+        $group2->addUser($user4);
 
         // verify initial state
         $testArray = $group1->get_members();
@@ -132,8 +132,8 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
     {
         global $conn, $group1, $group2, $user1, $user2;
 
-        $group1->add_user($user1);
-        $group2->add_user($user2);
+        $group1->addUser($user1);
+        $group2->addUser($user2);
         
         // verify initial state:
         $this->assertEquals(array($user1), $group1->get_members());
