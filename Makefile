@@ -5,6 +5,10 @@ HTMLDIR=${DOCDIR}/html
 all: 
 
 test:
+	# test for coding standards:
+	phpcs --report-width=120 tests/* RestAuth/*
+	
+	# start unit tests
 	phpunit tests
 
 coverage:
