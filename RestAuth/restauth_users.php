@@ -405,7 +405,7 @@ class RestAuthUser extends RestAuthResource
         switch ($resp->getResponseCode()) {
         // todo: 200 is never tested!!!
         case 200:
-            return $this->conn->handler->unmarshal_str($resp->getBody());
+            return $this->conn->handler->unmarshalStr($resp->getBody());
             
         case 201:
             return;
@@ -495,7 +495,7 @@ class RestAuthUser extends RestAuthResource
 
         switch ($resp->getResponseCode()) {
         case 200:
-            return $this->conn->handler->unmarshal_str($resp->getBody());
+            return $this->conn->handler->unmarshalStr($resp->getBody());
             
         case 404:
             throw new RestAuthResourceNotFound($resp);

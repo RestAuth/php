@@ -47,7 +47,7 @@ abstract class ContentHandler
      * 
      * @return str The unmarshalled string
      */
-    abstract function unmarshal_str($obj);
+    abstract function unmarshalStr($obj);
     
     /**
      * Unmarshal a list.
@@ -56,7 +56,7 @@ abstract class ContentHandler
      * 
      * @return str The unmarshalled list.
      */
-    abstract function unmarshal_list($obj);
+    abstract function unmarshalList($obj);
     
     /**
      * Unmarshal a dictionary.
@@ -65,14 +65,14 @@ abstract class ContentHandler
      * 
      * @return str The unmarshalled dictionary.
      */
-    abstract function unmarshal_dict($obj);
+    abstract function unmarshalDict($obj);
     
     /**
      * Get the mimetype that this class handles.
      *
      * @return str The MIME type handled by this class.
      */
-    abstract function get_mime_type();
+    abstract function getMimeType();
 }
 
 /**
@@ -95,7 +95,7 @@ class RestAuthJsonHandler extends ContentHandler
      *
      * @return str The unmarshalled string.
      */
-    public function unmarshal_str($obj)
+    public function unmarshalStr($obj)
     {
         $arr = json_decode($obj);
         return $arr[0];
@@ -108,7 +108,7 @@ class RestAuthJsonHandler extends ContentHandler
      *
      * @return str The unmarshalled list.
      */
-    public function unmarshal_list($obj)
+    public function unmarshalList($obj)
     {
     }
     
@@ -119,7 +119,7 @@ class RestAuthJsonHandler extends ContentHandler
      *
      * @return str The unmarshalled dictionary.
      */
-    public function unmarshal_dict($obj)
+    public function unmarshalDict($obj)
     {
     }
     
@@ -128,7 +128,7 @@ class RestAuthJsonHandler extends ContentHandler
      *
      * @return str Always returns 'application/json'.
      */
-    public function get_mime_type()
+    public function getMimeType()
     {
         return 'application/json';
     }
@@ -242,7 +242,7 @@ class RestAuthConnection
         // add headers present with all methods:
         $request->addHeaders(
             array(
-                'Accept'        => $this->handler->get_mime_type(),
+                'Accept'        => $this->handler->getMimeType(),
                 'Authorization' => 'Basic ' . $this->auth_header,
             )
         );
@@ -331,7 +331,7 @@ class RestAuthConnection
      */
     public function post($url, $params, $headers = array())
     {
-        $headers['Content-Type'] = $this->handler->get_mime_type();
+        $headers['Content-Type'] = $this->handler->getMimeType();
 
         $url = $this->host . $this->sanitizePath($url);
         $options = array('headers' => $headers);
