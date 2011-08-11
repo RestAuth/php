@@ -560,7 +560,7 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public function get_groups()
+    public function getGroups()
     {
         return RestAuthGroup::get_all($this->conn, $this);
     }

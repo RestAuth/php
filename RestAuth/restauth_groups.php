@@ -441,7 +441,7 @@ class RestAuthGroup extends RestAuthResource
      *     returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function get_groups()
+    public function getGroups()
     {
         $resp = $this->_get($this->name . '/groups/');
         switch ($resp->getResponseCode()) {

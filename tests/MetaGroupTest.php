@@ -98,8 +98,8 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($group2->is_member($user4));
 
         // verify subgroups:
-        $this->assertEquals(array($group2), $group1->get_groups());
-        $this->assertEquals(array(), $group2->get_groups());
+        $this->assertEquals(array($group2), $group1->getGroups());
+        $this->assertEquals(array(), $group2->getGroups());
     }
 
     public function testAddInvalidGroup()
@@ -111,7 +111,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("group", $e->getType());
-            $this->assertEquals(array(), $group1->get_groups());
+            $this->assertEquals(array(), $group1->getGroups());
         }
     }
 
@@ -124,7 +124,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("group", $e->getType());
-            $this->assertEquals(array(), $group1->get_groups());
+            $this->assertEquals(array(), $group1->getGroups());
         }
     }
 
@@ -198,7 +198,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $group5 = new RestAuthGroup($conn, $groupname5);
 
         try {
-            $group5->get_groups();
+            $group5->getGroups();
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("group", $e->getType());

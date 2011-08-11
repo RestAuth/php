@@ -46,7 +46,7 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
     {
         global $user, $group, $groupname1;
         $user->addGroup($groupname1);
-        $this->assertEquals(array($group), $user->get_groups());
+        $this->assertEquals(array($group), $user->getGroups());
         $this->assertTrue($user->inGroup($groupname1));
     }
 
@@ -55,7 +55,7 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
         global $user, $group, $groupname1;
         $this->assertFalse($user->inGroup($groupname1));
         $user->addGroup($groupname1);
-        $this->assertEquals(array($group), $user->get_groups());
+        $this->assertEquals(array($group), $user->getGroups());
         $this->assertTrue($user->inGroup($groupname1));
     }
 
@@ -64,15 +64,15 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
         global $user, $group, $groupname1;
 
         $this->assertFalse($user->inGroup($groupname1));
-        $this->assertEquals(array(), $user->get_groups());
+        $this->assertEquals(array(), $user->getGroups());
 
         $user->addGroup($groupname1);
         $this->assertTrue($user->inGroup($groupname1));
-        $this->assertEquals(array($group), $user->get_groups());
+        $this->assertEquals(array($group), $user->getGroups());
 
         $user->removeGroup($groupname1);
         $this->assertFalse($user->inGroup($groupname1));
-        $this->assertEquals(array(), $user->get_groups());
+        $this->assertEquals(array(), $user->getGroups());
     }
 
     public function testGetGroupsInvalidUser()
@@ -80,7 +80,7 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
         global $conn;
         $user = new RestAuthUser($conn, "foobar");
         try {
-            $user->get_groups();
+            $user->getGroups();
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());
