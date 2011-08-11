@@ -70,7 +70,7 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($user->in_group($groupname1));
         $this->assertEquals(array($group), $user->get_groups());
 
-        $user->remove_group($groupname1);
+        $user->removeGroup($groupname1);
         $this->assertFalse($user->in_group($groupname1));
         $this->assertEquals(array(), $user->get_groups());
     }

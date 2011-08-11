@@ -477,7 +477,7 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function remove_group($group)
+    public function removeGroup($group)
     {
         if (is_string($group)) {
             $groupname = $group;

@@ -157,7 +157,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($group2->is_member($user2));
         $this->assertFalse($group1->is_member($user2));
 
-        $group1->remove_group($group2);
+        $group1->removeGroup($group2);
 
         // verify inital state:
         $this->assertEquals(array($user1), $group1->get_members());
@@ -173,7 +173,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         global $conn, $group1, $group2;
         
         try {
-            $group1->remove_group($group2);
+            $group1->removeGroup($group2);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("group", $e->getType());
@@ -185,7 +185,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         global $conn, $group1, $groupname5;
 
         try {
-            $group1->remove_group($groupname5);
+            $group1->removeGroup($groupname5);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("group", $e->getType());
