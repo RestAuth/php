@@ -565,7 +565,7 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function _put($url, $params = array(), $headers = array())
+    protected function putRequest($url, $params = array(), $headers = array())
     {
         $url = static::PREFIX . $url;
         return $this->conn->put($url, $params, $headers);
@@ -595,7 +595,7 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function _delete($url, $headers = array())
+    protected function deleteRequest($url, $headers = array())
     {
         return $this->conn->delete(static::PREFIX . $url, $headers);
     }

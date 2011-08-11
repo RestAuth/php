@@ -247,7 +247,7 @@ class RestAuthUser extends RestAuthResource
         if (!((is_null($password)) || ($password === ''))) {
             $params['password'] = $password;
         }
-        $resp = $this->_put($this->name, $params);
+        $resp = $this->putRequest($this->name, $params);
 
         switch ($resp->getResponseCode()) {
         case 204:
@@ -322,7 +322,7 @@ class RestAuthUser extends RestAuthResource
      */
     public function remove()
     {
-        $resp = $this->_delete($this->name);
+        $resp = $this->deleteRequest($this->name);
         switch ($resp->getResponseCode()) {
         case 204:
             return;
@@ -401,7 +401,7 @@ class RestAuthUser extends RestAuthResource
     {
         $url = "$this->name/props/$name"; 
         $params = array('value' => $value);
-        $resp = $this->_put($url, $params);
+        $resp = $this->putRequest($url, $params);
         switch ($resp->getResponseCode()) {
         // todo: 200 is never tested!!!
         case 200:
@@ -526,7 +526,7 @@ class RestAuthUser extends RestAuthResource
     public function removeProperty($name)
     {
         $url = "$this->name/props/$name";
-        $resp = $this->_delete($url);
+        $resp = $this->deleteRequest($url);
 
         switch ($resp->getResponseCode()) {
         case 204:

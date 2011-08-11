@@ -329,7 +329,7 @@ class RestAuthGroup extends RestAuthResource
      */
     public function remove()
     {
-        $resp = $this->_delete($this->name);
+        $resp = $this->deleteRequest($this->name);
         switch ($resp->getResponseCode()) {
         case 204:
             return;
@@ -368,7 +368,7 @@ class RestAuthGroup extends RestAuthResource
         }
 
         $url = $this->name . '/users/' . $username;
-        $resp = $this->_delete($url);
+        $resp = $this->deleteRequest($url);
 
         switch ($resp->getResponseCode()) {
         case 204:
@@ -486,7 +486,7 @@ class RestAuthGroup extends RestAuthResource
         }
 
         $url = $this->name . '/groups/' . $groupname . '/';
-        $resp = $this->_delete($url);
+        $resp = $this->deleteRequest($url);
         switch ($resp->getResponseCode()) {
         case 204:
             return;
