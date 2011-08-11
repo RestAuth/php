@@ -631,7 +631,7 @@ class RestAuthUser extends RestAuthResource
      * Remove the users membership from the given group.
      *
      * This method is just a shortcut for {@link 
-     * RestAuthGroup::remove_user()}.
+     * RestAuthGroup::removeUser()}.
      *
      * @param mixed $group The group the user should no longer be a member
      *    of. Either a  {@link RestAuthGroup} or a string representing the
@@ -654,7 +654,7 @@ class RestAuthUser extends RestAuthResource
             $group = new RestAuthGroup($this->conn, $group);
         }
         
-        return $group->remove_user($this);
+        return $group->removeUser($this);
     }
 
     /**

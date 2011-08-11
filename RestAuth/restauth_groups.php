@@ -359,7 +359,7 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public function remove_user($user)
+    public function removeUser($user)
     {
         if (is_string($user)) {
             $username = $user;
