@@ -1,6 +1,6 @@
 <?php
 
-require_once('RestAuth/restauth.php');
+require_once 'RestAuth/restauth.php';
 
 // variables are defined in UserTest.php
 
@@ -67,12 +67,10 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         // verify initial state
         $testArray = $group1->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
-        $this->assertEquals(array($user1, $user2),
-            $testArray);
+        $this->assertEquals(array($user1, $user2), $testArray);
         $testArray = $group2->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
-        $this->assertEquals(array($user2, $user3, $user4),
-            $testArray);
+        $this->assertEquals(array($user2, $user3, $user4), $testArray);
 
         // make group2 a subgroup of group1
         $group1->addGroup($group2);
@@ -80,8 +78,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         // verify that group1 hasn't changed
         $testArray = $group1->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
-        $this->assertEquals(array($user1, $user2),
-            $testArray);
+        $this->assertEquals(array($user1, $user2), $testArray);
         $this->assertTrue($group1->isMember($user1));
         $this->assertTrue($group1->isMember($user2));
         $this->assertFalse($group1->isMember($user3));
@@ -90,8 +87,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         // verify that group2 now inherits memberships from group1:
         $testArray = $group2->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
-        $this->assertEquals(array($user1, $user2, $user3, $user4),
-            $testArray);
+        $this->assertEquals(array($user1, $user2, $user3, $user4), $testArray);
         $this->assertTrue($group2->isMember($user1));
         $this->assertTrue($group2->isMember($user2));
         $this->assertTrue($group2->isMember($user3));
@@ -150,8 +146,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array($user1), $group1->getMembers());
         $testArray = $group2->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
-        $this->assertEquals(array($user1, $user2), 
-            $testArray);
+        $this->assertEquals(array($user1, $user2), $testArray);
         $this->assertTrue($group1->isMember($user1));
         $this->assertTrue($group2->isMember($user1));
         $this->assertTrue($group2->isMember($user2));
