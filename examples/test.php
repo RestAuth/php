@@ -166,7 +166,7 @@ verify_membership($group1, $user1);
 verify_membership($group2, $user2);
 verify_membership($group3, $user3);
 
-$group0->add_group($group1);
+$group0->addGroup($group1);
 verify_membership($group1, $user0);
 
 // cleanup:

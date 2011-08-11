@@ -75,7 +75,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
             $testArray);
 
         // make group2 a subgroup of group1
-        $group1->add_group($group2);
+        $group1->addGroup($group2);
 
         // verify that group1 hasn't changed
         $testArray = $group1->get_members();
@@ -107,7 +107,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         global $conn, $group1, $groupname5;
 
         try {
-            $group1->add_group($groupname5);
+            $group1->addGroup($groupname5);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("group", $e->getType());
@@ -120,7 +120,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         global $conn, $group1, $groupname5;
         $group5 = new RestAuthGroup($conn, $groupname5);
         try {
-            $group5->add_group($group1);
+            $group5->addGroup($group1);
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("group", $e->getType());
@@ -144,7 +144,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($group2->is_member($user1));
 
         // create group-relationship
-        $group1->add_group($group2);
+        $group1->addGroup($group2);
 
         // verify state now:
         $this->assertEquals(array($user1), $group1->get_members());
