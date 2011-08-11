@@ -47,31 +47,31 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
         global $user, $group, $groupname1;
         $user->addGroup($groupname1);
         $this->assertEquals(array($group), $user->get_groups());
-        $this->assertTrue($user->in_group($groupname1));
+        $this->assertTrue($user->inGroup($groupname1));
     }
 
     public function testInGroup()
     {
         global $user, $group, $groupname1;
-        $this->assertFalse($user->in_group($groupname1));
+        $this->assertFalse($user->inGroup($groupname1));
         $user->addGroup($groupname1);
         $this->assertEquals(array($group), $user->get_groups());
-        $this->assertTrue($user->in_group($groupname1));
+        $this->assertTrue($user->inGroup($groupname1));
     }
 
     public function testRemoveGroup()
     {
         global $user, $group, $groupname1;
 
-        $this->assertFalse($user->in_group($groupname1));
+        $this->assertFalse($user->inGroup($groupname1));
         $this->assertEquals(array(), $user->get_groups());
 
         $user->addGroup($groupname1);
-        $this->assertTrue($user->in_group($groupname1));
+        $this->assertTrue($user->inGroup($groupname1));
         $this->assertEquals(array($group), $user->get_groups());
 
         $user->removeGroup($groupname1);
-        $this->assertFalse($user->in_group($groupname1));
+        $this->assertFalse($user->inGroup($groupname1));
         $this->assertEquals(array(), $user->get_groups());
     }
 

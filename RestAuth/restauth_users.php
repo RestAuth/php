@@ -585,7 +585,7 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public function in_group($group)
+    public function inGroup($group)
     {
         if (is_string($group)) {
             $group = new RestAuthGroup($this->conn, $group);
