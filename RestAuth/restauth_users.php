@@ -291,7 +291,7 @@ class RestAuthUser extends RestAuthResource
      */
     public function verifyPassword($password)
     {
-        $resp = $this->_post($this->name, array('password' => $password));
+        $resp = $this->postRequest($this->name, array('password' => $password));
         switch ($resp->getResponseCode()) {
         case 204:
             return true;
@@ -357,7 +357,7 @@ class RestAuthUser extends RestAuthResource
     public function getProperties()
     {
         $url = "$this->name/props/";
-        $resp = $this->_get($url);
+        $resp = $this->getRequest($url);
         
         switch ($resp->getResponseCode()) {
         case 200:
@@ -450,7 +450,7 @@ class RestAuthUser extends RestAuthResource
     {
         $url = "$this->name/props/";
         $params = array('prop' => $name, 'value' =>$value);
-        $resp = $this->_post($url, $params);
+        $resp = $this->postRequest($url, $params);
         switch ($resp->getResponseCode()) {
         case 201:
             return;
@@ -491,7 +491,7 @@ class RestAuthUser extends RestAuthResource
     public function getProperty($name)
     {
         $url = "$this->name/props/$name";
-        $resp = $this->_get($url);
+        $resp = $this->getRequest($url);
 
         switch ($resp->getResponseCode()) {
         case 200:

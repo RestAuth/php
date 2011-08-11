@@ -495,7 +495,7 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function _get($url, $params = array(), $headers = array())
+    protected function getRequest($url, $params = array(), $headers = array())
     {
         $url = static::PREFIX . $url;
         return $this->conn->get($url, $params, $headers);
@@ -530,7 +530,7 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function _post($url, $params = array(), $headers = array())
+    protected function postRequest($url, $params = array(), $headers = array())
     {
         $url = static::PREFIX . $url;
         return $this->conn->post($url, $params, $headers);

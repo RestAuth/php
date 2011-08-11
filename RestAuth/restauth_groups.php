@@ -211,7 +211,7 @@ class RestAuthGroup extends RestAuthResource
     {
         $params = array();
 
-        $resp = $this->_get($this->name . '/users/', $params);
+        $resp = $this->getRequest($this->name . '/users/', $params);
         switch ($resp->getResponseCode()) {
         case 200: 
             $users = array();
@@ -256,7 +256,7 @@ class RestAuthGroup extends RestAuthResource
             $params = array('user' => $user->name);
         }
 
-        $resp = $this->_post($this->name . '/users/', $params);
+        $resp = $this->postRequest($this->name . '/users/', $params);
         switch ($resp->getResponseCode()) {
         case 204:
             return;
@@ -294,7 +294,7 @@ class RestAuthGroup extends RestAuthResource
         }
 
         $url = $this->name . '/users/' . $username;
-        $resp = $this->_get($url);
+        $resp = $this->getRequest($url);
 
         switch ($resp->getResponseCode()) {
         case 204:
@@ -413,7 +413,7 @@ class RestAuthGroup extends RestAuthResource
 
         $params = array('group' => $groupname);
         
-        $resp = $this->_post($this->name . '/groups/', $params);
+        $resp = $this->postRequest($this->name . '/groups/', $params);
         switch ($resp->getResponseCode()) {
         case 204:
             return;
@@ -443,7 +443,7 @@ class RestAuthGroup extends RestAuthResource
      */
     public function getGroups()
     {
-        $resp = $this->_get($this->name . '/groups/');
+        $resp = $this->getRequest($this->name . '/groups/');
         switch ($resp->getResponseCode()) {
         case 200: 
             $users = array();
