@@ -11,7 +11,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
     {
         global $username1, $user, $password1, $conn;
 
-        $users = RestAuthUser::get_all($conn);
+        $users = RestAuthUser::getAll($conn);
         if (count($users)) {
             throw new Exception("Found " . count($users) . " left over users.");
         }
@@ -22,7 +22,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
     {
         global $conn;
 
-        $users = RestAuthUser::get_all($conn);
+        $users = RestAuthUser::getAll($conn);
         foreach ($users as $user) {
             $user->remove();
         }
@@ -67,7 +67,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());
             $this->assertEquals(array($user), 
-                RestAuthUser::get_all($conn));
+                RestAuthUser::getAll($conn));
         }
     }
 
@@ -113,7 +113,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());
             $this->assertEquals(array($user), 
-                RestAuthUser::get_all($conn));
+                RestAuthUser::getAll($conn));
         }
     }
 

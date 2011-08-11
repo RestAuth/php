@@ -17,11 +17,11 @@ class GroupTest extends PHPUnit_Framework_TestCase
         $pass = 'vowi';
         $conn = RestAuthConnection::get_connection($host, $user, $pass);
 
-        $users = RestAuthUser::get_all($conn);
+        $users = RestAuthUser::getAll($conn);
         if (count($users)) {
             throw new Exception("Found " . count($users) . " left over users.");
         }
-        $groups = RestAuthGroup::get_all($conn);
+        $groups = RestAuthGroup::getAll($conn);
         if (count($groups)) {
             throw new Exception("Found " . count($groups) . " left over users.");
         }
@@ -33,11 +33,11 @@ class GroupTest extends PHPUnit_Framework_TestCase
     {
         global $conn;
 
-        $users = RestAuthUser::get_all($conn);
+        $users = RestAuthUser::getAll($conn);
         foreach ($users as $user) {
             $user->remove();
         }
-        $groups = RestAuthGroup::get_all($conn);
+        $groups = RestAuthGroup::getAll($conn);
         foreach ($groups as $group) {
             $group->remove();
         }
@@ -49,7 +49,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
 
         $group1 = RestAuthGroup::create($conn, $groupname1);
         $this->assertEquals(array($group1), 
-            RestAuthGroup::get_all($conn));
+            RestAuthGroup::getAll($conn));
         $this->assertEquals($group1, 
             RestauthGroup::get($conn, $groupname1));
     }
@@ -64,7 +64,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $this->fail();
         } catch (RestAuthGroupExists $e) {
             $this->assertEquals(array($group1), 
-                RestAuthGroup::get_all($conn));
+                RestAuthGroup::getAll($conn));
         }    
     }
 
@@ -77,7 +77,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $this->fail();
         } catch (RestAuthPreconditionFailed $e) {
             $this->assertEquals(array(), 
-                RestAuthGroup::get_all($conn));
+                RestAuthGroup::getAll($conn));
         }
     }
 
@@ -91,7 +91,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
         $user3 = RestAuthUser::create($conn, $username3, "foobar");
 
         $this->assertEquals(array($group1, $group2),
-            RestAuthGroup::get_all($conn));
+            RestAuthGroup::getAll($conn));
 
         $group1->add_user($user1);
         $group2->add_user($user2);
@@ -136,7 +136,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("group", $e->getType());
             $this->assertEquals(array(), 
-                RestAuthGroup::get_all($conn));
+                RestAuthGroup::getAll($conn));
         }
     }
 
@@ -232,7 +232,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
         global $conn, $groupname1;
         $group = RestAuthGroup::create($conn, $groupname1);
         $group->remove();
-        $this->assertEquals(array(), RestAuthGroup::get_all($conn));
+        $this->assertEquals(array(), RestAuthGroup::getAll($conn));
     }
 
     public function testRemoveInvalidGroup()
@@ -279,7 +279,7 @@ class GroupTest extends PHPUnit_Framework_TestCase
 
         $conn = RestAuthConnection::get_connection();
         $this->assertEquals(array(), 
-            RestAuthGroup::get_all($conn, $username1));
+            RestAuthGroup::getAll($conn, $username1));
     }
 }
 

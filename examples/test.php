@@ -4,11 +4,11 @@ require_once('RestAuth/restauth.php');
 $conn = new RestAuthConnection('http://[::1]:8000', 'vowi', 'vowi');
 
 // verify initial state:
-$all_users = RestAuthUser::get_all($conn);
+$all_users = RestAuthUser::getAll($conn);
 if (count($all_users) != 0)
     die("Error: ".count($all_users)." left over users!");
 
-$all_groups = RestAuthGroup::get_all($conn);
+$all_groups = RestAuthGroup::getAll($conn);
 if (count($all_groups) != 0)
     die("Error: Left over groups!");
 
@@ -25,7 +25,7 @@ $user8 = RestAuthUser::create($conn, 'user8', 'password8');
 $user9 = RestAuthUser::create($conn, 'user9', 'password9');
 
 // ten users?
-$all_users = RestAuthUser::get_all($conn);
+$all_users = RestAuthUser::getAll($conn);
 if (count($all_users) != 10)
     die("Error: ".count($all_users)." users instead of 10!");
 
@@ -134,7 +134,7 @@ $group7 = RestAuthGroup::create($conn, 'group 7');
 $group8 = RestAuthGroup::create($conn, 'group 8');
 $group9 = RestAuthGroup::create($conn, 'group 9');
 
-$all_groups = RestAuthGroup::get_all($conn);
+$all_groups = RestAuthGroup::getAll($conn);
 if (count($all_groups) != 10)
     die("Error: Not 10 groups!");
 

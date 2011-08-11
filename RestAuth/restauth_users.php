@@ -184,7 +184,7 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public static function get_all($conn)
+    public static function getAll($conn)
     {
         $resp = $conn->get('/users/');
 
@@ -208,7 +208,7 @@ class RestAuthUser extends RestAuthResource
      * RestAuth. 
      *
      * <b>Note:</b> The constructor does not verify if the user exists, use
-     * {@link get} or {@link get_all} if you wan't to be sure it exists.
+     * {@link get} or {@link getAll} if you wan't to be sure it exists.
      *
      * @param RestAuthConnection $conn The connection to a RestAuth service.
      * @param string             $name The name of this user.
@@ -545,7 +545,7 @@ class RestAuthUser extends RestAuthResource
     /**
      * Get all groups that this user is a member of.
      *
-     * This method is just a shortcut for {@link RestAuthGroup::get_all()}.
+     * This method is just a shortcut for {@link RestAuthGroup::getAll()}.
      * 
      * @return array Array of {@link RestAuthGroup groups}.
      *
@@ -562,7 +562,7 @@ class RestAuthUser extends RestAuthResource
      */
     public function getGroups()
     {
-        return RestAuthGroup::get_all($this->conn, $this);
+        return RestAuthGroup::getAll($this->conn, $this);
     }
 
     /**

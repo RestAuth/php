@@ -151,7 +151,7 @@ class RestAuthGroup extends RestAuthResource
      *    returns HTTP status code 500
      * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
      */
-    public static function get_all($conn, $user=null)
+    public static function getAll($conn, $user=null)
     {
         $params = array();
         if ($user) {

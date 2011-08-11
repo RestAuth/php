@@ -34,7 +34,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         global $conn;
 
-        $users = RestAuthUser::get_all($conn);
+        $users = RestAuthUser::getAll($conn);
         if (count($users)) {
             throw new Exception("Found " . count($users) . " left over users.");
         }
@@ -43,7 +43,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         global $conn;
 
-        $users = RestAuthUser::get_all($conn);
+        $users = RestAuthUser::getAll($conn);
         foreach ($users as $user) {
             $user->remove();
         }
@@ -55,7 +55,7 @@ class UserTest extends PHPUnit_Framework_TestCase
 
         $user = RestAuthUser::create($conn, $username1, $password1);
 
-        $this->assertEquals(array($user), RestAuthUser::get_all($conn));
+        $this->assertEquals(array($user), RestAuthUser::getAll($conn));
         $this->assertEquals($user, RestAuthUser::get($conn, $username1));
     }
 
@@ -64,7 +64,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         global $conn, $username1, $username2, $username3, $password1;
 
         $user = RestAuthUser::create($conn, $username1);
-        $this->assertEquals(array($user), RestAuthUser::get_all($conn));
+        $this->assertEquals(array($user), RestAuthUser::getAll($conn));
         $this->assertEquals($user, RestAuthUser::get($conn, $username1));
 
         $this->assertFalse($user->verifyPassword($password1));
@@ -94,7 +94,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             RestAuthUser::create($conn, "foo/bar", "don't care");
             $this->fail();
         } catch (RestAuthPreconditionFailed $e) {
-            $this->assertEquals(array(), RestAuthUser::get_all($conn));
+            $this->assertEquals(array(), RestAuthUser::getAll($conn));
         }
     }
     public function testCreateUserTwice()
@@ -179,7 +179,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());
-            $this->assertEquals(array(), RestAuthUser::get_all($conn));
+            $this->assertEquals(array(), RestAuthUser::getAll($conn));
         }
     }
 
@@ -215,7 +215,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         $user = RestAuthUser::create($conn, $username1, $password1);
     
         $user->remove();
-        $this->assertEquals(array(), RestAuthUser::get_all($conn));
+        $this->assertEquals(array(), RestAuthUser::getAll($conn));
         try {
             RestAuthUser::get($conn, $username1);
             $this->fail();

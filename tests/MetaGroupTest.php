@@ -18,11 +18,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $pass = 'vowi';
         $conn = new RestAuthConnection($host, $user, $pass);
 
-        $users = RestAuthUser::get_all($conn);
+        $users = RestAuthUser::getAll($conn);
         if (count($users)) {
             throw new Exception("Found " . count($users) . " left over users.");
         }
-        $groups = RestAuthGroup::get_all($conn);
+        $groups = RestAuthGroup::getAll($conn);
         if (count($groups)) {
             throw new Exception("Found " . count($groups) . " left over users.");
         }
@@ -42,11 +42,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
     {
         global $conn;
 
-        $users = RestAuthUser::get_all($conn);
+        $users = RestAuthUser::getAll($conn);
         foreach ($users as $user) {
             $user->remove();
         }
-        $groups = RestAuthGroup::get_all($conn);
+        $groups = RestAuthGroup::getAll($conn);
         foreach ($groups as $group) {
             $group->remove();
         }
