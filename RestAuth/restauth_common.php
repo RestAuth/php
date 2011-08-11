@@ -497,8 +497,7 @@ abstract class RestAuthResource
      */
     protected function getRequest($url, $params = array(), $headers = array())
     {
-        $url = static::PREFIX . $url;
-        return $this->conn->get($url, $params, $headers);
+        return $this->conn->get(static::PREFIX . $url, $params, $headers);
     }
 
     /**
@@ -532,8 +531,7 @@ abstract class RestAuthResource
      */
     protected function postRequest($url, $params = array(), $headers = array())
     {
-        $url = static::PREFIX . $url;
-        return $this->conn->post($url, $params, $headers);
+        return $this->conn->post(static::PREFIX . $url, $params, $headers);
     }
 
     /**
@@ -567,8 +565,7 @@ abstract class RestAuthResource
      */
     protected function putRequest($url, $params = array(), $headers = array())
     {
-        $url = static::PREFIX . $url;
-        return $this->conn->put($url, $params, $headers);
+        return $this->conn->put(static::PREFIX . $url, $params, $headers);
     }
 
     /**
