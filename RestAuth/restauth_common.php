@@ -295,7 +295,7 @@ class RestAuthConnection
      */
     public function get($url, $params = array(), $headers = array())
     {
-        $url = $this->host . $this->sanitizeUrl($url);
+        $url = $this->host . $this->sanitizePath($url);
         $options = array('headers' => $headers);
         $request = new HttpRequest($url, HTTP_METH_GET, $options);
         $request->setQueryData($params);
@@ -333,7 +333,7 @@ class RestAuthConnection
     {
         $headers['Content-Type'] = $this->handler->get_mime_type();
 
-        $url = $this->host . $this->sanitizeUrl($url);
+        $url = $this->host . $this->sanitizePath($url);
         $options = array('headers' => $headers);
 
         $request = new HttpRequest($url, HTTP_METH_POST, $options);
@@ -382,7 +382,7 @@ class RestAuthConnection
     {
         $headers['Content-Type'] = 'application/json';
         
-        $url = $this->host . $this->sanitizeUrl($url);
+        $url = $this->host . $this->sanitizePath($url);
         $options = array('headers' => $headers);
 
         $request = new HttpRequest($url, HTTP_METH_PUT, $options);
@@ -423,7 +423,7 @@ class RestAuthConnection
      */
     public function delete($url, $headers = array())
     {
-        $url = $this->host . $this->sanitizeUrl($url);
+        $url = $this->host . $this->sanitizePath($url);
         $options = array('headers' => $headers);
         $request = new HttpRequest($url, HTTP_METH_DELETE, $options);
         return $this->send($request);
@@ -433,26 +433,25 @@ class RestAuthConnection
      * Sanitize the path segment of an URL. Makes sure it ends with a slash,
      * contains no double slashes and performs character escaping.
      *
-     * @param string $url The path segment of an URL. Please note that this
+     * @param string $path The path segment of an URL. Please note that this
      *     should not contain the query part ("?...") or the domain.
      *     
      * @return string The sanitized path segmet of an URL
-     * @todo rename to sanitize_path
      */
-    public function sanitizeUrl($url)
+    protected function sanitizePath($path)
     {
-        if (substr($url, -1) !== '/') {
-            $url .= '/';
+        if (substr($path, -1) !== '/') {
+            $path .= '/';
         }
 
         $parts = array();
-        foreach (explode('/', $url) as $part) {
+        foreach (explode('/', $path) as $part) {
             $part = rawurlencode($part);
             $parts[] = $part;
         }
-        $url = implode('/', $parts);
+        $path = implode('/', $parts);
 
-        return $url;
+        return $path;
     }
 
 }
