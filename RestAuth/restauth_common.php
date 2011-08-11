@@ -169,7 +169,7 @@ class RestAuthConnection
     public function __construct($host, $user, $password)
     {
         $this->host = rtrim($host, '/');
-        $this->set_credentials($user, $password);
+        $this->setCredentials($user, $password);
         $this->handler = new RestAuthJsonHandler();
 
         self::$connection = $this;
@@ -207,7 +207,7 @@ class RestAuthConnection
      *
      * @return null
      */
-    public function set_credentials($user, $password)
+    public function setCredentials($user, $password)
     {
         $this->auth_header = base64_encode($user . ':' . $password);
     }
