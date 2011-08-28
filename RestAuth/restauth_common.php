@@ -194,7 +194,7 @@ class RestAuthConnection
     public static function getConnection($host='', $user='', $password='')
     {
         if (!isset(self::$connection)) {
-            self::$connection = new RestAuthConnection($host, $user, $password);
+            return new RestAuthConnection($host, $user, $password);
         }
         return self::$connection;
     }
