@@ -86,6 +86,7 @@ class RestAuthUser extends RestAuthResource
      * @param string             $name     The name of this user.
      * @param string             $password The password for the new user. If
      *    ommitted or an empty string, the account is created but disabled.
+     * @param array              $props    Initial properties of the new user.
      *
      * @return RestAuthUser An instance representing a new user.
      *
@@ -105,12 +106,16 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthUnknownStatus} If the response status is
      *    unknown.
      */
-    public static function create($conn, $name, $password=null)
+    public static function create($conn, $name, $password=null, $props=null)
     {
         $params = array('user' => $name);
         if (!((is_null($password)) || ($password === ''))) {
             $params['password'] = $password;
         }
+        if (!((is_null($props)) || (empty($props)))) {
+            $params['properties'] = $props;
+        }
+        
         $resp = $conn->post('/users/', $params);
         switch ($resp->getResponseCode()) {
         case 201:

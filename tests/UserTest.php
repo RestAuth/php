@@ -85,6 +85,30 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($user->verifyPassword(''));
         $this->assertFalse($user->verifyPassword(null));
     }
+    
+    public function testCreateUserWithProperties() {
+        global $username1, $username2, $username3, $username4, $propKey, $propVal;
+        
+        $user = RestAuthUser::create($this->conn, $username1, null, null);
+        $this->assertEquals(array(), $user->getProperties());
+        
+        $user = RestAuthUser::create($this->conn, $username2, null, array());
+        $this->assertEquals(array(), $user->getProperties());
+        
+        $initProps = array( $propKey => $propVal );
+        $user = RestAuthUser::create($this->conn, $username3, null, $initProps);
+        $this->assertEquals($initProps, $user->getProperties());
+        $this->assertEquals($propVal, $user->getProperty($propKey));
+        
+        $initProps['foo'] = 'bar';
+        ksort( $initProps );
+        $user = RestAuthUser::create($this->conn, $username4, null, $initProps);
+        $all_props = $user->getProperties();
+        ksort($all_props);
+        $this->assertEquals($initProps, $all_props);
+        $this->assertEquals($propVal, $user->getProperty($propKey));
+        $this->assertEquals('bar', $user->getProperty('foo'));
+    }
 
     public function testCreateInvalidUser()
     {
