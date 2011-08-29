@@ -68,6 +68,15 @@ abstract class ContentHandler
     abstract function unmarshalDict($obj);
     
     /**
+     * Marshal an array into a dictionary.
+     *
+     * @param array $arr The array to serialize.
+     * 
+     * @return str The serialized array.
+     */
+    abstract function marshalDict($obj);
+    
+    /**
      * Get the mimetype that this class handles.
      *
      * @return str The MIME type handled by this class.
@@ -123,6 +132,17 @@ class RestAuthJsonHandler extends ContentHandler
     public function unmarshalDict($obj)
     {
         return (array) json_decode($obj);
+    }
+    
+    /**
+     * Marshal an array into a dictionary.
+     *
+     * @param array $arr The array to serialize.
+     * 
+     * @return str The serialized array.
+     */
+    public function marshalDict($arr) {
+        return json_encode($arr, JSON_FORCE_OBJECT);
     }
     
     /**
@@ -359,7 +379,7 @@ class RestAuthConnection
         $options = array('headers' => $headers);
 
         $request = new HttpRequest($url, HTTP_METH_POST, $options);
-        $request->setRawPostData(json_encode($params, JSON_FORCE_OBJECT));
+        $request->setRawPostData($this->handler->marshalDict($params));
 
         $response = $this->send($request);
 
@@ -408,7 +428,7 @@ class RestAuthConnection
         $options = array('headers' => $headers);
 
         $request = new HttpRequest($url, HTTP_METH_PUT, $options);
-        $request->setPutData(json_encode($params, JSON_FORCE_OBJECT));
+        $request->setPutData($this->handler->marshalDict($params));
         $response = $this->send($request);
 
         switch ($response->getResponseCode()) {
