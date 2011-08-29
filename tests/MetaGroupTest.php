@@ -6,6 +6,11 @@ require_once 'RestAuth/restauth.php';
 
 class MetaGroupTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * Set up the data for the tests.
+     *
+     * @return null
+     */
     public function setUp()
     {
         global $username1, $username2, $username3, $username4;
@@ -40,6 +45,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $group4 = RestAuthGroup::create($this->conn, $groupname4);
     }
 
+    /**
+     * Remove any data created by the tests.
+     *
+     * @return null
+     */
     public function tearDown()
     {
         $users = RestAuthUser::getAll($this->conn);

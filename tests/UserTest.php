@@ -1,4 +1,31 @@
 <?php
+/**
+ * This file does some basic user tests.
+ *
+ * PHP version 5.1
+ *
+ * LICENSE: php-restauth is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * php-restauth is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with php-restauth.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category   Testing
+ * @package    RestAuth
+ * @subpackage Testing
+ * @author     Mathias Ertl <mati@restauth.net>
+ * @copyright  2010-2011 Mathias Ertl
+ * @license    http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version    0.0
+ * @link       https://php.restauth.net
+ */
 
 require_once 'PHPUnit/Framework.php';
 require_once 'RestAuth/restauth.php';
@@ -27,8 +54,25 @@ $groupname5 = "group ӁӜӚ"; // cyrillic
 $propKey = "property 漢字"; // traditional chinese
 $propVal = "value 汉字"; // simplified chinese
 
+/**
+ * Basic user handling tests.
+ * 
+ * @category   Testing
+ * @package    RestAuth
+ * @subpackage Testing
+ * @author     Mathias Ertl <mati@restauth.net>
+ * @copyright  2010-2011 Mathias Ertl
+ * @license    http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version    Release: @package_version@
+ * @link       https://php.restauth.net
+ */
 class UserTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * Set up the data for the tests.
+     *
+     * @return null
+     */
     public function setUp()
     {
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
@@ -41,6 +85,12 @@ class UserTest extends PHPUnit_Framework_TestCase
             throw new Exception("Found " . count($users) . " left over users.");
         }
     }
+    
+    /**
+     * Remove any data created by the tests.
+     *
+     * @return null
+     */
     public function tearDown()
     {
         $users = RestAuthUser::getAll($this->conn);
@@ -49,6 +99,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try creating a user.
+     *
+     * @return null
+     */
     public function testCreateUser()
     {
         global $username1, $password1;
@@ -59,6 +114,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($user, RestAuthUser::get($this->conn, $username1));
     }
 
+    /**
+     * Try creating a user with no password.
+     *
+     * @return null
+     */
     public function testCreateUserNoPassword()
     {
         global $username1, $username2, $username3, $password1;
@@ -86,7 +146,13 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($user->verifyPassword(null));
     }
     
-    public function testCreateUserWithProperties() {
+    /**
+     * Try creating a user with initial properties.
+     *
+     * @return null
+     */
+    public function testCreateUserWithProperties()
+    {
         global $username1, $username2, $username3, $username4, $propKey, $propVal;
         
         $user = RestAuthUser::create($this->conn, $username1, null, null);
@@ -101,7 +167,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($propVal, $user->getProperty($propKey));
         
         $initProps['foo'] = 'bar';
-        ksort( $initProps );
+        ksort($initProps);
         $user = RestAuthUser::create($this->conn, $username4, null, $initProps);
         $all_props = $user->getProperties();
         ksort($all_props);
@@ -110,6 +176,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $user->getProperty('foo'));
     }
 
+    /**
+     * Try creating a user with an invalid entity name (containing a slash).
+     *
+     * @return null
+     */
     public function testCreateInvalidUser()
     {
         global $username1, $password1;
@@ -121,6 +192,12 @@ class UserTest extends PHPUnit_Framework_TestCase
             $this->assertEquals(array(), RestAuthUser::getAll($this->conn));
         }
     }
+    
+    /**
+     * Try creating a user twice.
+     *
+     * @return null
+     */
     public function testCreateUserTwice()
     {
         global $username1, $password1;
@@ -137,6 +214,12 @@ class UserTest extends PHPUnit_Framework_TestCase
             $this->assertFalse($user->verifyPassword($new_pass));
         }
     }
+    
+    /**
+     * Try verifying the password.
+     *
+     * @return null
+     */
     public function testVerifyPassword()
     {
         global $username1, $password1;
@@ -146,6 +229,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($user->verifyPassword("something else"));
     }
 
+    /**
+     * Try verifying the password of a non-existing user.
+     *
+     * @return null
+     */
     public function testVerifyPasswordInvalidUser()
     {
         global $username1, $password1;
@@ -155,6 +243,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($user->verifyPassword("foobar"));
     }
 
+    /**
+     * Try setting a new password.
+     *
+     * @return null
+     */
     public function testSetPassword()
     {
         global $username1, $password1;
@@ -171,6 +264,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($user->verifyPassword($new_pass));
     }
 
+    /**
+     * Try disabling a password.
+     *
+     * @return null
+     */
     public function testDisablePassword()
     {
         global $username1, $password1;
@@ -193,6 +291,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($user->verifyPassword(null));
     }
 
+    /**
+     * Try setting the password of a non-existing user.
+     *
+     * @return null
+     */
     public function testSetPasswordInvalidUser()
     {
         global $username1, $password1;
@@ -207,6 +310,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try setting a password that is too short.
+     *
+     * @return null
+     */
     public function testSetTooShortPasswort()
     {
         global $username1, $password1;
@@ -221,6 +329,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try getting a non-existing user.
+     *
+     * @return null
+     */
     public function testGetInvalidUser()
     {
         global $username1, $password1;
@@ -233,6 +346,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try removing a user.
+     *
+     * @return null
+     */
     public function testRemoveUser()
     {
         global $username1, $password1;
@@ -248,6 +366,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try removing a non-existing user.
+     *
+     * @return null
+     */
     public function testRemoveInvalidUser()
     {
         global $username1, $password1;
@@ -262,6 +385,11 @@ class UserTest extends PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * Testing users for equality.
+     *
+     * @return null
+     */
     public function testEqualUsers()
     {
         global $username1;
@@ -272,6 +400,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, RestAuthUser::cmp($user2, $user1));
     }
     
+    /**
+     * Testing users for unequality.
+     *
+     * @return null
+     */
     public function testUnequalUsers()
     {
         $user1 = new RestAuthUser($this->conn, 'abc');

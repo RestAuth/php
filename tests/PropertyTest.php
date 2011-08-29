@@ -7,6 +7,11 @@ require_once 'RestAuth/restauth.php';
 
 class PropertyTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * Set up the data for the tests.
+     *
+     * @return null
+     */
     public function setUp()
     {
         global $username1, $user, $password1;
@@ -23,6 +28,12 @@ class PropertyTest extends PHPUnit_Framework_TestCase
 
         $user = RestAuthUser::create($this->conn, $username1, $password1);
     }
+    
+    /**
+     * Remove any data created by the tests.
+     *
+     * @return null
+     */
     public function tearDown()
     {
         $users = RestAuthUser::getAll($this->conn);
