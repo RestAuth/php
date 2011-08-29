@@ -19,6 +19,10 @@ class FakeContentHandler extends ContentHandler
     {
         return array("wrong key" => "wrong value");
     }
+    
+    public function marshalDict($obj) {
+        return '';
+    }
 
     public function getMimeType()
     {
