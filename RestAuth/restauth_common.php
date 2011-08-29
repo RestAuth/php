@@ -162,17 +162,31 @@ class RestAuthConnection
      * an unavailable service will only trigger an error when actually doing a
      * request.
      *
-     * @param string $host     The hostname of the RestAuth service
-     * @param string $user     The username to use for authenticating with the
+     * @param string $host      The hostname of the RestAuth service
+     * @param string $user      The username to use for authenticating with the
      *     RestAuth service.
-     * @param string $password The password to use for authenticating with the
+     * @param string $password  The password to use for authenticating with the
      *     RestAuth service.
+     * @param array $sslOptions Any SSL options to use, please see SSL options
+     *     chapter in the {@link
+     *     http://www.php.net/manual/en/http.request.options.php HttpRequest
+     *     options chapter} for available options. This array is merged with the
+     *     default array, which sets 'verifypeer' and 'verifyhost' to true.
      */
-    public function __construct($host, $user, $password)
+    public function __construct($host, $user, $password, $sslOptions=array() )
     {
         $this->host = rtrim($host, '/');
         $this->setCredentials($user, $password);
         $this->handler = new RestAuthJsonHandler();
+        
+        $this->parsedUrl = parse_url($host);
+        $this->sslOptions = array_merge(
+            array(
+                'verifypeer' => true,
+                'verifyhost' => true,
+            ),
+            $sslOptions
+        );
 
         self::$connection = $this;
     }
@@ -248,6 +262,10 @@ class RestAuthConnection
                 'Authorization' => 'Basic ' . $this->auth_header,
             )
         );
+        
+        if ($this->parsedUrl['scheme'] === 'https') {
+            $request->addSslOptions($this->sslOptions);
+        }
 
         try {
             $response = $request->send();
