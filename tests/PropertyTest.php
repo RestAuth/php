@@ -1,10 +1,49 @@
 <?php
+/**
+ * This file does some user property tests.
+ *
+ * PHP version 5.1
+ *
+ * LICENSE: php-restauth is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * php-restauth is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with php-restauth.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category   Testing
+ * @package    RestAuth
+ * @subpackage Testing
+ * @author     Mathias Ertl <mati@restauth.net>
+ * @copyright  2010-2011 Mathias Ertl
+ * @license    http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version    0.0
+ * @link       https://php.restauth.net
+ */
 
 require_once 'PHPUnit/Framework.php';
 require_once 'RestAuth/restauth.php';
 
 // variables are defined in UserTest.php
 
+/**
+ * Do some user property tests.
+ *
+ * @category   Testing
+ * @package    RestAuth
+ * @subpackage Testing
+ * @author     Mathias Ertl <mati@restauth.net>
+ * @copyright  2010-2011 Mathias Ertl
+ * @license    http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version    Release: @package_version@
+ * @link       https://php.restauth.net
+ */
 class PropertyTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -42,6 +81,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try creating a property.
+     *
+     * @return null
+     */
     public function testCreateProperty()
     {
         global $user, $propKey, $propVal;
@@ -53,6 +97,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($propVal, $user->getProperty($propKey));
     }
 
+    /**
+     * Try creating a property twice.
+     *
+     * @return null
+     */
     public function testCreatePropertyTwice()
     {
         global $user, $propKey, $propVal;
@@ -69,6 +118,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try creating a property of an invalid user.
+     *
+     * @return null
+     */
     public function testCreatePropertyWithInvalidUser()
     {
         global $user, $propKey, $propVal;
@@ -86,6 +140,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try setting a property.
+     *
+     * @return null
+     */
     public function testSetProperty()
     {
         global $user, $propKey, $propVal;
@@ -97,6 +156,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($propVal, $user->getProperty($propKey));
     }
 
+    /**
+     * Try setting a property twice.
+     *
+     * @return null
+     */
     public function testSetPropertyTwice()
     {
         global $user, $propKey, $propVal;
@@ -113,6 +177,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($newVal, $user->getProperty($propKey));
     }
 
+    /**
+     * Try setting a property for an invalid user.
+     *
+     * @return null
+     */
     public function testSetPropertyWithInvalidUser()
     {
         global $user, $propKey, $propVal;
@@ -128,6 +197,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try removing a property.
+     *
+     * @return null
+     */
     public function testRemoveProperty()
     {
         global $user, $propKey, $propVal;
@@ -142,6 +216,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $user->getProperties());
     }
 
+    /**
+     * TRy removing a non-existing property.
+     *
+     * @return null
+     */
     public function testRemoveInvalidProperty()
     {
         global $user, $propKey, $propVal;
@@ -161,6 +240,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try removing a property of a non-existing user.
+     *
+     * @return null
+     */
     public function testRemovePropertyWithInvalidUser()
     {
         global $user, $propKey, $propVal;
@@ -181,6 +265,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try getting a non-existing property.
+     *
+     * @return null
+     */
     public function testGetInvalidProperty()
     {
         global $user, $propKey, $propVal;
@@ -193,6 +282,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try getting a property from a non-existing user.
+     *
+     * @return null
+     */
     public function testGetPropertyInvalidUser()
     {
         global $user, $propKey, $propVal;
@@ -207,6 +301,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try getting all properties from a non-existing user.
+     *
+     * @return null
+     */
     public function testGetPropertiesInvalidUser()
     {
         global $user, $propKey, $propVal;

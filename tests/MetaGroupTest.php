@@ -1,9 +1,49 @@
 <?php
+/**
+ * This file does some metagroup tests.
+ *
+ * PHP version 5.1
+ *
+ * LICENSE: php-restauth is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * php-restauth is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with php-restauth.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @category   Testing
+ * @package    RestAuth
+ * @subpackage Testing
+ * @author     Mathias Ertl <mati@restauth.net>
+ * @copyright  2010-2011 Mathias Ertl
+ * @license    http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version    0.0
+ * @link       https://php.restauth.net
+ */
+
 
 require_once 'RestAuth/restauth.php';
 
 // variables are defined in UserTest.php
 
+/**
+ * Do some metagroup tests.
+ *
+ * @category   Testing
+ * @package    RestAuth
+ * @subpackage Testing
+ * @author     Mathias Ertl <mati@restauth.net>
+ * @copyright  2010-2011 Mathias Ertl
+ * @license    http://www.gnu.org/licenses/lgpl.html  GNU LESSER GENERAL PUBLIC LICENSE
+ * @version    Release: @package_version@
+ * @link       https://php.restauth.net
+ */
 class MetaGroupTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -62,6 +102,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Test some simple inheritance.
+     *
+     * @return null
+     */
     public function testSimpleInheritance()
     {
         global $group1, $group2, $group3, $group4;
@@ -108,6 +153,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $group2->getGroups());
     }
 
+    /**
+     * Try adding a non-existing group to a group.
+     *
+     * @return null
+     */
     public function testAddInvalidGroup()
     {
         global $group1, $groupname5;
@@ -121,6 +171,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try adding a group to a non-existing group.
+     *
+     * @return null
+     */
     public function testAddGroupToInvalidGroup()
     {
         global $group1, $groupname5;
@@ -134,6 +189,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try removing a group from a group.
+     *
+     * @return null
+     */
     public function testRemoveGroup()
     {
         global $group1, $group2, $user1, $user2;
@@ -173,6 +233,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($group2->isMember($user1));
     }
 
+    /**
+     * Try removing a group that is not a subgroup.
+     *
+     * @return null
+     */
     public function testRemoveGroupNotMember()
     {
         global $group1, $group2;
@@ -185,6 +250,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try removing an invalid subgroup.
+     *
+     * @return null
+     */
     public function testRemoveInvalidGroup()
     {
         global $group1, $groupname5;
@@ -197,6 +267,11 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try getting subgroups of a non-existing group.
+     *
+     * @return null
+     */
     public function testGetGroupsInvalidGroup()
     {
         global $groupname5;
