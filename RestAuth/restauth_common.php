@@ -74,7 +74,7 @@ abstract class ContentHandler
      * 
      * @return str The serialized array.
      */
-    abstract function marshalDict($obj);
+    abstract function marshalDict($arr);
     
     /**
      * Get the mimetype that this class handles.
@@ -141,7 +141,8 @@ class RestAuthJsonHandler extends ContentHandler
      * 
      * @return str The serialized array.
      */
-    public function marshalDict($arr) {
+    public function marshalDict($arr)
+    {
         return json_encode($arr, JSON_FORCE_OBJECT);
     }
     
@@ -182,12 +183,12 @@ class RestAuthConnection
      * an unavailable service will only trigger an error when actually doing a
      * request.
      *
-     * @param string $host      The hostname of the RestAuth service
-     * @param string $user      The username to use for authenticating with the
+     * @param string $host       The hostname of the RestAuth service
+     * @param string $user       The username to use for authenticating with the
      *     RestAuth service.
-     * @param string $password  The password to use for authenticating with the
+     * @param string $password   The password to use for authenticating with the
      *     RestAuth service.
-     * @param array $sslOptions Any SSL options to use, please see SSL options
+     * @param array  $sslOptions Any SSL options to use, please see SSL options
      *     chapter in the {@link
      *     http://www.php.net/manual/en/http.request.options.php HttpRequest
      *     options chapter} for available options. This array is merged with the
