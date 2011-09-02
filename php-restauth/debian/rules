@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 DEB_UPSTREAM=$(shell dpkg-parsechangelog -ldebian/changelog | grep '^Source:' | sed  -e 's/[^ ]* //' -e 's/[^:]://')
-GIT_URL=git://git.fsinf.at/restauth/php.git
+GIT_URL=https://git.fsinf.at/restauth/php.git
 DH_ARGS = --with quilt
 
 prepare: cleanup
