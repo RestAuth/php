@@ -41,15 +41,15 @@ first version
    <file baseinstalldir="RestAuth" name="tests/PropertyTest.php" role="test" />
    <file baseinstalldir="RestAuth" name="tests/SimpleUserGroupTest.php" role="test" />
    <file baseinstalldir="RestAuth" name="tests/UserTest.php" role="test" />
-   <file baseinstalldir="RestAuth" name="tutorials/php-restauth/contribute.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/php-restauth/errors.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/php-restauth/guide.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/php-restauth/guide.pkg.ini" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/php-restauth/installation-on-debian-ubuntu.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/php-restauth/installation.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/php-restauth/installation.pkg.ini" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/php-restauth/php-restauth.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/php-restauth/php-restauth.pkg.ini" role="doc" />
+   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/contribute.pkg" role="doc" />
+   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/errors.pkg" role="doc" />
+   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/guide.pkg" role="doc" />
+   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/guide.pkg.ini" role="doc" />
+   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/installation-on-debian-ubuntu.pkg" role="doc" />
+   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/installation.pkg" role="doc" />
+   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/installation.pkg.ini" role="doc" />
+   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/RestAuth.pkg" role="doc" />
+   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/RestAuth.pkg.ini" role="doc" />
    <file baseinstalldir="RestAuth" name="AUTHORS" role="data" />
    <file baseinstalldir="RestAuth" name="COPYING" role="data" />
    <file baseinstalldir="RestAuth" name="COPYRIGHT" role="data" />
