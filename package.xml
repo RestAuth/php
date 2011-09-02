@@ -42,9 +42,7 @@ first version
    <file baseinstalldir="RestAuth" name="tests/SimpleUserGroupTest.php" role="test" />
    <file baseinstalldir="RestAuth" name="tests/UserTest.php" role="test" />
    <file baseinstalldir="RestAuth" name="tutorials/RestAuth/contribute.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/errors.pkg" role="doc" />
    <file baseinstalldir="RestAuth" name="tutorials/RestAuth/guide.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/guide.pkg.ini" role="doc" />
    <file baseinstalldir="RestAuth" name="tutorials/RestAuth/installation-on-debian-ubuntu.pkg" role="doc" />
    <file baseinstalldir="RestAuth" name="tutorials/RestAuth/installation.pkg" role="doc" />
    <file baseinstalldir="RestAuth" name="tutorials/RestAuth/installation.pkg.ini" role="doc" />
