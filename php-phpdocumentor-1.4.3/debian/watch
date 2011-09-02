@@ -1,0 +1,2 @@
+version=3
+http://pear.php.net/package/PhpDocumentor/download http://download.pear.php.net/package/PhpDocumentor-([\d.]+)\.tgz

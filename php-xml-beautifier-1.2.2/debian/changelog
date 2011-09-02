@@ -1,0 +1,5 @@
+php-xml-beautifier (1.2.2-1) wheezy; urgency=low
+
+  * Initial Release (Closes: #<ITP bug number>).
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Wed, 29 Jun 2011 17:12:49 +0200

@@ -1,0 +1,19 @@
+This package was debianized by Mathias Ertl <apt-repository@fsinf.at> using dh-make-pear
+on Wed, 29 Jun 2011 17:12:49 +0200.
+
+It was downloaded from http://pear.php.net/package/XML_Beautifier
+
+Upstream Author(s):
+
+    Stephan Schmidt, Chuck Burgess
+
+Copyright:
+
+    Copyright (C) 2010 Stephan Schmidt, Chuck Burgess
+
+License:
+
+    BSD License
+
+The Debian packaging is copyright 2009, Mathias Ertl <apt-repository@fsinf.at> and
+is licensed under the GPL, see `/usr/share/common-licenses/GPL'.

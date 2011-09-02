@@ -1,0 +1,23 @@
+#!/usr/bin/make -f
+# template debian/rules provided by dh-make-php.
+
+DEB_COMPRESS_EXCLUDE=package.xml
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/pear.mk
+
+ORIG_SRC=php-xml-beautifier_1.2.2.orig.tar.gz
+
+
+get-orig-source: ../${ORIG_SRC}
+../${ORIG_SRC}:
+	dh_testdir
+	wget http://download.pear.php.net/package/XML_Beautifier-1.2.2.tgz -O ../${ORIG_SRC}
+
+prepare: cleanup get-orig-source
+	dh_testdir
+	tar xzf ../${ORIG_SRC}
+
+cleanup: clean
+	dh_testdir
+	ls -A | grep --invert-match "^debian" | xargs rm -rf
