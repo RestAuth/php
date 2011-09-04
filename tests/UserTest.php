@@ -215,6 +215,38 @@ class UserTest extends PHPUnit_Framework_TestCase
         }
     }
     
+    public function testCreateUserTest()
+    {
+        global $username1, $password1, $propKey, $propVal;
+        
+        $this->assertTrue(RestAuthUser::createTest($this->conn, $username1));
+        $this->assertTrue(RestAuthUser::createTest(
+            $this->conn, $username1, $password1));
+        $this->assertTrue(RestAuthUser::createTest(
+            $this->conn, $username1, null, array($propKey, $propVal)));
+        $this->assertTrue(RestAuthUser::createTest(
+            $this->conn, $username1, $password1, array($propKey, $propVal)));
+    }
+    
+    public function testCreateInvalidUserTest()
+    {
+        global $username1, $password1;
+        
+        // username too short:
+        $this->assertFalse(RestAuthUser::createTest($this->conn, 'a'));
+        // username invalid:
+        $this->assertFalse(RestAuthUser::createTest($this->conn, 'user:name'));
+        // password too short
+        $this->assertFalse(RestAuthUser::createTest(
+            $this->conn, $username1, 'a'));
+        
+        // existing user:
+        $user = RestAuthUser::create($this->conn, $username1, $password1);
+        $this->assertFalse(RestAuthUser::createTest(
+            $this->conn, $username1, "new password"));
+        $this->assertTrue($user->verifyPassword($password1));
+    }
+    
     /**
      * Try verifying the password.
      *

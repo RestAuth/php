@@ -136,6 +136,26 @@ class GroupTest extends PHPUnit_Framework_TestCase
             $this->assertEquals(array(), RestAuthGroup::getAll($this->conn));
         }
     }
+    
+    public function testCreateGroupTest()
+    {
+        global $groupname1;
+        $this->assertTrue(RestAuthGroup::createTest($this->conn, $groupname1));
+        $this->assertEquals(array(), RestAuthGroup::getAll($this->conn));
+    }
+    
+    public function testCreateExistingGroupTest()
+    {
+        global $groupname1;
+        RestAuthGroup::create($this->conn, $groupname1);
+        
+        $this->assertFalse(RestAuthGroup::createTest($this->conn, $groupname1));
+    }
+    
+    public function testCreateInvalidGroupTest()
+    {
+        $this->assertFalse(RestAuthGroup::createTest($this->conn, "foo:bar"));
+    }
 
     /**
      * Add a user to a group.

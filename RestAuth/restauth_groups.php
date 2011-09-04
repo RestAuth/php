@@ -100,6 +100,39 @@ class RestAuthGroup extends RestAuthResource
         }
         // @codeCoverageIgnoreEnd
     }
+    
+    /**
+     * Test if creating a group with the current parameters would succeed or
+     * not.
+     * Note that doing this request never guarantees that an actual request
+     * works in the future, it can only assure that it would succeed right now.
+     *
+     * This method returns false on all error cases, i.e. even if the RestAuth
+     * server is not available.
+     *
+     * @param RestAuthConnection $conn A connection to a RestAuth service.
+     * @param string             $name The name of the new group.
+     *
+     * @return true if the request would succeed, false otherwise.
+     */
+    public static function createTest($conn, $name)
+    {
+        try {
+            $resp = $conn->post('/test/groups/', array('group' => $name));
+            // @codeCoverageIgnoreStart
+        } catch (Exception $e) {
+            return false;
+            // @codeCoverageIgnoreEnd
+        }
+        
+        switch ($resp->getResponseCode()) {
+        case 201:
+            return true;
+        default:
+            return false;
+        }
+    }
+    
 
     /**
      * Factory method that creates a {@link RestAuthGroup} and verifies that it

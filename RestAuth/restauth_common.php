@@ -285,8 +285,10 @@ class RestAuthConnection
         );
         
         if ($this->parsedUrl['scheme'] === 'https') {
+            // @codeCoverageIgnoreStart
             $request->addSslOptions($this->sslOptions);
         }
+        // @codeCoverageIgnoreEnd
 
         try {
             $response = $request->send();

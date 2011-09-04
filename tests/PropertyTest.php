@@ -139,6 +139,38 @@ class PropertyTest extends PHPUnit_Framework_TestCase
             );
         }
     }
+    
+    public function testCreatePropertyTest()
+    {
+        global $user, $propKey, $propVal;
+        
+        $this->assertTrue($user->createPropertyTest($propKey, $propVal));
+        $this->assertEquals(array(), $user->getProperties());
+    }
+    
+    public function testCreateInvalidPropertyTest()
+    {
+        global $user, $propKey, $propVal;
+        $user->createProperty($propKey, $propVal);
+        
+        // create it again
+        $this->assertFalse($user->createPropertyTest($propKey, "new value"));
+        $this->assertEquals(
+            array($propKey => $propVal), $user->getProperties());
+        
+        // invalid property name
+        $this->assertFalse($user->createPropertyTest("foo:bar", $propVal));
+        $this->assertEquals(
+            array($propKey => $propVal), $user->getProperties());
+        
+        // non-existing user
+        $user = new RestAuthUser($this->conn, "wronguser");
+        $this->assertFalse($user->createPropertyTest($propKey, $propVal));
+        
+        // invalid username
+        $user = new RestAuthUser($this->conn, "invalid:user");
+        $this->assertFalse($user->createPropertyTest($propKey, $propVal));
+    }
 
     /**
      * Try setting a property.

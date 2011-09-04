@@ -133,6 +133,47 @@ class RestAuthUser extends RestAuthResource
         }
         // @codeCoverageIgnoreEnd
     }
+    
+    /**
+     * Test if creating a user with the current parameters would succeed or not.
+     * Note that doing this request never guarantees that an actual request
+     * works in the future, it can only assure that it would succeed right now.
+     *
+     * This method returns false on all error cases, i.e. even if the RestAuth
+     * server is not available.
+     *
+     * @param RestAuthConnection $conn     The connection to a RestAuth service.
+     * @param string             $name     The name of this user.
+     * @param string             $password The password for the new user. If
+     *    ommitted or an empty string, the account is created but disabled.
+     * @param array              $props    Initial properties of the new user.
+     *
+     * @return true if the request would succeed, false otherwise.
+     */
+    public static function createTest($conn, $name, $password=null, $props=null)
+    {
+        $params = array('user' => $name);
+        if (!((is_null($password)) || ($password === ''))) {
+            $params['password'] = $password;
+        }
+        if (!((is_null($props)) || (empty($props)))) {
+            $params['properties'] = $props;
+        }
+        
+        try {
+            $resp = $conn->post('/test/users/', $params);
+            // @codeCoverageIgnoreStart
+        } catch (Exception $e) {
+            return false;
+            // @codeCoverageIgnoreEnd
+        }
+        switch ($resp->getResponseCode()) {
+        case 201:
+            return true;
+        default:
+            return false;
+        }
+    }
 
     /**
      * Factory method that gets an existing user from RestAuth. This method
@@ -471,6 +512,40 @@ class RestAuthUser extends RestAuthResource
             throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
+    }
+    
+    /**
+     * Test if creating a property for a user with the current parameters would
+     * succeed or not.
+     * Note that doing this request never guarantees that an actual request
+     * works in the future, it can only assure that it would succeed right now.
+     *
+     * This method returns false on all error cases, i.e. even if the RestAuth
+     * server is not available.
+     * 
+     * @param string $name  The property to set.
+     * @param string $value The new value of the property.
+     *
+     * @return true if the request would succeed, false otherwise.
+     */
+    public function createPropertyTest($name, $value)
+    {
+        $url = "/test/users/$this->name/props/";
+        $params = array('prop' => $name, 'value' =>$value);
+        
+        try {
+            $resp = $this->conn->post($url, $params);
+            // @codeCoverageIgnoreStart
+        } catch (Exception $e) {
+            return false;
+            // @codeCoverageIgnoreEnd
+        }
+        switch ($resp->getResponseCode()) {
+        case 201:
+            return true;
+        default:
+            return false;
+        }
     }
 
     /**
