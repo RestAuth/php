@@ -1,4 +1,4 @@
 *.orig.tar.gz
 *.swp
 *.swo
-php-restauth_0.0-144-gc8987ff-1_amd64.build php-restauth_0.0-145-g350f8c0-1_amd64.build
+*.build
