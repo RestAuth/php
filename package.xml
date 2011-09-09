@@ -51,7 +51,6 @@ first version
    <file baseinstalldir="RestAuth" name="AUTHORS" role="data" />
    <file baseinstalldir="RestAuth" name="COPYING" role="data" />
    <file baseinstalldir="RestAuth" name="COPYRIGHT" role="data" />
-   <file baseinstalldir="RestAuth" name="Makefile" role="data" />
    <file baseinstalldir="RestAuth" name="README" role="data" />
    <file baseinstalldir="RestAuth" name="TODO" role="data" />
   </dir>
