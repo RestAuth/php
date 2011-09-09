@@ -3,7 +3,7 @@ Section: php
 Priority: extra
 Maintainer: Mathias Ertl <apt-repository@fsinf.at>
 Build-Depends: debhelper (>= 7.0.50), git-core, php-phpdocumentor
-Standards-Version: 3.9.2
+Standards-Version: 3.9.1
 Homepage: http://fs.fsinf.at/wiki/RestAuth/PHP
 
 Package: php-restauth

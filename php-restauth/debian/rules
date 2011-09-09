@@ -1,27 +1,38 @@
 #!/usr/bin/make -f
 
-DEB_UPSTREAM=$(shell dpkg-parsechangelog -ldebian/changelog | grep '^Source:' | sed  -e 's/[^ ]* //' -e 's/[^:]://')
 GIT_URL=https://git.fsinf.at/restauth/php.git
 DH_ARGS = --with quilt
 
+include /usr/share/cdbs/1/rules/buildvars.mk
+
 prepare: cleanup
 	dh_testdir
-	python /usr/share/restauth-common/prepare.py ${GIT_URL} ${DEB_UPSTREAM}
+	python /usr/share/restauth-common/prepare.py ${GIT_URL} ${DEB_SOURCE_PACKAGE}
 
 cleanup: clean
 	dh_testdir
 	rm -f debian/patches/.dpkg-source-applied
 	rm -f debian/patches/debian-changes*
-	-quilt delete -r debian-changes-${VERSION}-1
-	ls -A | grep --invert-match "^debian" | grep --invert-match "^.svn" | xargs rm -rf
+	ls -A | grep --invert-match "^debian" | xargs rm -rf
 	dh_clean
+
 
 %:
 	dh ${DH_ARGS} $@
 
 override_dh_auto_test:
+override_dh_auto_install:
+	/usr/bin/pear \
+		-c debian/pearrc \
+		-d include_path=/usr/share/php \
+		-d php_bin=/usr/bin/php \
+		-d bin_dir=/usr/bin \
+		-d php_dir=/usr/share/php \
+		-d data_dir=/usr/share/php/data \
+		-d doc_dir=/usr/share/php/docs \
+		-d test_dir=/usr/share/php/tests \
+		install --offline --nodeps -P $(DEB_DESTDIR) package.xml
 
 override_dh_auto_build:
 	dh_auto_build -O ${DH_ARGS}
-
 	make doc
