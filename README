@@ -6,25 +6,11 @@ data format. The library requires the pecl_http extension (see INSTALLATION).
 Full API docs are available online at [2] or can be generated using the source
 code (see Generating documentation).
 
-[1] https://fs.fsinf.at/wiki/RestAuth
-[2] https://fs.fsinf.at/doc/php-restauth
+[1] https://restauth.net/Specification
+[2] https://php.restauth.net
 
 = INSTALLATION =
-This library requires pecl_http [1]. You can install the library via PEAR using:
-	pecl install pecl_http
-
-Other than that this library should just be copied to a directory of your
-choice. Creating a PEAR module for this is a TODO.
-
-[1] http://php.net/manual/en/book.http.php
-
-=== On Debian/Ubuntu ===
-There is an APT repository providing debian packages for all restauth software.
-Please see
-	https://fs.fsinf.at/wiki/RestAuth/APT_repositories
-for more information on how to add the repository to your system.
-
-The packages for this library are called php-restauth and php-restauth-doc.
+Please see installation instructions at https://php.restauth.net/.
 
 === Generating documentation ===
 Generating the documentation requires phpDocumentor[1]. If you have it
