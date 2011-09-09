@@ -12,10 +12,8 @@ prepare: cleanup
 cleanup: clean
 	dh_testdir
 	rm -f debian/patches/.dpkg-source-applied
-	rm -f debian/patches/debian-changes*
 	ls -A | grep --invert-match "^debian" | xargs rm -rf
 	dh_clean
-
 
 %:
 	dh ${DH_ARGS} $@
