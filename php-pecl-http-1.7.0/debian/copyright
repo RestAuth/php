@@ -1,0 +1,20 @@
+This package was debianized by foo using dh-make-pecl
+on Mon, 27 Dec 2010 21:25:10 +0100.
+
+It was downloaded from http://pecl.php.net/package/pecl_http
+
+Upstream Author(s):
+
+    Michael Wallner
+
+Copyright:
+
+    Copyright (C) 2010 Michael Wallner
+
+License:
+
+    B
+
+The Debian packaging is copyright 2009, foo and
+is licensed under the GPL, see `/usr/share/common-licenses/GPL'.
+
