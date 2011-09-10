@@ -383,7 +383,7 @@ class RestAuthConnection
         $options = array('headers' => $headers);
 
         $request = new HttpRequest($url, HTTP_METH_POST, $options);
-        $request->setRawPostData($this->handler->marshalDict($params));
+        $request->setBody($this->handler->marshalDict($params));
 
         $response = $this->send($request);
 
