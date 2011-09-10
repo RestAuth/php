@@ -19,6 +19,9 @@ examples:
 install:
 	pear install -f package.xml
 
+pear-package:
+	pear package
+
 doc:
 	mkdir -p ${HTMLDIR}
 	phpdoc -ue -s --title "php-restauth documentation" -o HTML:frames:default -dn php-restauth -d ${SRCDIR},tutorials -t ${HTMLDIR}
