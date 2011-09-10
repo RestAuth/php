@@ -4,9 +4,12 @@
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
  <name>Authentication_RestAuth</name>
- <channel>pear.php.net</channel>
- <summary>one-line summary</summary>
- <description>longer description.</description>
+ <channel>pear.php.restauth.net</channel>
+ <summary>RestAuth php client library</summary>
+ <description>
+  RestAuth is a system providing shared authentication, authorization and preferences. This library
+  is a client library written in pure PHP and supports all features of the RestAuth protocol.
+ </description>
  <lead>
   <name>Mathias Ertl</name>
   <user>mati</user>
@@ -16,16 +19,16 @@
  <date>2011-08-01</date>
  <time>14:40:28</time>
  <version>
-  <release>1.0.0</release>
-  <api>1.0.0</api>
+  <release>0.5.0</release> 
+  <api>0.5</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
- <license uri="http://www.php.net/license/">PHP</license>
+ <license uri="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence, version 3</license>
  <notes>
-first version
+  first version
  </notes>
  <contents>
   <dir name="/">
@@ -53,6 +56,7 @@ first version
    <file baseinstalldir="RestAuth" name="COPYRIGHT" role="data" />
    <file baseinstalldir="RestAuth" name="README" role="data" />
    <file baseinstalldir="RestAuth" name="TODO" role="data" />
+   <file baseinstalldir="RestAuth" name="ChangeLog" role="data" />
   </dir>
  </contents>
  <dependencies>
@@ -69,17 +73,17 @@ first version
  <changelog>
   <release>
    <version>
-    <release>1.0.0</release>
-    <api>1.0.0</api>
+    <release>0.5.0</release>
+    <api>0.5</api>
    </version>
    <stability>
     <release>stable</release>
     <api>stable</api>
    </stability>
    <date>2011-08-01</date>
-   <license uri="http://www.php.net/license/">PHP</license>
+   <license uri="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence, version 3</license>
    <notes>
-first version
+    first version.
    </notes>
   </release>
  </changelog>

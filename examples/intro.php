@@ -1,4 +1,5 @@
 <?php
+
 // NOTE: that all error handling in this example is skipped for the sake of
 // clarity.
 

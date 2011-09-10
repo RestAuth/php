@@ -25,26 +25,24 @@
   </para>
  </refsect1>
  <refsect1 id="{@id installation}">
-  <title>Installation</title>
+  <title>Documentation</title>
   <para>
    <itemizedlist>
-    <listitem>{@tutorial installation-from-source.pkg From source}</listitem>
-    <listitem>{@tutorial installation-on-debian-ubuntu.pkg On Debian/Ubuntu}</listitem>
-   </itemizedlist>
-  </para>
- </refsect1>
- <refsect1 id="{@id guide}">
-  <title>Guide</title>
-  <para>
-   <itemizedlist>
+    <listitem>{@tutorial installation.pkg Installation}</listitem>
+    <itemizedlist>
+     <listitem>{@tutorial installation-from-source.pkg from source}</listitem>
+     <listitem>{@tutorial installation-on-debian-ubuntu.pkg on Debian/Ubuntu}</listitem>
+    </itemizedlist>
     <listitem>{@tutorial guide.pkg Guide}</listitem>
+    <listitem>{@tutorial contribute.pkg Contribute}</listitem>
    </itemizedlist>
   </para>
  </refsect1>
  <refsect1 id="{@id api}">
   <title>API documentation</title>
   <para>
-   The most important classes are:
+   All classes are available in the {@link https://php.restauth.net/classtrees_RestAuth.html class
+   tree}. However, the most important classes are:
    <itemizedlist>
     <listitem>{@link RestAuthConnection}</listitem>
     <listitem>{@link RestAuthUser}</listitem>
