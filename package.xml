@@ -55,7 +55,6 @@
    <file baseinstalldir="RestAuth" name="COPYING" role="data" />
    <file baseinstalldir="RestAuth" name="COPYRIGHT" role="data" />
    <file baseinstalldir="RestAuth" name="README" role="data" />
-   <file baseinstalldir="RestAuth" name="TODO" role="data" />
    <file baseinstalldir="RestAuth" name="ChangeLog" role="data" />
   </dir>
  </contents>
