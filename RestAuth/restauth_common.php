@@ -25,7 +25,7 @@
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   0.0
+ * @version   0.5.0
  * @link      https://php.restauth.net
  */
 
@@ -37,7 +37,7 @@
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 abstract class ContentHandler
@@ -94,7 +94,7 @@ abstract class ContentHandler
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthJsonHandler extends ContentHandler
@@ -170,7 +170,7 @@ class RestAuthJsonHandler extends ContentHandler
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthConnection
@@ -512,7 +512,7 @@ class RestAuthConnection
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 abstract class RestAuthResource

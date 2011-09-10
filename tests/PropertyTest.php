@@ -24,8 +24,8 @@
  * @subpackage Testing
  * @author     Mathias Ertl <mati@restauth.net>
  * @copyright  2010-2011 Mathias Ertl
- * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version    0.0
+ * @license    http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
+ * @version    0.5.0
  * @link       https://php.restauth.net
  */
 
@@ -42,8 +42,8 @@ require_once 'RestAuth/restauth.php';
  * @subpackage Testing
  * @author     Mathias Ertl <mati@restauth.net>
  * @copyright  2010-2011 Mathias Ertl
- * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version    Release: @package_version@
+ * @license    http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
+ * @version    Release: 0.5.0
  * @link       https://php.restauth.net
  */
 class PropertyTest extends PHPUnit_Framework_TestCase
@@ -142,6 +142,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
     
+    /**
+     * Test to create a property.
+     *
+     * @return null
+     */
     public function testCreatePropertyTest()
     {
         global $user, $propKey, $propVal;
@@ -150,6 +155,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $user->getProperties());
     }
     
+    /**
+     * Test creating an invalid property.
+     * 
+     * @return null
+     */
     public function testCreateInvalidPropertyTest()
     {
         global $user, $propKey, $propVal;
@@ -158,12 +168,14 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         // create it again
         $this->assertFalse($user->createPropertyTest($propKey, "new value"));
         $this->assertEquals(
-            array($propKey => $propVal), $user->getProperties());
+            array($propKey => $propVal), $user->getProperties()
+        );
         
         // invalid property name
         $this->assertFalse($user->createPropertyTest("foo:bar", $propVal));
         $this->assertEquals(
-            array($propKey => $propVal), $user->getProperties());
+            array($propKey => $propVal), $user->getProperties()
+        );
         
         // non-existing user
         $user = new RestAuthUser($this->conn, "wronguser");

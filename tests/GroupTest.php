@@ -24,8 +24,8 @@
  * @subpackage Testing
  * @author     Mathias Ertl <mati@restauth.net>
  * @copyright  2010-2011 Mathias Ertl
- * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version    0.0
+ * @license    http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
+ * @version    0.5.0
  * @link       https://php.restauth.net
  */
 
@@ -40,8 +40,8 @@ require_once 'RestAuth/restauth.php';
  * @subpackage Testing
  * @author     Mathias Ertl <mati@restauth.net>
  * @copyright  2010-2011 Mathias Ertl
- * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version    Release: @package_version@
+ * @license    http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
+ * @version    Release: 0.5.0
  * @link       https://php.restauth.net
  */
 class GroupTest extends PHPUnit_Framework_TestCase
@@ -139,6 +139,11 @@ class GroupTest extends PHPUnit_Framework_TestCase
         }
     }
     
+    /**
+     * Test creating a group.
+     *
+     * @return null
+     */
     public function testCreateGroupTest()
     {
         global $groupname1;
@@ -146,6 +151,11 @@ class GroupTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), RestAuthGroup::getAll($this->conn));
     }
     
+    /**
+     * Test creating an existing group.
+     *
+     * @return null
+     */
     public function testCreateExistingGroupTest()
     {
         global $groupname1;
@@ -154,6 +164,11 @@ class GroupTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(RestAuthGroup::createTest($this->conn, $groupname1));
     }
     
+    /**
+     * Test creating an invalid group.
+     * 
+     * @return null
+     */
     public function testCreateInvalidGroupTest()
     {
         $this->assertFalse(RestAuthGroup::createTest($this->conn, "foo:bar"));

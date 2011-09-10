@@ -26,7 +26,7 @@
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   0.0
+ * @version   0.5.0
  * @link      https://php.restauth.net
  */
 
@@ -38,7 +38,7 @@
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 abstract class RestAuthException extends Exception
@@ -63,7 +63,7 @@ abstract class RestAuthException extends Exception
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthResourceNotFound extends RestAuthException
@@ -90,7 +90,7 @@ class RestAuthResourceNotFound extends RestAuthException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 abstract class RestAuthResourceConflict extends RestAuthException
@@ -106,7 +106,7 @@ abstract class RestAuthResourceConflict extends RestAuthException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthBadResponse extends RestAuthException
@@ -121,7 +121,7 @@ class RestAuthBadResponse extends RestAuthException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthInternalException extends RestAuthException
@@ -137,7 +137,7 @@ class RestAuthInternalException extends RestAuthException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthBadRequest extends RestAuthInternalException
@@ -154,7 +154,7 @@ class RestAuthBadRequest extends RestAuthInternalException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthInternalServerError extends RestAuthInternalException
@@ -171,7 +171,7 @@ class RestAuthInternalServerError extends RestAuthInternalException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthUnknownStatus extends RestAuthInternalException
@@ -187,7 +187,7 @@ class RestAuthUnknownStatus extends RestAuthInternalException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthPreconditionFailed extends RestAuthException
@@ -205,7 +205,7 @@ class RestAuthPreconditionFailed extends RestAuthException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthUnauthorized extends RestAuthException
@@ -222,7 +222,7 @@ class RestAuthUnauthorized extends RestAuthException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthNotAcceptable extends RestAuthInternalException
@@ -239,7 +239,7 @@ class RestAuthNotAcceptable extends RestAuthInternalException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthUnsupportedMediaType extends RestAuthInternalException
@@ -256,7 +256,7 @@ class RestAuthUnsupportedMediaType extends RestAuthInternalException
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthHttpException extends RestAuthException

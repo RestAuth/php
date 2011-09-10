@@ -24,8 +24,8 @@
  * @subpackage Testing
  * @author     Mathias Ertl <mati@restauth.net>
  * @copyright  2010-2011 Mathias Ertl
- * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version    0.0
+ * @license    http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
+ * @version    0.5.0
  * @link       https://php.restauth.net
  */
 
@@ -64,8 +64,8 @@ $propVal = "value 汉字"; // simplified chinese
  * @subpackage Testing
  * @author     Mathias Ertl <mati@restauth.net>
  * @copyright  2010-2011 Mathias Ertl
- * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version    Release: @package_version@
+ * @license    http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
+ * @version    Release: 0.5.0
  * @link       https://php.restauth.net
  */
 class UserTest extends PHPUnit_Framework_TestCase
@@ -217,19 +217,38 @@ class UserTest extends PHPUnit_Framework_TestCase
         }
     }
     
+    /**
+     * Test for creating users.
+     *
+     * @return null
+     */
     public function testCreateUserTest()
     {
         global $username1, $password1, $propKey, $propVal;
         
         $this->assertTrue(RestAuthUser::createTest($this->conn, $username1));
-        $this->assertTrue(RestAuthUser::createTest(
-            $this->conn, $username1, $password1));
-        $this->assertTrue(RestAuthUser::createTest(
-            $this->conn, $username1, null, array($propKey, $propVal)));
-        $this->assertTrue(RestAuthUser::createTest(
-            $this->conn, $username1, $password1, array($propKey, $propVal)));
+        $this->assertTrue(
+            RestAuthUser::createTest(
+                $this->conn, $username1, $password1
+            )
+        );
+        $this->assertTrue(
+            RestAuthUser::createTest(
+                $this->conn, $username1, null, array($propKey, $propVal)
+            )
+        );
+        $this->assertTrue(
+            RestAuthUser::createTest(
+                $this->conn, $username1, $password1, array($propKey, $propVal)
+            )
+        );
     }
     
+    /**
+     * Test for creating invalid users.
+     *
+     * @return null
+     */
     public function testCreateInvalidUserTest()
     {
         global $username1, $password1;
@@ -239,13 +258,19 @@ class UserTest extends PHPUnit_Framework_TestCase
         // username invalid:
         $this->assertFalse(RestAuthUser::createTest($this->conn, 'user:name'));
         // password too short
-        $this->assertFalse(RestAuthUser::createTest(
-            $this->conn, $username1, 'a'));
+        $this->assertFalse(
+            RestAuthUser::createTest(
+                $this->conn, $username1, 'a'
+            )
+        );
         
         // existing user:
         $user = RestAuthUser::create($this->conn, $username1, $password1);
-        $this->assertFalse(RestAuthUser::createTest(
-            $this->conn, $username1, "new password"));
+        $this->assertFalse(
+            RestAuthUser::createTest(
+                $this->conn, $username1, "new password"
+            )
+        );
         $this->assertTrue($user->verifyPassword($password1));
     }
     

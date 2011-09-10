@@ -24,7 +24,7 @@
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   0.0
+ * @version   0.5.0
  * @link      https://php.restauth.net
  */
 
@@ -43,7 +43,7 @@ require_once 'restauth_groups.php';
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthUserExists extends RestAuthResourceConflict
@@ -58,7 +58,7 @@ class RestAuthUserExists extends RestAuthResourceConflict
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthPropertyExists extends RestAuthResourceConflict
@@ -73,7 +73,7 @@ class RestAuthPropertyExists extends RestAuthResourceConflict
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   Release: @package_version@
+ * @version   Release: 0.5.0
  * @link      https://php.restauth.net
  */
 class RestAuthUser extends RestAuthResource
