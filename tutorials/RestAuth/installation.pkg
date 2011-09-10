@@ -14,8 +14,9 @@
  <refsect1 id="{@id intro}">
   <para>Various installation methods are documented:</para>
   <itemizedlist>
-   <listitem>{@tutorial installation-from-source.pkg}</listitem>
-   <listitem>{@tutorial installation-on-debian-ubuntu.pkg}</listitem>
+   <listitem>{@tutorial installation-from-source.pkg from source}</listitem>
+   <listitem>{@tutorial installation-using-pear.pkg using PEAR}</listitem>
+   <listitem>{@tutorial installation-on-debian-ubuntu.pkg on Debian/Ubuntu}</listitem>
   </itemizedlist>
  </refsect1>
 </refentry>

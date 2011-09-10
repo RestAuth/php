@@ -31,6 +31,7 @@
     <listitem>{@tutorial installation.pkg Installation}</listitem>
     <itemizedlist>
      <listitem>{@tutorial installation-from-source.pkg from source}</listitem>
+     <listitem>{@tutorial installation-using-pear.pkg using PEAR}</listitem>
      <listitem>{@tutorial installation-on-debian-ubuntu.pkg on Debian/Ubuntu}</listitem>
     </itemizedlist>
     <listitem>{@tutorial guide.pkg Guide}</listitem>
