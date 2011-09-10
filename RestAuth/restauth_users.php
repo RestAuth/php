@@ -137,11 +137,12 @@ class RestAuthUser extends RestAuthResource
     
     /**
      * Test if creating a user with the current parameters would succeed or not.
+     * This method always returns true if the user could be created, otherwise
+     * it should throw the exact same exceptions as if you would actually {@link
+     * create create} the user. 
+     *
      * Note that doing this request never guarantees that an actual request
      * works in the future, it can only assure that it would succeed right now.
-     *
-     * This method returns false on all error cases, i.e. even if the RestAuth
-     * server is not available.
      *
      * @param RestAuthConnection $conn     The connection to a RestAuth service.
      * @param string             $name     The name of this user.
@@ -149,7 +150,7 @@ class RestAuthUser extends RestAuthResource
      *    ommitted or an empty string, the account is created but disabled.
      * @param array              $props    Initial properties of the new user.
      *
-     * @return true if the request would succeed, false otherwise.
+     * @return true Always returns true if no exception is thrown.
      */
     public static function createTest($conn, $name, $password=null, $props=null)
     {
@@ -161,19 +162,22 @@ class RestAuthUser extends RestAuthResource
             $params['properties'] = $props;
         }
         
-        try {
-            $resp = $conn->post('/test/users/', $params);
-            // @codeCoverageIgnoreStart
-        } catch (Exception $e) {
-            return false;
-            // @codeCoverageIgnoreEnd
-        }
+        $resp = $conn->post('/test/users/', $params);
         switch ($resp->getResponseCode()) {
         case 201:
             return true;
+            
+        case 409:
+            throw new RestAuthUserExists($resp);
+            
+        case 412:
+            throw new RestAuthPreconditionFailed($resp);
+            
+            // @codeCoverageIgnoreStart
         default:
-            return false;
+            throw new RestAuthUnknownStatus($resp);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -486,6 +490,8 @@ class RestAuthUser extends RestAuthResource
      * @throws {@link RestAuthResourceNotFound} When the user does exist
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
+     * @throws {@link RestAUthPreconditionFailed} When the property name is
+     *    invalid.
      * @throws {@link RestAuthPropertyExists} When the property already exists
      * @throws {@link RestAuthUnsupportedMediaType} The server does not
      *    support the content type used by this connection.
@@ -508,6 +514,9 @@ class RestAuthUser extends RestAuthResource
         case 409:
             throw new RestAuthPropertyExists($resp);
             
+        case 412:
+            throw new RestAuthPreconditionFailed($resp);
+            
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -517,36 +526,38 @@ class RestAuthUser extends RestAuthResource
     
     /**
      * Test if creating a property for a user with the current parameters would
-     * succeed or not.
-     * Note that doing this request never guarantees that an actual request
-     * works in the future, it can only assure that it would succeed right now.
-     *
-     * This method returns false on all error cases, i.e. even if the RestAuth
-     * server is not available.
+     * succeed or not. This method always returns null if the property could be
+     * created, otherwise it should throw the exact same exceptions as if you
+     * would actually {@link createProperty create the property}.
      * 
      * @param string $name  The property to set.
      * @param string $value The new value of the property.
      *
-     * @return true if the request would succeed, false otherwise.
+     * @return null Always returns null if no exception is thrown.
      */
     public function createPropertyTest($name, $value)
     {
-        $url = "/test/users/$this->name/props/";
+        $url = "/test/users/".$this->name."/props/";
         $params = array('prop' => $name, 'value' =>$value);
-        
-        try {
-            $resp = $this->conn->post($url, $params);
-            // @codeCoverageIgnoreStart
-        } catch (Exception $e) {
-            return false;
-            // @codeCoverageIgnoreEnd
-        }
+        $resp = $this->conn->post( $url, $params );
         switch ($resp->getResponseCode()) {
         case 201:
-            return true;
+            return;
+        
+        case 404:
+            throw new RestAuthResourceNotFound($resp);
+            
+        case 409:
+            throw new RestAuthPropertyExists($resp);
+            
+        case 412:
+            throw new RestAuthPreconditionFailed($resp);
+            
+            // @codeCoverageIgnoreStart
         default:
-            return false;
+            throw new RestAuthUnknownStatus($resp);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**

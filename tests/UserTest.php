@@ -28,7 +28,7 @@
  * @link       https://php.restauth.net
  */
 
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Autoload.php';
 require_once 'RestAuth/restauth.php';
 
 // setup the connection:
@@ -253,24 +253,34 @@ class UserTest extends PHPUnit_Framework_TestCase
         global $username1, $password1;
         
         // username too short:
-        $this->assertFalse(RestAuthUser::createTest($this->conn, 'a'));
-        // username invalid:
-        $this->assertFalse(RestAuthUser::createTest($this->conn, 'user:name'));
-        // password too short
-        $this->assertFalse(
-            RestAuthUser::createTest(
-                $this->conn, $username1, 'a'
-            )
-        );
+        try {
+            RestAuthUser::createTest($this->conn, 'a');
+            $this->fail();
+        } catch (RestAuthPreconditionFailed $e) {
+        }
         
-        // existing user:
+        try {
+            // username invalid:
+            RestAuthUser::createTest($this->conn, 'user:name');
+            $this->fail();
+        } catch (RestAuthPreconditionFailed $e) {
+        }
+        
+        try {
+            // password too short
+            RestAuthUser::createTest($this->conn, $username1, 'a');
+            $this->fail();
+        } catch (RestAuthPreconditionFailed $e) {
+        }
+        
         $user = RestAuthUser::create($this->conn, $username1, $password1);
-        $this->assertFalse(
-            RestAuthUser::createTest(
-                $this->conn, $username1, "new password"
-            )
-        );
-        $this->assertTrue($user->verifyPassword($password1));
+        try {
+            // existing user:
+            RestAuthUser::createTest($this->conn, $username1, "new password");
+            $this->fail();
+        } catch(RestAuthUserExists $e) {
+            $this->assertTrue($user->verifyPassword($password1));
+        }
     }
     
     /**

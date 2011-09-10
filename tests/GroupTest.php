@@ -28,7 +28,7 @@
  * @link       https://php.restauth.net
  */
 
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Autoload.php';
 require_once 'RestAuth/restauth.php';
 
 /**
@@ -160,7 +160,11 @@ class GroupTest extends PHPUnit_Framework_TestCase
         global $groupname1;
         RestAuthGroup::create($this->conn, $groupname1);
         
-        $this->assertFalse(RestAuthGroup::createTest($this->conn, $groupname1));
+        try {
+            RestAuthGroup::createTest($this->conn, $groupname1);
+            $this->fail();
+        } catch (RestAuthGroupExists $e) {
+        }
     }
     
     /**
@@ -170,7 +174,11 @@ class GroupTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateInvalidGroupTest()
     {
-        $this->assertFalse(RestAuthGroup::createTest($this->conn, "foo:bar"));
+        try {
+            RestAuthGroup::createTest($this->conn, "foo:bar");
+            $this->fail();
+        } catch (RestAuthPreconditionFailed $e) {
+        }
     }
 
     /**

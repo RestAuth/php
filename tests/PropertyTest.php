@@ -28,7 +28,7 @@
  * @link       https://php.restauth.net
  */
 
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Autoload.php';
 require_once 'RestAuth/restauth.php';
 
 // variables are defined in UserTest.php
@@ -141,6 +141,18 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
     
+    public function testCreateInvalidProperty()
+    {
+        global $user, $propVal;
+        
+        try {
+            $user->createProperty("foo:bar", $propVal);
+            $this->fail();
+        } catch (RestAuthPreconditionFailed $e) {
+            $this->assertEquals(array(), $user->getProperties());
+        }
+    }
+    
     /**
      * Test to create a property.
      *
@@ -150,7 +162,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase
     {
         global $user, $propKey, $propVal;
         
-        $this->assertTrue($user->createPropertyTest($propKey, $propVal));
+        $this->assertNull($user->createPropertyTest($propKey, $propVal));
         $this->assertEquals(array(), $user->getProperties());
     }
     
@@ -165,24 +177,41 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         $user->createProperty($propKey, $propVal);
         
         // create it again
-        $this->assertFalse($user->createPropertyTest($propKey, "new value"));
+        try {
+            $user->createPropertyTest($propKey, "new value");
+            $this->fail();
+        } catch(RestAuthPropertyExists $e) {
+        }
         $this->assertEquals(
             array($propKey => $propVal), $user->getProperties()
         );
         
         // invalid property name
-        $this->assertFalse($user->createPropertyTest("foo:bar", $propVal));
+        try {
+            $user->createPropertyTest("foo:bar", $propVal);
+            $this->fail();
+        } catch (RestAuthPreconditionFailed $e) {
+        }
         $this->assertEquals(
             array($propKey => $propVal), $user->getProperties()
         );
         
         // non-existing user
-        $user = new RestAuthUser($this->conn, "wronguser");
-        $this->assertFalse($user->createPropertyTest($propKey, $propVal));
+        try {
+            $user = new RestAuthUser($this->conn, "wronguser");
+            $user->createPropertyTest($propKey, $propVal);
+            $this->fail();
+        } catch (RestAuthResourceNotFound $e) {
+        }
         
         // invalid username
-        $user = new RestAuthUser($this->conn, "invalid:user");
-        $this->assertFalse($user->createPropertyTest($propKey, $propVal));
+        try {
+            $user = new RestAuthUser($this->conn, "invalid:user");
+            $user->createPropertyTest($propKey, $propVal);
+            $this->fail();
+        } catch (RestAuthResourceNotFound $e) {
+            $this->assertEquals("user", $e->getType());
+        }
     }
 
     /**

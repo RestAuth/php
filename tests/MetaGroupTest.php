@@ -28,7 +28,7 @@
  * @link       https://php.restauth.net
  */
 
-
+require_once 'PHPUnit/Autoload.php';
 require_once 'RestAuth/restauth.php';
 
 // variables are defined in UserTest.php
