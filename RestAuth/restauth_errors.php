@@ -26,7 +26,6 @@
  * @author    Mathias Ertl <mati@restauth.net>
  * @copyright 2010-2011 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version   0.5.0
  * @link      https://php.restauth.net
  */
 
