@@ -1,0 +1,14 @@
+php-pecl-http (1.7.1-1) wheezy; urgency=low
+
+  * version bump from upstream
+  * move to debian package version 3.0
+  * implement get-orig-source target
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Fri, 09 Sep 2011 18:43:37 +0200
+
+php-pecl-http (1.7.0-1) maverick; urgency=low
+
+  * initial package
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Mon, 27 Dec 2010 21:25:10 +0100
+

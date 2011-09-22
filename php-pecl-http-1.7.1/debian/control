@@ -2,8 +2,8 @@ Source: php-pecl-http
 Section: web
 Priority: optional
 Maintainer: Mathias Ertl <apt-repository@fsinf.at>
-Build-Depends: debhelper (>= 7), po-debconf, xsltproc , php5-dev, libcurl4-gnutls-dev, zlib1g-dev
-Standards-Version: 3.8.4
+Build-Depends: debhelper (>= 7), cdbs, po-debconf, xsltproc , php5-dev, libcurl4-gnutls-dev, zlib1g-dev
+Standards-Version: 3.9.1
 
 Package: php5-pecl-http
 Architecture: any

@@ -1,6 +1,0 @@
-php-pecl-http (1.7.0-1) maverick; urgency=low
-
-  * initial package
-
- -- Mathias Ertl <apt-repository@fsinf.at>  Mon, 27 Dec 2010 21:25:10 +0100
-
