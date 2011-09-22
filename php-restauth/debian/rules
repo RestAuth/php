@@ -18,6 +18,8 @@ cleanup: clean
 %:
 	dh ${DH_ARGS} $@
 
+override_dh_installchangelogs:
+	dh_installchangelogs ChangeLog
 override_dh_auto_test:
 override_dh_auto_install:
 	/usr/bin/pear \
