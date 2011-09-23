@@ -1,6 +1,7 @@
 SRCDIR=RestAuth/
 DOCDIR=doc/
 HTMLDIR=${DOCDIR}/html
+RELEASE=$(shell grep -m 1 release package.xml | sed 's/\s*<release>\(.*\)<\/release>\s*/\1/')
 
 all: 
 
@@ -30,3 +31,6 @@ doc:
 
 clean:
 	rm -rf ${DOCDIR}
+	
+release:
+	tar --exclude-vcs --xform 's/^./php-restauth-0.5.0/' -czf ../php-restauth-${RELEASE}.tar.gz .
