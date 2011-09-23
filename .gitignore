@@ -2,3 +2,4 @@
 *.swo
 doc/
 Authentication_RestAuth-*.tgz
+Makefile.local
