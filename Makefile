@@ -33,4 +33,6 @@ clean:
 	rm -rf ${DOCDIR}
 	
 release:
-	tar --exclude-vcs --xform 's/^./php-restauth-0.5.0/' -czf ../php-restauth-${RELEASE}.tar.gz .
+	git checkout ${RELEASE}
+	tar --exclude-vcs --xform 's/^./php-restauth-${RELEASE}/' -czf ../php-restauth-${RELEASE}.tar.gz .
+	git checkout master
