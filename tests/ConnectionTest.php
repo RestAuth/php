@@ -41,7 +41,7 @@ require_once 'RestAuth/restauth.php';
  * @author     Mathias Ertl <mati@restauth.net>
  * @copyright  2010-2011 Mathias Ertl
  * @license    http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version    Release: 0.5.0
+ * @version    Release: @package_version@
  * @link       https://php.restauth.net
  */
 class FakeContentHandler extends ContentHandler
@@ -114,7 +114,7 @@ class FakeContentHandler extends ContentHandler
  * @author     Mathias Ertl <mati@restauth.net>
  * @copyright  2010-2011 Mathias Ertl
  * @license    http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
- * @version    Release: 0.5.0
+ * @version    Release: @package_version@
  * @link       https://php.restauth.net
  */
 class ConnectionTest extends PHPUnit_Framework_TestCase
