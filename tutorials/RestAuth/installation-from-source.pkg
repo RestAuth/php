@@ -46,7 +46,8 @@
   </refsect2>
   <refsect2 id="{@id get_source_official_releases}">
    <title>Official releases</title>
-   <para>There are no "official releases" yet, hence no tarballs to download ;-).</para>
+   <para>You can download official releases of php-restauth at
+    {@link https://php.restauth.net/download}.</para>
   </refsect2>
  </refsect1>
 
