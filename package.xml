@@ -32,30 +32,27 @@
  </notes>
  <contents>
   <dir name="/">
-   <file name="RestAuth/restauth.php" role="php" />
-   <file name="RestAuth/restauth_common.php" role="php" />
-   <file name="RestAuth/restauth_errors.php" role="php" />
-   <file name="RestAuth/restauth_groups.php" role="php" />
-   <file name="RestAuth/restauth_users.php" role="php" />
+   <file name="RestAuth/restauth.php" role="php">
+    <replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file name="RestAuth/restauth_common.php" role="php">
+    <replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file name="RestAuth/restauth_errors.php" role="php">
+    <replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file name="RestAuth/restauth_groups.php" role="php">
+    <replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file name="RestAuth/restauth_users.php" role="php">
+    <replace from="@package_version@" to="version" type="package-info" />
+   </file>
    
-   <file baseinstalldir="RestAuth" name="examples/test.php" role="doc" />
-   <file baseinstalldir="RestAuth" name="tests/GroupTest.php" role="test" />
-   <file baseinstalldir="RestAuth" name="tests/MetaGroupTest.php" role="test" />
-   <file baseinstalldir="RestAuth" name="tests/PropertyTest.php" role="test" />
-   <file baseinstalldir="RestAuth" name="tests/SimpleUserGroupTest.php" role="test" />
-   <file baseinstalldir="RestAuth" name="tests/UserTest.php" role="test" />
-   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/contribute.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/guide.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/installation-on-debian-ubuntu.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/installation.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/installation.pkg.ini" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/RestAuth.pkg" role="doc" />
-   <file baseinstalldir="RestAuth" name="tutorials/RestAuth/RestAuth.pkg.ini" role="doc" />
-   <file baseinstalldir="RestAuth" name="AUTHORS" role="data" />
-   <file baseinstalldir="RestAuth" name="COPYING" role="data" />
-   <file baseinstalldir="RestAuth" name="COPYRIGHT" role="data" />
-   <file baseinstalldir="RestAuth" name="README" role="data" />
-   <file baseinstalldir="RestAuth" name="ChangeLog" role="data" />
+   <file baseinstalldir="RestAuth" name="AUTHORS" role="doc" />
+   <file baseinstalldir="RestAuth" name="COPYING" role="doc" />
+   <file baseinstalldir="RestAuth" name="COPYRIGHT" role="doc" />
+   <file baseinstalldir="RestAuth" name="README" role="doc" />
+   <file baseinstalldir="RestAuth" name="ChangeLog" role="doc" />
   </dir>
  </contents>
  <dependencies>
