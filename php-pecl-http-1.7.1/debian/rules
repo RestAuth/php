@@ -19,8 +19,6 @@ else
 	DEBUG := --disable-debug
 endif
 
-ORIG_SOURCE=${PACKAGE_NAME}_${DEB_UPSTREAM_VERSION}.orig.tar.gz
-
 TAR=tar
 PECL_PKG_NAME=pecl-http
 PECL_PKG_REALNAME=pecl_http
@@ -34,20 +32,8 @@ BINARYTARGETS=binary-arch-v5
 BUILDTARGETS=build-v5 
 CLEANTARGETS=clean-v5 
 
-../${ORIG_SOURCE}:
-	wget http://pecl.php.net/get/pecl_http-${DEB_UPSTREAM_VERSION}.tgz -O ../${ORIG_SOURCE}
-
-get-orig-source: ../${ORIG_SOURCE}
-
-prepare: cleanup ../${ORIG_SOURCE}
-	dh_testdir
-	tar xzf ../${ORIG_SOURCE}
-
-cleanup: 
-	dh_testdir
-	dh_clean
-	rm -f debian/stamp-*
-	ls -A | grep --invert-match "^debian" | xargs rm -rf
+get-orig-source:
+	uscan --noconf --force-download --download-current-version --destdir=${CURDIR}
 
 # Sarge doesn't support --phpapi option (Bug #365667)
 phpapiver4=$(shell /usr/bin/php-config4 --phpapi)
