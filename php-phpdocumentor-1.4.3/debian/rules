@@ -1,22 +1,20 @@
 #!/usr/bin/make -f
 # template debian/rules provided by dh-make-php.
 
-DEB_COMPRESS_EXCLUDE=package.xml
-
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/pear.mk
+DEB_FIXPERMS_EXCLUDE=usr/share/php/PhpDocumentor/scripts/makedoc.sh
 
-ORIG_SRC=php-phpdocumentor_1.4.3.orig.tar.gz
+get-orig-source:
+	uscan --noconf --force-download --download-current-version --destdir=${CURDIR}
 
-get-orig-source: ../${ORIG_SRC}
-../${ORIG_SRC}:
-	dh_testdir
-	wget http://download.pear.php.net/package/PhpDocumentor-1.4.3.tgz -O ../${ORIG_SRC}
+common-install-indep::
+	# ${DEB_DESTDIR}
+	rm ${DEB_DESTDIR}usr/share/doc/php-phpdocumentor/INSTALL
+	rm ${DEB_DESTDIR}usr/share/php/data/PhpDocumentor/phpDocumentor/Smarty-2.6.0/COPYING.lib
+	rm -f ${DEB_DESTDIR}usr/share/doc/php-phpdocumentor/README
+	chmod a+rx ${DEB_DESTDIR}usr/share/php/PhpDocumentor/scripts/makedoc.sh
+	touch -m PhpDocumentor-1.4.3/README
 
-prepare: cleanup get-orig-source
-	dh_testdir
-	tar xzf ../${ORIG_SRC}
-
-cleanup: clean
-	dh_testdir
-	ls -A | grep --invert-match "^debian" | xargs rm -rf
+#%:
+#	dh $@
