@@ -1,5 +1,5 @@
-php-xml-beautifier (1.2.2-1) wheezy; urgency=low
+php-xml-beautifier (1.2.2-1) unstable; urgency=low
 
-  * Initial Release (Closes: #<ITP bug number>).
+  * Initial Release (Closes: #649903).
 
- -- Mathias Ertl <apt-repository@fsinf.at>  Wed, 29 Jun 2011 17:12:49 +0200
+ -- Mathias Ertl <apt-repository@fsinf.at>  Thu, 24 Nov 2011 06:53:12 +2000
