@@ -1,3 +1,9 @@
+php-pecl-http (1.7.3-1) wheezy; urgency=low
+
+  * bump from upstream
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Fri, 16 Mar 2012 11:37:20 +0200
+
 php-pecl-http (1.7.1-1) wheezy; urgency=low
 
   * version bump from upstream
