@@ -13,8 +13,8 @@ Copyright:
 
 License:
 
-    B
+    BSD, revised
 
-The Debian packaging is copyright 2009, foo and
+The Debian packaging is copyright 2012, Mathias Ertl and
 is licensed under the GPL, see `/usr/share/common-licenses/GPL'.
 
