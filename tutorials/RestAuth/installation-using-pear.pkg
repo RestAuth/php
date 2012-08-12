@@ -33,7 +33,7 @@
    </programlisting></para>
    If you only want to upgrade this package, do:
    <para><programlisting language="bash">
-    pear upgrade RestAuth/Authentication_RestAuth
+    pear upgrade RestAuth/Authentication_RestAuth	
    </programlisting></para>
   </para>
  </refsect1>
