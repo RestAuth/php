@@ -249,7 +249,7 @@ class RestAuthUnsupportedMediaType extends RestAuthInternalException
 /**
  * Thrown when a connection-related error occurs (i.e. the RestAuth service is
  * not available).
- * 
+ *
  * @category  Authentication
  * @package   RestAuth
  * @author    Mathias Ertl <mati@restauth.net>
@@ -265,12 +265,10 @@ class RestAuthHttpException extends RestAuthException
      *
      * @param Exception $http_exception The exception causing this exception.
      */
-    public function __construct($http_exception)
+    public function __construct()
     {
-        $this->cause = $http_exception;
-        $this->message = $http_exception->getMessage();
     }
-    
+
     /**
      * Get the root cause of this exception.
      *
