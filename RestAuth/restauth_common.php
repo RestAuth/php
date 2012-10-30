@@ -182,6 +182,24 @@ class RestAuthHttpResponse
         return $this->status;
     }
 
+    public function getHeaders()
+    {
+        if (is_null($this->headers)) {
+            $this->parseHeaders();
+        }
+
+        return $this->headers;
+    }
+
+    public function getHeader($field)
+    {
+        if (is_null($this->headers)) {
+            $this->parseHeaders();
+        }
+
+        return $this->headers[$field];
+    }
+
     public function getBody()
     {
         if (is_null($this->body)) {
@@ -189,7 +207,32 @@ class RestAuthHttpResponse
             $this->body = substr($this->response, $this->header_size);
         }
 
-        return $this->body;
+        return utf8_encode($this->body);
+    }
+
+    public function parseHeaders()
+    {
+        if (is_null($this->raw_headers)) {
+            $this->raw_headers = substr($this->response, 0, $this->header_size);
+            $this->body = substr($this->response, $this->header_size);
+        }
+
+        $headers = str_replace("\r", "", $this->raw_headers);
+        $headers = explode("\n",$headers);
+        foreach($headers as $value) {
+            if (strpos($value, ':') === false) {
+                continue;
+            }
+
+            $header = explode(": ",$value);
+            if($header[0] && !$header[1]) {
+                print('##### OK, WE GET STATUS!');
+                $headerdata['status'] = $header[0];
+            } elseif($header[0] && $header[1]) {
+                $headerdata[$header[0]] = $header[1];
+            }
+        }
+        $this->headers = $headerdata;
     }
 }
 
