@@ -146,9 +146,9 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
      */
     public function testGetGroupsInvalidUser()
     {
-        $user = new RestAuthUser($this->conn, "foobar");
+        $fakeuser = new RestAuthUser($this->conn, "foobar");
         try {
-            print_r($user->getGroups());
+            $fakeuser->getGroups();
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());

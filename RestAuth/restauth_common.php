@@ -225,12 +225,7 @@ class RestAuthHttpResponse
             }
 
             $header = explode(": ",$value);
-            if($header[0] && !$header[1]) {
-                print('##### OK, WE GET STATUS!');
-                $headerdata['status'] = $header[0];
-            } elseif($header[0] && $header[1]) {
-                $headerdata[$header[0]] = $header[1];
-            }
+            $headerdata[$header[0]] = $header[1];
         }
         $this->headers = $headerdata;
     }
@@ -435,9 +430,10 @@ class RestAuthConnection
      */
     public function get($url, $params = array())
     {
-        //send($method, $url, $body=null, $headers=array())
         $url = $this->sanitizePath($url);
-        //TODO: handle get request parameters: $request->setQueryData($params);
+        if (!($params == false)) {
+            $url .= '?' . http_build_query($params);
+        }
         return $this->send('GET', $url);
     }
 

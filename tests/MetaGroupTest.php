@@ -143,7 +143,6 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
         // verify that group2 now inherits memberships from group1:
         $testArray = $group2->getMembers();
         usort($testArray, array("RestAuthUser", "cmp"));
-        print_r($testArray);
         $this->assertEquals(array($user1, $user2, $user3, $user4), $testArray);
         $this->assertTrue($group2->isMember($user1));
         $this->assertTrue($group2->isMember($user2));
