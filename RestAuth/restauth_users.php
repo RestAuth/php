@@ -22,7 +22,7 @@
  * @category  Authentication
  * @package   RestAuth
  * @author    Mathias Ertl <mati@restauth.net>
- * @copyright 2010-2011 Mathias Ertl
+ * @copyright 2010-2012 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
  * @link      https://php.restauth.net
  */
@@ -70,7 +70,7 @@ class RestAuthPropertyExists extends RestAuthResourceConflict
  * @category  Authentication
  * @package   RestAuth
  * @author    Mathias Ertl <mati@restauth.net>
- * @copyright 2010-2011 Mathias Ertl
+ * @copyright 2010-2012 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
  * @version   Release: @package_version@
  * @link      https://php.restauth.net
@@ -471,6 +471,24 @@ class RestAuthUser extends RestAuthResource
         // @codeCoverageIgnoreEnd
     }
 
+    public function setProperties($properties)
+    {
+        $url = "$this->name/props/";
+        $resp = $this->putRequest($url, $properties);
+
+        switch ($resp->getResponseCode()) {
+        case 204:
+            return;
+
+        case 404:
+            throw new RestAuthResourceNotFound($resp);
+
+            // @codeCoverageIgnoreStart
+        default:
+            throw new RestAuthUnknownStatus($resp);
+        }
+        // @codeCoverageIgnoreEnd
+    }
 
     /**
      * Create a new property for this user.
