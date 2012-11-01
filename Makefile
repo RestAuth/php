@@ -11,7 +11,8 @@ test:
 test-standards:
 	-phpcs --report-width=120 tests/* RestAuth/*
 
-coverage:
+coverage: ${HTMLDIR}/coverage/index.html
+${HTMLDIR}/coverage/index.html:
 	phpunit --coverage-html ./doc/coverage tests/
 
 examples:
@@ -23,7 +24,8 @@ install:
 pear-package:
 	pear package
 
-doc:
+doc: ${HTMLDIR}/index.html
+${HTMLDIR}/index.html:
 	mkdir -p ${HTMLDIR}
 	phpdoc -ue -s --title "php-restauth documentation" -o HTML:frames:default -dn php-restauth -d ${SRCDIR},tutorials -t ${HTMLDIR}
 
