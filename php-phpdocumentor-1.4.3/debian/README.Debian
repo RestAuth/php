@@ -1,7 +1,0 @@
-php-phpdocumentor for Debian
---------------------------
-
-This extension has been created with dh-make-pear which is part
-of dh-make-php.
-
- -- Mathias Ertl <apt-repository@fsinf.at>, Wed, 29 Jun 2011 17:13:02 +0200
