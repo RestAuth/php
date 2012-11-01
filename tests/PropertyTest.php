@@ -292,6 +292,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Test setting multiple properties
+     *
+     * @return null
+     */
     public function testSetProperties()
     {
         global $user, $propKey1, $propVal1, $propKey2, $propVal2;
@@ -313,6 +318,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($propVal3, $user->getProperty($propKey3));
     }
 
+    /**
+     * Test partially overwriting multiple properties at once.
+     *
+     * @return null
+     */
     public function testSetPropertiesPartialOverwrite()
     {
         global $user, $propKey1, $propVal1, $propKey2, $propVal2;
@@ -347,6 +357,11 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('new property', $user->getProperty('new key'));
     }
 
+    /**
+     * Test setting properties of an invalid user.
+     *
+     * @return null
+     */
     public function testSetPropertiesInvalidUser()
     {
         global $user, $propKey, $propVal;
