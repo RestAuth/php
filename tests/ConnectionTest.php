@@ -132,7 +132,17 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         RestAuthUser::getAll($conn);
     }
 
-    private function assertPrivates($conn, $headers, $contenttype, $options)
+    /**
+     * Assert private variables of a RestAuthConnection object.
+     *
+     * @param RestAuthConnection $conn        The Connection to test.
+     * @param array              $headers     The expected headers
+     * @param string             $contenttype The expected ContentType header
+     * @param array              $options     The expected curl options
+     *
+     * @return null
+     */
+    private function _assertPrivates($conn, $headers, $contenttype, $options)
     {
         $this->assertAttributeEquals(
             $headers,  /* expected value */
@@ -151,6 +161,11 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test various constructor parameters.
+     *
+     * @return null
+     */
     public function testConstructor()
     {
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
@@ -166,7 +181,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         );
 
         $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
-        $this->assertPrivates($conn, $headers, $contenttype, $curlOptions);
+        $this->_assertPrivates($conn, $headers, $contenttype, $curlOptions);
 
         $handler = new FakeContentHandler();
         $add_headers = array('Foo: Bar', 'Bla: Hugo');
@@ -182,7 +197,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         $test_headers = array_merge($headers, $add_headers);
         $test_headers['accept'] = 'Accept: ' . $handler->getMimeType();
         $test_contenttype = 'Content-Type: ' . $handler->getMimeType();
-        $this->assertPrivates(
+        $this->_assertPrivates(
             $conn, $test_headers, $test_contenttype,
             array_merge($curlOptions, $add_options)
         );
@@ -259,6 +274,11 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Test connecting to a host that doesn't allow us to connect from here.
+     *
+     * @return null
+     */
     public function testWrongHost()
     {
         global $RestAuthHost, $RestAuthPass;
@@ -272,6 +292,11 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Try to perform an operation that we don't have the permissions for.
+     *
+     * @return null
+     */
     public function testNoPermissions()
     {
         global $RestAuthHost, $RestAuthPass;
