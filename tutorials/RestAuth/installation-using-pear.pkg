@@ -1,0 +1,39 @@
+<refentry id="{@id}">
+ <refnamediv>
+  <refname>Installation using PEAR</refname>
+  <refpurpose>How-to install using PEAR</refpurpose>
+ </refnamediv>
+ <refsynopsisdiv>
+  <author>
+   Mathias Ertl
+   <authorblurb>
+    {@link mailto:mati@restauth.net mati@restauth.net}
+   </authorblurb>
+  </author>
+ </refsynopsisdiv>
+ <refsect1 id="{@id installation}">
+  <para>
+   You can also install php-restauth using PEAR. We provide our own PEAR channel containing stable
+   releases of php-restauth. First, you must discover our channel:
+   <para><programlisting language="bash">
+    pear channel-discover pear.php.restauth.net
+   </programlisting></para>
+   and then install the package simply by doing:
+   <para><programlisting language="bash">
+    pear install RestAuth/Authentication_RestAuth
+   </programlisting></para>
+  </para>
+ </refsect1>
+ <refsect1 id="{@id update}">
+  <title>Upgrading</title>
+  <para>To upgrade all packages, simply run:
+   <para><programlisting language="bash">
+    pear upgrade
+   </programlisting></para>
+   If you only want to upgrade this package, do:
+   <para><programlisting language="bash">
+    pear upgrade RestAuth/Authentication_RestAuth	
+   </programlisting></para>
+  </para>
+ </refsect1>
+</refentry>

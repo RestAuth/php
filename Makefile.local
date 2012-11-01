@@ -1,0 +1,27 @@
+RELEASE=$(shell grep -m 1 release package.xml | sed 's/\s*<release>\(.*\)<\/release>\s*/\1/')
+NAME=$(shell grep -m 1 '^\s*<name>' package.xml | sed 's/\s*<name>\(.*\)<\/name>\s*/\1/')
+
+SRC_PACKAGE=php-restauth-${RELEASE}.tar.gz
+PEAR_PACKAGE=${NAME}-${RELEASE}.tgz
+
+${PEAR_PACKAGE}:
+	pear package
+
+publish-pear: ${PEAR_PACKAGE}
+	scp ${PEAR_PACKAGE} haumea:
+	rm ${PEAR_PACKAGE}
+	ssh haumea sudo pirum add /srv/www/pear.php.restauth.net/ ${PEAR_PACKAGE}
+	ssh haumea rm ${PEAR_PACKAGE}
+
+publish-source: ../${SRC_PACKAGE}
+	scp ../${SRC_PACKAGE} mars:
+	ssh mars sudo cp ${SRC_PACKAGE} /var/www/php.restauth.net/download
+	ssh mars rm ${SRC_PACKAGE}
+	rm ../${SRC_PACKAGE}
+
+../${SRC_PACKAGE}:
+	git checkout ${RELEASE}
+	tar --exclude-vcs --xform 's/^./php-restauth-${RELEASE}/' -czf ../${SRC_PACKAGE} .
+	git checkout master
+
+publish: publish-source publish-pear

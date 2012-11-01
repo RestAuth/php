@@ -1,0 +1,13 @@
+RestAuth 0.6.0 (01 November 2012)
+
+  * Support for RestAuth 0.6. This includes setting multiple properties.
+    and detection for the HTTP 403 Forbidden status code.
+  * Use pure libcurl instead of pecl_http, which removes a runtime dependency.
+  * Support setting additional headers or any curl option via the constructor.
+  * Remove some function parameters that were never used.
+  * Use the new services defined in version 0.6.1 of the testserver of the
+    RestAuth server reference implementation. 
+
+RestAuth 0.5.0 (23 September 2011)
+
+  * Initial version based on version 0.5 of the RestAuth protocol.
