@@ -298,9 +298,9 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         global $propKey3, $propVal3;
 
         $properties = array(
-            $propKey1 => $propKey1,
-            $propKey2 => $propKey2,
-            $propKey3 => $propKey3,
+            $propKey1 => $propVal1,
+            $propKey2 => $propVal2,
+            $propKey3 => $propVal3,
         );
 
         $this->assertNull($user->setProperties($properties));
@@ -319,9 +319,9 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         global $propKey3, $propVal3;
 
         $properties = array(
-            $propKey1 => $propKey1,
-            $propKey2 => $propKey2,
-            $propKey3 => $propKey3,
+            $propKey1 => $propVal1,
+            $propKey2 => $propVal2,
+            $propKey3 => $propVal3,
         );
 
         $this->assertNull($user->setProperties($properties));
