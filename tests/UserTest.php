@@ -33,8 +33,8 @@ require_once 'RestAuth/restauth.php';
 
 // setup the connection:
 $RestAuthHost = 'http://[::1]:8000';
-$RestAuthUser = 'vowi';
-$RestAuthPass = 'vowi';
+$RestAuthUser = 'example.com';
+$RestAuthPass = 'nopass';
 
 // various test data.
 $username1 = "user1 ɨʄɔ"; // IPA (\u0268\u0284\u0254)
