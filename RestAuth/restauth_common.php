@@ -249,8 +249,8 @@ class RestAuthConnection
 {
     public static $connection;
 
-    private $handle;
-    private $headers;
+    private $handler;
+    private $headers = array();
     private $curlOptions;
     private $contenttype;
 
@@ -277,12 +277,6 @@ class RestAuthConnection
     {
         $this->url = rtrim($url, '/');
         $this->setCredentials($user, $password);
-
-        // build standard headers:
-        $this->headers = array(
-            'Authorization: ' . $this->auth_header,
-        );
-
         $this->setContentHandler($contentHandler);
 
         $this->curlOptions = array(
@@ -334,7 +328,8 @@ class RestAuthConnection
      */
     public function setCredentials($user, $password)
     {
-        $this->auth_header = 'Basic ' . base64_encode($user . ':' . $password);
+        $value = 'Basic ' . base64_encode($user . ':' . $password);
+        $this->headers['auth'] = 'Authorization: ' . $value;
     }
 
     public function setContentHandler($handler=null) {
@@ -346,6 +341,18 @@ class RestAuthConnection
 
         $this->contenttype = 'Content-Type: ' . $this->handler->getMimeType();
         $this->headers['accept'] = 'Accept: ' . $this->handler->getMimeType();
+    }
+
+    public function unmarshalStr($str) {
+        return $this->handler->unmarshalStr($str);
+    }
+
+    public function unmarshalDict($dict) {
+        return $this->handler->unmarshalDict($dict);
+    }
+
+    public function unmarshalList($list) {
+        return $this->handler->unmarshalList($list);
     }
 
     /**

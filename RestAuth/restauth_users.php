@@ -36,7 +36,7 @@ require_once 'restauth_groups.php';
 
 /**
  * Thrown when a user is supposed to be created but already exists.
- * 
+ *
  * @category  Authentication
  * @package   RestAuth
  * @author    Mathias Ertl <mati@restauth.net>
@@ -51,7 +51,7 @@ class RestAuthUserExists extends RestAuthResourceConflict
 
 /**
  * Thrown when a property is supposed to be created but already exists.
- * 
+ *
  * @category  Authentication
  * @package   RestAuth
  * @author    Mathias Ertl <mati@restauth.net>
@@ -116,30 +116,30 @@ class RestAuthUser extends RestAuthResource
         if (!((is_null($props)) || (empty($props)))) {
             $params['properties'] = $props;
         }
-        
+
         $resp = $conn->post('/users/', $params);
         switch ($resp->getResponseCode()) {
         case 201:
             return new RestAuthUser($conn, $name);
-            
+
         case 409:
             throw new RestAuthUserExists($resp);
-            
+
         case 412:
             throw new RestAuthPreconditionFailed($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Test if creating a user with the current parameters would succeed or not.
      * This method always returns true if the user could be created, otherwise
      * it should throw the exact same exceptions as if you would actually {@link
-     * create create} the user. 
+     * create create} the user.
      *
      * Note that doing this request never guarantees that an actual request
      * works in the future, it can only assure that it would succeed right now.
@@ -161,18 +161,18 @@ class RestAuthUser extends RestAuthResource
         if (!((is_null($props)) || (empty($props)))) {
             $params['properties'] = $props;
         }
-        
+
         $resp = $conn->post('/test/users/', $params);
         switch ($resp->getResponseCode()) {
         case 201:
             return true;
-            
+
         case 409:
             throw new RestAuthUserExists($resp);
-            
+
         case 412:
             throw new RestAuthPreconditionFailed($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -189,7 +189,7 @@ class RestAuthUser extends RestAuthResource
      * @param string             $name The name of this user.
      *
      * @return RestAuthUser An instance representing a remote user.
-     * 
+     *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
      * @throws {@link RestAuthResourceNotFound} If the user does not exist in
@@ -208,10 +208,10 @@ class RestAuthUser extends RestAuthResource
         switch ($resp->getResponseCode()) {
         case 204:
             return new RestAuthUser($conn, $name);
-            
+
         case 404:
             throw new RestAuthResourceNotFound($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -225,7 +225,7 @@ class RestAuthUser extends RestAuthResource
      * @param RestAuthConnection $conn The connection to a RestAuth service.
      *
      * @return array An array containing all users.
-     * 
+     *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
@@ -241,13 +241,13 @@ class RestAuthUser extends RestAuthResource
 
         switch ($resp->getResponseCode()) {
         case 200:
-            $list = $conn->handler->unmarshalList($resp->getBody());
+            $list = $conn->unmarshalList($resp->getBody());
             $response = array();
             foreach ($list as $name) {
                 $response[] = new RestAuthUser($conn, $name);
             }
             return $response;
-        
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -257,7 +257,7 @@ class RestAuthUser extends RestAuthResource
 
     /**
      * Constructor that initializes an object representing a user in
-     * RestAuth. 
+     * RestAuth.
      *
      * <b>Note:</b> The constructor does not verify if the user exists, use
      * {@link get} or {@link getAll} if you wan't to be sure it exists.
@@ -304,13 +304,13 @@ class RestAuthUser extends RestAuthResource
         switch ($resp->getResponseCode()) {
         case 204:
             return;
-        
+
         case 404:
             throw new RestAuthResourceNotFound($resp);
-            
+
         case 412:
             throw new RestAuthPreconditionFailed($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -320,12 +320,12 @@ class RestAuthUser extends RestAuthResource
 
     /**
      * Verify the given password.
-     * 
+     *
      * The method does not throw an error if the user does not exist at all,
      * it also returns false in this case.
-     * 
+     *
      * @param string $password The password to verify.
-     * 
+     *
      * @return boolean true if the password is correct, false if the
      *     password is wrong or the user does not exist.
 
@@ -347,10 +347,10 @@ class RestAuthUser extends RestAuthResource
         switch ($resp->getResponseCode()) {
         case 204:
             return true;
-        
+
         case 404:
             return false;
-        
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -362,7 +362,7 @@ class RestAuthUser extends RestAuthResource
      * Delete this user.
      *
      * @return null
-     * 
+     *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
      * @throws {@link RestAuthResourceNotFound} When the user does exist
@@ -378,10 +378,10 @@ class RestAuthUser extends RestAuthResource
         switch ($resp->getResponseCode()) {
         case 204:
             return;
-        
+
         case 404:
             throw new RestAuthResourceNotFound($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -394,7 +394,7 @@ class RestAuthUser extends RestAuthResource
      *
      * This method causes a single request to the RestAuth service and is
      * a much better solution when fetching multiple properties.
-     * 
+     *
      * @return array A key/value array of the properties defined for this user.
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
@@ -410,21 +410,21 @@ class RestAuthUser extends RestAuthResource
     {
         $url = "$this->name/props/";
         $resp = $this->getRequest($url);
-        
+
         switch ($resp->getResponseCode()) {
         case 200:
-            return $this->conn->handler->unmarshalDict($resp->getBody());
-        
+            return $this->conn->unmarshalDict($resp->getBody());
+
         case 404:
             throw new RestAuthResourceNotFound($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Set a property for this user. This method overwrites any previous
      * entry.
@@ -450,20 +450,20 @@ class RestAuthUser extends RestAuthResource
      */
     public function setProperty($name, $value)
     {
-        $url = "$this->name/props/$name"; 
+        $url = "$this->name/props/$name";
         $params = array('value' => $value);
         $resp = $this->putRequest($url, $params);
         switch ($resp->getResponseCode()) {
         // todo: 200 is never tested!!!
         case 200:
-            return $this->conn->handler->unmarshalStr($resp->getBody());
-            
+            return $this->conn->unmarshalStr($resp->getBody());
+
         case 201:
             return;
-        
+
         case 404:
             throw new RestAuthResourceNotFound($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -473,11 +473,11 @@ class RestAuthUser extends RestAuthResource
 
 
     /**
-     * Create a new property for this user. 
-     * 
+     * Create a new property for this user.
+     *
      * This method fails if the property already existed. Use {@link
      * setProperty} if you do not care if the property already exists.
-     * 
+     *
      * @param string $name  The property to set.
      * @param string $value The new value of the property.
      *
@@ -507,29 +507,29 @@ class RestAuthUser extends RestAuthResource
         switch ($resp->getResponseCode()) {
         case 201:
             return;
-        
+
         case 404:
             throw new RestAuthResourceNotFound($resp);
-            
+
         case 409:
             throw new RestAuthPropertyExists($resp);
-            
+
         case 412:
             throw new RestAuthPreconditionFailed($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
         }
         // @codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Test if creating a property for a user with the current parameters would
      * succeed or not. This method always returns null if the property could be
      * created, otherwise it should throw the exact same exceptions as if you
      * would actually {@link createProperty create the property}.
-     * 
+     *
      * @param string $name  The property to set.
      * @param string $value The new value of the property.
      *
@@ -543,16 +543,16 @@ class RestAuthUser extends RestAuthResource
         switch ($resp->getResponseCode()) {
         case 201:
             return;
-        
+
         case 404:
             throw new RestAuthResourceNotFound($resp);
-            
+
         case 409:
             throw new RestAuthPropertyExists($resp);
-            
+
         case 412:
             throw new RestAuthPreconditionFailed($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -561,14 +561,14 @@ class RestAuthUser extends RestAuthResource
     }
 
     /**
-     * Get the given property for this user. 
+     * Get the given property for this user.
      *
-     * <b>Note:</b> Each call to this function causes an HTTP request to 
+     * <b>Note:</b> Each call to this function causes an HTTP request to
      * the RestAuth service. If you want to get many properties, consider
      * using {@link getProperties}.
      *
      * @param string $name Name of the property we should get.
-     * 
+     *
      * @return string The value of the property.
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
@@ -587,11 +587,11 @@ class RestAuthUser extends RestAuthResource
 
         switch ($resp->getResponseCode()) {
         case 200:
-            return $this->conn->handler->unmarshalStr($resp->getBody());
-            
+            return $this->conn->unmarshalStr($resp->getBody());
+
         case 404:
             throw new RestAuthResourceNotFound($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -623,10 +623,10 @@ class RestAuthUser extends RestAuthResource
         switch ($resp->getResponseCode()) {
         case 204:
             return;
-        
+
         case 404:
             throw new RestAuthResourceNotFound($resp);
-            
+
             // @codeCoverageIgnoreStart
         default:
             throw new RestAuthUnknownStatus($resp);
@@ -638,7 +638,7 @@ class RestAuthUser extends RestAuthResource
      * Get all groups that this user is a member of.
      *
      * This method is just a shortcut for {@link RestAuthGroup::getAll()}.
-     * 
+     *
      * @return array Array of {@link RestAuthGroup groups}.
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
@@ -665,7 +665,7 @@ class RestAuthUser extends RestAuthResource
      *
      * @param mixed $group The group to test. Either a  {@link RestAuthGroup}
      *    or a string representing the groupname.
-     *    
+     *
      * @return boolean true if the user is a member, false if not
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
@@ -682,7 +682,7 @@ class RestAuthUser extends RestAuthResource
         if (is_string($group)) {
             $group = new RestAuthGroup($this->conn, $group);
         }
-        
+
         return $group->isMember($this);
     }
 
@@ -691,7 +691,7 @@ class RestAuthUser extends RestAuthResource
      *
      * This method is just a shortcut for {@link RestAuthGroup::addUser()}.
      *
-     * @param mixed $group The group the user should become a member of. 
+     * @param mixed $group The group the user should become a member of.
      *    Either a  {@link RestAuthGroup} or a string representing the
      *    groupname.
      *
@@ -715,14 +715,14 @@ class RestAuthUser extends RestAuthResource
         if (is_string($group)) {
             $group = new RestAuthGroup($this->conn, $group);
         }
-        
+
         return $group->addUser($this);
     }
 
     /**
      * Remove the users membership from the given group.
      *
-     * This method is just a shortcut for {@link 
+     * This method is just a shortcut for {@link
      * RestAuthGroup::removeUser()}.
      *
      * @param mixed $group The group the user should no longer be a member
@@ -745,7 +745,7 @@ class RestAuthUser extends RestAuthResource
         if (is_string($group)) {
             $group = new RestAuthGroup($this->conn, $group);
         }
-        
+
         return $group->removeUser($this);
     }
 
@@ -768,7 +768,7 @@ class RestAuthUser extends RestAuthResource
             return ($aName > $bName) ? +1 : -1;
         }
     }
-    
+
     /**
      * A string representic this class for pretty-printing.
      *
