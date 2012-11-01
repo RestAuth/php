@@ -16,11 +16,11 @@
   <email>mati@restauth.net</email>
   <active>yes</active>
  </lead>
- <date>2011-08-01</date>
- <time>14:40:28</time>
+ <date>2012-11-01</date>
+ <time>20:14:30</time>
  <version>
-  <release>0.5.0</release> 
-  <api>0.5</api>
+  <release>0.6.0</release> 
+  <api>0.6</api>
  </version>
  <stability>
   <release>stable</release>
@@ -67,6 +67,21 @@
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.6.0</release>
+    <api>0.6</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2012-11-01</date>
+   <license uri="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence, version 3</license>
+   <notes>
+    Support for RestAuth 0.6, use libcurl instead of pecl_http. See ChangeLog for details.
+   </notes>
+  </release>
   <release>
    <version>
     <release>0.5.0</release>

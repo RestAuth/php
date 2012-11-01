@@ -79,15 +79,17 @@ function verifyProperty($user, $key, $value)
 // test user properties:
 foreach ($all_users as $user) {
     $props = $user->getProperties();
-    if (count($props) != 0)
+    if (count($props) != 1) {
+        // the 'date joined' property is auto-defined and thus wasn't removed.
         die("Error: Left over properties: ".count($props));
+    }
 
-    $user->create_property('name test', "name is $user->name");
+    $user->createProperty('name test', "name is $user->name");
     verifyProperty($user, 'name test', "name is $user->name");
 
     // try to create it again:
     try {
-        $user->create_property('name test', "wrong value");
+        $user->createProperty('name test', "wrong value");
         die("Error: Successfully created already existing property!");
     } catch (RestAuthPropertyExists $e) {
     }
@@ -152,7 +154,7 @@ function verify_membership($group, $user)
     if (! $group->isMember($user))
         die("Error: $user->name is not a member of $group->name");
     $members = $group->getMembers();
-    
+
     if (! in_array($user, $members))
         die("Error: $user->name not in all users of $group->name");
 }

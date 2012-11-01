@@ -32,7 +32,7 @@ require_once 'PHPUnit/Autoload.php';
 require_once 'RestAuth/restauth.php';
 
 // variables are defined in UserTest.php
- 
+
 /**
  * Do some very basic group tests.
  *
@@ -146,9 +146,9 @@ class SimpleUserGroupTest extends PHPUnit_Framework_TestCase
      */
     public function testGetGroupsInvalidUser()
     {
-        $user = new RestAuthUser($this->conn, "foobar");
+        $fakeuser = new RestAuthUser($this->conn, "foobar");
         try {
-            $user->getGroups();
+            $fakeuser->getGroups();
             $this->fail();
         } catch (RestAuthResourceNotFound $e) {
             $this->assertEquals("user", $e->getType());

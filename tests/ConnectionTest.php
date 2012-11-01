@@ -50,50 +50,50 @@ class FakeContentHandler extends ContentHandler
      * Not really unmarshal a string.
      *
      * @param object $obj not used.
-     * 
+     *
      * @return str always 'wrong'.
      */
     public function unmarshalStr($obj)
     {
         return "wrong";
     }
-    
+
     /**
      * Not really unmarshal a list.
      *
      * @param object $obj not used.
-     * 
+     *
      * @return array always array('wrong').
      */
     public function unmarshalList($obj)
     {
         return array("wrong");
     }
-    
+
     /**
      * Not really unmarshal a dictionary.
      *
      * @param object $obj not used.
-     * 
+     *
      * @return str always array("wrong key" => "wrong value").
      */
     public function unmarshalDict($obj)
     {
         return array("wrong key" => "wrong value");
     }
-    
+
     /**
      * Not really marshal a dictionary.
      *
      * @param object $obj not used.
-     * 
+     *
      * @return str always ''.
      */
     public function marshalDict($obj)
     {
         return '';
     }
-    
+
     /**
      * Get a bogus mime type.
      *
@@ -102,7 +102,7 @@ class FakeContentHandler extends ContentHandler
     public function getMimeType()
     {
         return 'something/wrong';
-    }    
+    }
 }
 
 /**
@@ -128,10 +128,82 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
     {
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
         $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
-        
+
         RestAuthUser::getAll($conn);
     }
-    
+
+    /**
+     * Assert private variables of a RestAuthConnection object.
+     *
+     * @param RestAuthConnection $conn        The Connection to test.
+     * @param array              $headers     The expected headers
+     * @param string             $contenttype The expected ContentType header
+     * @param array              $options     The expected curl options
+     *
+     * @return null
+     */
+    private function _assertPrivates($conn, $headers, $contenttype, $options)
+    {
+        $this->assertAttributeEquals(
+            $headers,  /* expected value */
+            '_headers',  /* attribute name */
+            $conn
+        );
+        $this->assertAttributeEquals(
+            $contenttype,  /* expected value */
+            '_contenttype',  /* attribute name */
+            $conn
+        );
+        $this->assertAttributeEquals(
+            $options,  /* expected value */
+            '_curlOptions',  /* attribute name */
+            $conn
+        );
+    }
+
+    /**
+     * Test various constructor parameters.
+     *
+     * @return null
+     */
+    public function testConstructor()
+    {
+        global $RestAuthHost, $RestAuthUser, $RestAuthPass;
+
+        $headers = array (
+            'auth' => 'Authorization: Basic ZXhhbXBsZS5jb206bm9wYXNz',
+            'accept' => 'Accept: application/json',
+        );
+        $contenttype = 'Content-Type: application/json';
+        $curlOptions = array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_HEADER => 1,
+        );
+
+        $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
+        $this->_assertPrivates($conn, $headers, $contenttype, $curlOptions);
+
+        $handler = new FakeContentHandler();
+        $add_headers = array('Foo: Bar', 'Bla: Hugo');
+        $add_options = array(
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_SSL_VERIFYPEER => true,
+        );
+
+        $conn = new RestAuthConnection(
+            $RestAuthHost, $RestAuthUser, $RestAuthPass,
+            $handler, $add_options, $add_headers
+        );
+        $test_headers = array_merge($headers, $add_headers);
+        $test_headers['accept'] = 'Accept: ' . $handler->getMimeType();
+        $test_contenttype = 'Content-Type: ' . $handler->getMimeType();
+        $this->_assertPrivates(
+            $conn, $test_headers, $test_contenttype,
+            array_merge($curlOptions, $add_options)
+        );
+
+    }
+
     /**
      * Try to authenticate with the wrong username.
      *
@@ -141,14 +213,14 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
     {
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
         $conn = new RestAuthConnection($RestAuthHost, "wrong user", $RestAuthPass);
-        
+
         try {
             RestAuthUser::getAll($conn);
             $this->fail();
         } catch (RestAuthUnauthorized $e) {
         }
     }
-    
+
     /**
      * Try to authenticate with the wrong password.
      *
@@ -158,14 +230,14 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
     {
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
         $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, "wrong");
-        
+
         try {
             RestAuthUser::getAll($conn);
             $this->fail();
         } catch (RestAuthUnauthorized $e) {
         }
     }
-    
+
     /**
      * Try to connect to the wrong port.
      *
@@ -176,40 +248,68 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
         $host = 'http://[::1]:8001';
         $conn = new RestAuthConnection($host, $RestAuthUser, $RestAuthPass);
-        
+
         try {
             RestAuthUser::getAll($conn);
             $this->fail();
         } catch (RestAuthHttpException $e) {
-            $cause = $e->getCause();
-            if (! is_a($cause, 'HttpInvalidParamException')) {
-                $this->fail();
-            }
         }
     }
-    
+
     /**
      * Try to connect to the wrong host.
      *
      * @return null
      */
-    public function testWrongHost()
+    public function testInvalidHost()
     {
         global $RestAuthUser, $RestAuthPass;
         $host = 'http://[::3]:8000';
         $conn = new RestAuthConnection($host, $RestAuthUser, $RestAuthPass);
-        
+
         try {
             RestAuthUser::getAll($conn);
             $this->fail();
         } catch (RestAuthHttpException $e) {
-            $cause = $e->getCause();
-            if (! is_a($cause, 'HttpInvalidParamException')) {
-                $this->fail();
-            }
         }
     }
-    
+
+    /**
+     * Test connecting to a host that doesn't allow us to connect from here.
+     *
+     * @return null
+     */
+    public function testWrongHost()
+    {
+        global $RestAuthHost, $RestAuthPass;
+        $RestAuthUser = 'nohosts.example.com';
+        $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
+
+        try {
+            RestAuthUser::getAll($conn);
+            $this->fail();
+        } catch (RestAuthUnauthorized $e) {
+        }
+    }
+
+    /**
+     * Try to perform an operation that we don't have the permissions for.
+     *
+     * @return null
+     */
+    public function testNoPermissions()
+    {
+        global $RestAuthHost, $RestAuthPass;
+        $RestAuthUser = 'example.net';
+        $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
+
+        try {
+            RestAuthUser::getAll($conn);
+            $this->fail();
+        } catch (RestAuthForbidden $e) {
+        }
+    }
+
     /**
      * Try to accept content in a format that can not be generated by the
      * server.
@@ -220,21 +320,21 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
     {
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
         $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
-        $conn->handler = new FakeContentHandler();
-        
+        $conn->setContentHandler(new FakeContentHandler());
+
         try {
             RestAuthUser::getAll($conn);
             $this->fail();
         } catch (RestAuthNotAcceptable $e) {
         }
-        
+
         try {
             RestAuthGroup::getAll($conn);
             $this->fail();
         } catch (RestAuthNotAcceptable $e) {
         }
     }
-    
+
     /**
      * Try making a bad POST request.
      *
@@ -244,7 +344,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
     {
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
         $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
-        
+
         $params = array('whatever' => "foobar");
         try {
             $resp = $conn->post('/users/', $params);
@@ -253,9 +353,9 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
             $this->assertEquals(array(), RestAuthUser::getAll($conn));
         }
     }
-    
+
     /**
-     * Try a POST request with serialized data in an unsupported media format. 
+     * Try a POST request with serialized data in an unsupported media format.
      *
      * @return null
      */
@@ -263,19 +363,19 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
     {
         global $RestAuthHost, $RestAuthUser, $RestAuthPass, $username1;
         $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
-        
-        $conn->handler = new FakeContentHandler();
-        
+
+        $conn->setContentHandler(new FakeContentHandler());
+
         $params = array('whatever' => "foobar");
         try {
             $resp = $conn->post('/users/', $params);
             $this->fail();
         } catch (RestAuthUnsupportedMediaType $e) {
-            $conn->handler = new RestAuthJsonHandler();
+            $conn->setContentHandler();
             $this->assertEquals(array(), RestAuthUser::getAll($conn));
         }
     }
-    
+
     /**
      * Try making a bad PUT request.
      *
@@ -286,22 +386,22 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         global $RestAuthHost, $RestAuthUser, $RestAuthPass, $username1, $password1;
         $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
         $user = RestAuthUser::create($conn, $username1, $password1);
-        
+
         $params = array('bad' => 'request');
         try {
             // change password
             $resp = $conn->put('/users/'.$username1.'/', $params);
             $this->fail();
         } catch (RestAuthBadRequest $e) {
-            $conn->handler = new RestAuthJsonHandler();
-            
+            $conn->setContentHandler();
+
             $this->assertEquals(array($user), RestAuthUser::getAll($conn));
             $this->assertTrue($user->verifyPassword($password1));
         }
     }
-    
+
     /**
-     * Try a PUT request with serialized data in an unsupported media format. 
+     * Try a PUT request with serialized data in an unsupported media format.
      *
      * @return null
      */
@@ -313,24 +413,24 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
             $RestAuthHost, $RestAuthUser, $RestAuthPass
         );
         $user = RestAuthUser::create($conn, $username1, $password1);
-        
-        $conn->handler = new FakeContentHandler();
-        
+
+        $conn->setContentHandler(new FakeContentHandler());
+
         $params = array('password' => $password2);
         try {
             // change password
             $resp = $conn->put('/users/'.$username1.'/', $params);
             $this->fail();
         } catch (RestAuthUnsupportedMediaType $e) {
-            $conn->handler = new RestAuthJsonHandler();
-            
+            $conn->setContentHandler();
+
             $this->assertEquals(array($user), RestAuthUser::getAll($conn));
             $this->assertTrue($user->verifyPassword($password1));
             $this->assertFalse($user->verifyPassword($password2));
         }
-        
+
     }
-    
+
     /**
      * Set up everything for the test.
      *
@@ -348,7 +448,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
             throw new Exception("Found " . count($users) . " left over users.");
         }
     }
-    
+
     /**
      * Remove all data created by any test, etc.
      *
@@ -358,13 +458,13 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
     {
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
         $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
-        
+
         $users = RestAuthUser::getAll($conn);
         foreach ($users as $user) {
             $user->remove();
         }
     }
-    
+
     /**
      * Total cleanup after this test suite.
      *

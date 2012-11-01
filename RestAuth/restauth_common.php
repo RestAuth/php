@@ -2,7 +2,7 @@
 
 /**
  * This file contains code related to HTTP handling.
- * 
+ *
  * PHP version 5.1
  *
  * LICENSE: This file is part of php-restauth.
@@ -45,38 +45,38 @@ abstract class ContentHandler
      * Unmarshal a string.
      *
      * @param str $obj The serialized data to unmarshal
-     * 
+     *
      * @return str The unmarshalled string
      */
     abstract function unmarshalStr($obj);
-    
+
     /**
      * Unmarshal a list.
-     * 
+     *
      * @param str $obj The serialized data to unmarshal
-     * 
+     *
      * @return str The unmarshalled list.
      */
     abstract function unmarshalList($obj);
-    
+
     /**
      * Unmarshal a dictionary.
      *
      * @param str $obj The serialized data to unmarshal
-     * 
+     *
      * @return str The unmarshalled dictionary.
      */
     abstract function unmarshalDict($obj);
-    
+
     /**
      * Marshal an array into a dictionary.
      *
      * @param array $arr The array to serialize.
-     * 
+     *
      * @return str The serialized array.
      */
     abstract function marshalDict($arr);
-    
+
     /**
      * Get the mimetype that this class handles.
      *
@@ -110,7 +110,7 @@ class RestAuthJsonHandler extends ContentHandler
         $arr = json_decode($obj);
         return $arr[0];
     }
-    
+
     /**
      * Unmarshal a list.
      *
@@ -122,7 +122,7 @@ class RestAuthJsonHandler extends ContentHandler
     {
         return json_decode($obj);
     }
-    
+
     /**
      * Unmarshal a dictionary.
      *
@@ -134,19 +134,19 @@ class RestAuthJsonHandler extends ContentHandler
     {
         return (array) json_decode($obj);
     }
-    
+
     /**
      * Marshal an array into a dictionary.
      *
      * @param array $arr The array to serialize.
-     * 
+     *
      * @return str The serialized array.
      */
     public function marshalDict($arr)
     {
         return json_encode($arr, JSON_FORCE_OBJECT);
     }
-    
+
     /**
      * Get the content type that this class handles.
      *
@@ -159,15 +159,123 @@ class RestAuthJsonHandler extends ContentHandler
 }
 
 /**
- * An instance of this class represents a connection to a RestAuth service. 
+ * A HTTP response. Since php5 provides no easy handling for this, we have to
+ * implement this ourselves :-(
  *
- * An instance of this class needs to be passed to any constructor of a
- * {@link RestAuthResource} or the respective factory methods.
- * 
  * @category  Authentication
  * @package   RestAuth
  * @author    Mathias Ertl <mati@restauth.net>
- * @copyright 2010-2011 Mathias Ertl
+ * @copyright 2012 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
+ */
+class RestAuthHttpResponse
+{
+    private $_status;
+    private $_response; // raw response as returned by curl_exec
+    private $_raw_headers;
+    private $_headers;
+    private $_body;
+
+    /**
+     * A simple constructor.
+     *
+     * @param integer $status      The HTTP response status
+     * @param string  $response    The raw HTTP response, including all headers
+     *     (possibly) the HTTP status line.
+     * @param integer $header_size The size of the HTTP headers.
+     */
+    public function __construct($status, $response, $header_size)
+    {
+        $this->_status = $status;
+        $this->_response = $response;
+        $this->_header_size = $header_size;
+    }
+
+    /**
+     * Get the HTTP response code.
+     *
+     * @return integer The HTTP response code.
+     */
+    public function getResponseCode()
+    {
+        return $this->_status;
+    }
+
+    /**
+     * Get one specific header.
+     *
+     * @param string $field The HTTP header of interest.
+     *
+     * @return string The value of HTTP header.
+     */
+    public function getHeader($field)
+    {
+        if (is_null($this->_headers)) {
+            $this->_parseHeaders();
+        }
+
+        return $this->_headers[$field];
+    }
+
+    /**
+     * Get the HTTP response body.
+     *
+     * @return string The HTTP response body.
+     */
+    public function getBody()
+    {
+        $this->_parseBody();
+        return utf8_encode($this->_body);
+    }
+
+    /**
+     * Split the response body and headers.
+     *
+     * @return null
+     */
+    private function _parseBody()
+    {
+        if (is_null($this->_body)) {
+            $this->_raw_headers = substr($this->_response, 0, $this->_header_size);
+            $this->_body = substr($this->_response, $this->_header_size);
+        }
+    }
+
+    /**
+     * Parse raw request headers into an array of headers.
+     *
+     * @return null
+     */
+    private function _parseHeaders()
+    {
+        $this->_parseBody();
+
+        $headers = str_replace("\r", "", $this->_raw_headers);
+        $headers = explode("\n", $headers);
+        foreach ($headers as $value) {
+            if (strpos($value, ':') === false) {
+                continue;
+            }
+
+            $header = explode(": ", $value);
+            $headerdata[$header[0]] = $header[1];
+        }
+        $this->_headers = $headerdata;
+    }
+}
+
+/**
+ * An instance of this class represents a connection to a RestAuth service.
+ *
+ * An instance of this class needs to be passed to any constructor of a
+ * {@link RestAuthResource} or the respective factory methods.
+ *
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2010-2012 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
  * @version   Release: @package_version@
  * @link      https://php.restauth.net
@@ -175,6 +283,11 @@ class RestAuthJsonHandler extends ContentHandler
 class RestAuthConnection
 {
     public static $connection;
+
+    private $_handler;
+    private $_headers = array();
+    private $_curlOptions;
+    private $_contenttype;
 
     /**
      * A simple constructor.
@@ -184,31 +297,42 @@ class RestAuthConnection
      * an unavailable service will only trigger an error when actually doing a
      * request.
      *
-     * @param string $host       The hostname of the RestAuth service
-     * @param string $user       The username to use for authenticating with the
-     *     RestAuth service.
-     * @param string $password   The password to use for authenticating with the
-     *     RestAuth service.
-     * @param array  $sslOptions Any SSL options to use, please see SSL options
-     *     chapter in the {@link
-     *     http://www.php.net/manual/en/http.request.options.php HttpRequest
-     *     options chapter} for available options. This array is merged with the
-     *     default array, which sets 'verifypeer' and 'verifyhost' to true.
+     * @param string         $url            The base URL of the RestAuth
+     *     service
+     * @param string         $user           The username to use for
+     *     authenticating with the RestAuth service.
+     * @param string         $password       The password to use for
+     *     authenticating with the RestAuth service.
+     * @param ContentHandler $contentHandler The content handler used.
+     *     If null, a {@link RestAuthJsonContentHandler} will be used.
+     * @param array          $curlOptions    Any additional curl options
+     *     to pass to this connection. See the documentation of {@link
+     *     http://www.php.net/manual/en/function.curl-setopt.php curl_setopt}
+     *     for a list of possible values.
+     * @param array          $headers        Any additional headers to pass with
+     *      this request.
      */
-    public function __construct($host, $user, $password, $sslOptions=array() )
-    {
-        $this->host = rtrim($host, '/');
+    public function __construct($url, $user, $password, $contentHandler=null,
+        $curlOptions=null, $headers=null
+    ) {
+        $this->url = rtrim($url, '/');
         $this->setCredentials($user, $password);
-        $this->handler = new RestAuthJsonHandler();
-        
-        $this->parsedUrl = parse_url($host);
-        $this->sslOptions = array_merge(
-            array(
-                'verifypeer' => true,
-                'verifyhost' => true,
-            ),
-            $sslOptions
+        $this->setContentHandler($contentHandler);
+
+        $this->_curlOptions = array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_HEADER => 1,
         );
+
+        // update any user-provided headers or options:
+        if (!is_null($headers)) {
+            $this->_headers = array_merge($this->_headers, $headers);
+        }
+        if (!is_null($curlOptions)) {
+            $this->_curlOptions = array_merge(
+                $this->_curlOptions, $curlOptions
+            );
+        }
 
         self::$connection = $this;
     }
@@ -239,7 +363,7 @@ class RestAuthConnection
      * Set the authentication credentials used when accessing the RestAuth
      * service. This method is already invoked by the constructor, so you only
      * have to call it when they change for some reason.
-     * 
+     *
      * @param string $user     The username to use
      * @param string $password The password to use
      *
@@ -247,27 +371,88 @@ class RestAuthConnection
      */
     public function setCredentials($user, $password)
     {
-        $this->auth_header = base64_encode($user . ':' . $password);
+        $value = 'Basic ' . base64_encode($user . ':' . $password);
+        $this->_headers['auth'] = 'Authorization: ' . $value;
     }
 
     /**
-     * Send an HTTP request to the RestAuth service. 
+     * Set the content handler used in this connection.
      *
-     * This method is called by the {@link RestAuthConnection::get() get}, 
-     * {@link RestAuthConnection::post() post}, 
+     * @param object $handler The handler to use. If null, a
+     *     {@link RestAuthJsonHandler} is used.
+     *
+     * @return null
+     */
+    public function setContentHandler($handler=null)
+    {
+        if (is_null($handler)) {
+            $this->_handler = new RestAuthJsonHandler();
+        } else {
+            $this->_handler = $handler;
+        }
+
+        $mimetype = $this->_handler->getMimeType();
+        $this->_contenttype = 'Content-Type: ' . $mimetype;
+        $this->_headers['accept'] = 'Accept: ' . $mimetype;
+    }
+
+    /**
+     * Unmarshal a string using the content type of this connection.
+     *
+     * @param string $str The string to unmarshal.
+     *
+     * @return string the unmarshalled string
+     */
+    public function unmarshalStr($str)
+    {
+        return $this->_handler->unmarshalStr($str);
+    }
+
+    /**
+     * Unmarshal a dictionary using the content type of this connection.
+     *
+     * @param string $dict The dictionary to unmarshal.
+     *
+     * @return string the unmarshalled dictionary
+     */
+    public function unmarshalDict($dict)
+    {
+        return $this->_handler->unmarshalDict($dict);
+    }
+
+    /**
+     * Unmarshal a list using the content type of this connection.
+     *
+     * @param string $list The list to unmarshal.
+     *
+     * @return array the unmarshalled list
+     */
+    public function unmarshalList($list)
+    {
+        return $this->_handler->unmarshalList($list);
+    }
+
+    /**
+     * Send an HTTP request to the RestAuth service.
+     *
+     * This method is called by the {@link RestAuthConnection::get() get},
+     * {@link RestAuthConnection::post() post},
      * {@link RestAuthConnection::put() put} and
-     * {@link RestAuthConnection::delete() delete} methods. 
+     * {@link RestAuthConnection::delete() delete} methods.
      * This method takes care of service authentication, encryption
-     * and sets the Accept headers. 
+     * and sets the Accept headers.
      *
-     * @param HttpRequest $request The request to use.
-     * 
-     * @link http://www.php.net/manual/en/class.httprequest.php HttpRequest
+     * @param string $method The HTTP method to call ('GET', 'POST', ...)
+     * @param string $path   The path to call. The URL from the constructor is
+     *     automatically prepended.
+     * @param string $body   The HTTP body, if any.
      *
-     * @return HttpResponse The response from the RestAuth server.
+     * @return RestAuthHttpResponse The response from the RestAuth server.
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *     failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -275,37 +460,46 @@ class RestAuthConnection
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    public function send($request)
-    { 
-        // add headers present with all methods:
-        $request->addHeaders(
-            array(
-                'Accept'        => $this->handler->getMimeType(),
-                'Authorization' => 'Basic ' . $this->auth_header,
-            )
-        );
-        
-        if ($this->parsedUrl['scheme'] === 'https') {
-            // @codeCoverageIgnoreStart
-            $request->addSslOptions($this->sslOptions);
-        }
-        // @codeCoverageIgnoreEnd
+    public function send($method, $path, $body=null)
+    {
+        // initialize curl handle:
+        $curlHandle = curl_init($this->url . $path);
+        $headers = $this->_headers;
+        $curlOptions = $this->_curlOptions;
 
-        try {
-            $response = $request->send();
-        } catch (HttpException $ex) {
-            throw new RestAuthHttpException($ex);
+        $curlOptions[CURLOPT_CUSTOMREQUEST] = $method;
+
+        // set body if we POST/PUT:
+        if (!is_null($body)) {
+            $curlOptions[CURLOPT_POSTFIELDS] = $body;
+            $headers[] = $this->_contenttype;;
         }
-        $response_headers = $response->getHeaders();
+
+        // finally set all options at once:
+        $curlOptions[CURLOPT_HTTPHEADER] = $headers;
+        curl_setopt_array($curlHandle, $curlOptions);
+
+        $result = curl_exec($curlHandle);
+        if ($result === false) {
+            throw new RestAuthHttpException();
+        } else {
+            $status = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+            $header_size = curl_getinfo($curlHandle, CURLINFO_HEADER_SIZE);
+
+            $response = new RestAuthHttpResponse($status, $result, $header_size);
+        }
 
         // handle error status codes
         switch ($response->getResponseCode()) {
         case 401:
             throw new RestAuthUnauthorized($response);
-        
+
+        case 403:
+            throw new RestAuthForbidden($response);
+
         case 406:
             throw new RestAuthNotAcceptable($response);
-            
+
             // @codeCoverageIgnoreStart
         case 500:
             throw new RestAuthInternalServerError($response);
@@ -320,18 +514,19 @@ class RestAuthConnection
      * of escaping parameters and assembling the correct URL. This
      * method internally calls the {@link RestAuthConnection::send() send}
      * function to perform service authentication.
-     * 
-     * @param string $url     The URL to perform the GET request on. The URL must
+     *
+     * @param string $url    The URL to perform the GET request on. The URL must
      *     not include a query string.
-     * @param array  $params  Optional query parameters for this request.
-     * @param array  $headers Additional headers to send with this request.
+     * @param array  $params Optional query parameters for this request.
      *
      * @return HttpMessage The response to the request.
-     * 
+     *
      * @link http://www.php.net/manual/en/class.httpmessage.php HttpMessage
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *     failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -339,13 +534,13 @@ class RestAuthConnection
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    public function get($url, $params = array(), $headers = array())
+    public function get($url, $params = array())
     {
-        $url = $this->host . $this->sanitizePath($url);
-        $options = array('headers' => $headers);
-        $request = new HttpRequest($url, HTTP_METH_GET, $options);
-        $request->setQueryData($params);
-        return $this->send($request);
+        $url = $this->sanitizePath($url);
+        if (!($params == false)) {
+            $url .= '?' . http_build_query($params);
+        }
+        return $this->send('GET', $url);
     }
 
     /**
@@ -353,11 +548,10 @@ class RestAuthConnection
      * of escaping parameters and assembling the correct URL. This
      * method internally calls the {@link RestAuthConnection::send() send}
      * function to perform service authentication.
-     * 
-     * @param string $url     The URL to perform the POST request on. The URL
+     *
+     * @param string $url    The URL to perform the POST request on. The URL
      *    must not include a query string.
-     * @param array  $params  Query parameters for this request.
-     * @param array  $headers Additional headers to send with this request.
+     * @param array  $params Query parameters for this request.
      *
      * @return HttpMessage The response to the request.
      * @link http://www.php.net/manual/en/class.httpmessage.php HttpMessage
@@ -366,6 +560,8 @@ class RestAuthConnection
      *    the request body.
      * @throws {@link RestAuthUnauthorized} When service authentication
      *     failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthUnsupportedMediaType} The server does not
@@ -375,22 +571,17 @@ class RestAuthConnection
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    public function post($url, $params, $headers = array())
+    public function post($url, $params)
     {
-        $headers['Content-Type'] = $this->handler->getMimeType();
+        $url = $this->sanitizePath($url);
+        $body = $this->_handler->marshalDict($params);
 
-        $url = $this->host . $this->sanitizePath($url);
-        $options = array('headers' => $headers);
-
-        $request = new HttpRequest($url, HTTP_METH_POST, $options);
-        $request->setBody($this->handler->marshalDict($params));
-
-        $response = $this->send($request);
+        $response = $this->send('POST', $url, $body);
 
         switch ($response->getResponseCode()) {
         case 400:
             throw new RestAuthBadRequest($response);
-            
+
         case 415:
             throw new RestAuthUnsupportedMediaType($response);
         }
@@ -402,11 +593,10 @@ class RestAuthConnection
      * of escaping parameters and assembling the correct URL. This
      * method internally calls the {@link RestAuthConnection::send() send}
      * function to perform service authentication.
-     * 
-     * @param string $url     The URL to perform the PUTrequest on. The URL must
+     *
+     * @param string $url    The URL to perform the PUTrequest on. The URL must
      *     not include a query string.
-     * @param array  $params  Query parameters for this request.
-     * @param array  $headers Additional headers to send with this request.
+     * @param array  $params Query parameters for this request.
      *
      * @return HttpMessage The response to the request.
      * @link http://www.php.net/manual/en/class.httpmessage.php HttpMessage
@@ -415,6 +605,8 @@ class RestAuthConnection
      *    the request body.
      * @throws {@link RestAuthUnauthorized} When service authentication
      *     failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthUnsupportedMediaType} The server does not
@@ -424,22 +616,18 @@ class RestAuthConnection
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    public function put($url, $params, $headers = array())
+    public function put($url, $params)
     {
-        $headers['Content-Type'] = $this->handler->getMimeType();
-        
-        $url = $this->host . $this->sanitizePath($url);
-        $options = array('headers' => $headers);
+        $url = $this->sanitizePath($url);
+        $body = $this->_handler->marshalDict($params);
 
-        $request = new HttpRequest($url, HTTP_METH_PUT, $options);
-        $request->setPutData($this->handler->marshalDict($params));
-        $response = $this->send($request);
+        $response = $this->send('PUT', $url, $body);
 
         switch ($response->getResponseCode()) {
         case 400:
             throw new RestAuthBadRequest($response);
             break;
-            
+
         case 415:
             throw new RestAuthUnsupportedMediaType($response);
             break;
@@ -452,36 +640,35 @@ class RestAuthConnection
      * of escaping parameters and assembling the correct URL. This
      * method internally calls the {@link RestAuthConnection::send() send}
      * function to perform service authentication.
-     * 
-     * @param string $url     The URL to perform the DELETE request on. The URL
-     *     must not include a query string.
-     * @param array  $headers Additional headers to send with this request.
+     *
+     * @param string $url The URL to perform the DELETE request on. The URL must
+     *     not include a query string.
      *
      * @return HttpMessage The response to the request.
      * @link http://www.php.net/manual/en/class.httpmessage.php HttpMessage
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *     failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
-     *    a response in the content type used by this connection.
+     *     a response in the content type used by this connection.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
-     *    suffers from an internal error.
+     *     suffers from an internal error.
      */
-    public function delete($url, $headers = array())
+    public function delete($url)
     {
-        $url = $this->host . $this->sanitizePath($url);
-        $options = array('headers' => $headers);
-        $request = new HttpRequest($url, HTTP_METH_DELETE, $options);
-        return $this->send($request);
+        $url = $this->sanitizePath($url);
+        return $this->send('DELETE', $url);
     }
-    
+
     /**
      * Sanitize the path segment of an URL. Makes sure it ends with a slash,
      * contains no double slashes and performs character escaping.
      *
      * @param string $path The path segment of an URL. Please note that this
      *     should not contain the query part ("?...") or the domain.
-     *     
+     *
      * @return string The sanitized path segmet of an URL
      */
     protected function sanitizePath($path)
@@ -505,7 +692,7 @@ class RestAuthConnection
 /**
  * Superclass for {@link RestAuthUser} and {@link RestAuthGroup} objects.
  * Exists to wrap http requests with the prefix of the given resource.
- * 
+ *
  * @category  Authentication
  * @package   RestAuth
  * @author    Mathias Ertl <mati@restauth.net>
@@ -524,16 +711,17 @@ abstract class RestAuthResource
      * ('/users/' or '/groups/') and passes all parameters (otherwise
      * unmodified) to {@link RestAuthConnection::get()}.
      *
-     * @param string $url     The URL to perform the GET request on. The URL must
+     * @param string $url    The URL to perform the GET request on. The URL must
      *     not include a query string.
-     * @param array  $params  Optional query parameters for this request.
-     * @param array  $headers Additional headers to send with this request.
+     * @param array  $params Optional query parameters for this request.
      *
      * @return HttpMessage The response to the request.
      * @link http://www.php.net/manual/en/class.httpmessage.php HttpMessage
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *     failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -541,9 +729,9 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function getRequest($url, $params = array(), $headers = array())
+    protected function getRequest($url, $params = array())
     {
-        return $this->conn->get(static::PREFIX . $url, $params, $headers);
+        return $this->conn->get(static::PREFIX . $url, $params);
     }
 
     /**
@@ -554,10 +742,9 @@ abstract class RestAuthResource
      * ('/users/' or '/groups/') and passes all parameters (otherwise
      * unmodified) to {@link RestAuthConnection::post()}.
      *
-     * @param string $url     The URL to perform the POST request on. The URL must
+     * @param string $url    The URL to perform the POST request on. The URL must
      *     not include a query string.
-     * @param array  $params  Optional query parameters for this request.
-     * @param array  $headers Additional headers to send with this request.
+     * @param array  $params Optional query parameters for this request.
      *
      * @return HttpMessage The response to the request.
      * @link http://www.php.net/manual/en/class.httpmessage.php HttpMessage
@@ -566,6 +753,8 @@ abstract class RestAuthResource
      *    parsed. This should only happen with POST or PUT requests.
      * @throws {@link RestAuthUnauthorized} When service authentication
      *     failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthUnsupportedMediaType} The server does not
@@ -575,9 +764,9 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function postRequest($url, $params = array(), $headers = array())
+    protected function postRequest($url, $params = array())
     {
-        return $this->conn->post(static::PREFIX . $url, $params, $headers);
+        return $this->conn->post(static::PREFIX . $url, $params);
     }
 
     /**
@@ -588,10 +777,9 @@ abstract class RestAuthResource
      * ('/users/' or '/groups/') and passes all parameters (otherwise
      * unmodified) to {@link RestAuthConnection::put()}.
      *
-     * @param string $url     The URL to perform the PUT request on. The URL must
+     * @param string $url    The URL to perform the PUT request on. The URL must
      *     not include a query string.
-     * @param array  $params  Optional query parameters for this request.
-     * @param array  $headers Additional headers to send with this request.
+     * @param array  $params Optional query parameters for this request.
      *
      * @return HttpMessage The response to the request.
      * @link http://www.php.net/manual/en/class.httpmessage.php HttpMessage
@@ -600,6 +788,8 @@ abstract class RestAuthResource
      *    parsed. This should only happen with POST or PUT requests.
      * @throws {@link RestAuthUnauthorized} When service authentication
      *     failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthUnsupportedMediaType} The server does not
@@ -609,9 +799,9 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function putRequest($url, $params = array(), $headers = array())
+    protected function putRequest($url, $params = array())
     {
-        return $this->conn->put(static::PREFIX . $url, $params, $headers);
+        return $this->conn->put(static::PREFIX . $url, $params);
     }
 
     /**
@@ -622,15 +812,16 @@ abstract class RestAuthResource
      * prefix ('/users/' or '/groups/') and passes all parameters (otherwise
      * unmodified) to {@link RestAuthConnection::delete()}.
      *
-     * @param string $url     The URL to perform the DELETE request on. The URL 
-     *    must not include a query string.
-     * @param array  $headers Additional headers to send with this request.
+     * @param string $url The URL to perform the DELETE request on. The URL must
+     *    not include a query string.
      *
      * @return HttpMessage The response to the request.
      * @link http://www.php.net/manual/en/class.httpmessage.php HttpMessage
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
-     *     failed.
+     *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -638,9 +829,9 @@ abstract class RestAuthResource
      * @throws {@link RestAuthRuntimeException} When some HTTP related error
      *    occurs.
      */
-    protected function deleteRequest($url, $headers = array())
+    protected function deleteRequest($url)
     {
-        return $this->conn->delete(static::PREFIX . $url, $headers);
+        return $this->conn->delete(static::PREFIX . $url);
     }
 }
 ?>

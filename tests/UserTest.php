@@ -33,31 +33,37 @@ require_once 'RestAuth/restauth.php';
 
 // setup the connection:
 $RestAuthHost = 'http://[::1]:8000';
-$RestAuthUser = 'vowi';
-$RestAuthPass = 'vowi';
+$RestAuthUser = 'example.com';
+$RestAuthPass = 'nopass';
 
-// various test data. 
-$username1 = "user ɨʄɔ"; // IPA (\u0268\u0284\u0254)
-$username2 = "user θσξ"; // Greek (\u03b8\u03c3\u03be)
-$username3 = "user わたし"; // Hiranga (\u308f\u305f\u3057)
-$username4 = "user 조선글"; // Chosongul (North Korea) (\uc870\uc120\uae00)
-$username5 = "user 한글"; // Hangul (South Korea) (\ud55c\uae00)
+// various test data.
+$username1 = "user1 ɨʄɔ"; // IPA (\u0268\u0284\u0254)
+$username2 = "user2 θσξ"; // Greek (\u03b8\u03c3\u03be)
+$username3 = "user3 わたし"; // Hiranga (\u308f\u305f\u3057)
+$username4 = "user4 조선글"; // Chosongul (North Korea) (\uc870\uc120\uae00)
+$username5 = "user5 한글"; // Hangul (South Korea) (\ud55c\uae00)
 
 $password1 = 'foo bar';
 $password2 = 'bla hugo';
 
-$groupname1 = "group بشك"; // Arabic
-$groupname2 = "group 漢字働働"; // Kanji
-$groupname3 = "group אָלֶף־בֵּית עִבְרִי"; // hebrew
-$groupname4 = "group अऋआऐ";
-$groupname5 = "group ӁӜӚ"; // cyrillic
+$groupname1 = "group1 بشك"; // Arabic
+$groupname2 = "group2 漢字働働"; // Kanji
+$groupname3 = "group3 אָלֶף־בֵּית עִבְרִי"; // hebrew
+$groupname4 = "group4 अऋआऐ";
+$groupname5 = "group5 ӁӜӚ"; // cyrillic
 
 $propKey = "property 漢字"; // traditional chinese
 $propVal = "value 汉字"; // simplified chinese
+$propKey1 = "property1 漢字"; // traditional chinese
+$propVal1 = "value1 汉字"; // simplified chinese
+$propKey2 = "property2 漢字"; // traditional chinese
+$propVal2 = "value2 汉字"; // simplified chinese
+$propKey3 = "property3 漢字"; // traditional chinese
+$propVal3 = "value3 汉字"; // simplified chinese
 
 /**
  * Basic user handling tests.
- * 
+ *
  * @category   Testing
  * @package    RestAuth
  * @subpackage Testing
@@ -86,7 +92,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             throw new Exception("Found " . count($users) . " left over users.");
         }
     }
-    
+
     /**
      * Remove any data created by the tests.
      *
@@ -98,6 +104,22 @@ class UserTest extends PHPUnit_Framework_TestCase
         foreach ($users as $user) {
             $user->remove();
         }
+    }
+
+    /**
+     * Function to get the given users properties without the auto-generated
+     * 'date joined' property.
+     *
+     * @param RestAuthUser $user The user of interest.
+     *
+     * @return array The properties of that user excluding the 'date joined'
+     *      property.
+     */
+    public function getProperties($user)
+    {
+        $props = $user->getProperties();
+        unset($props['date joined']);
+        return $props;
     }
 
     /**
@@ -146,7 +168,7 @@ class UserTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($user->verifyPassword(''));
         $this->assertFalse($user->verifyPassword(null));
     }
-    
+
     /**
      * Try creating a user with initial properties.
      *
@@ -155,22 +177,22 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function testCreateUserWithProperties()
     {
         global $username1, $username2, $username3, $username4, $propKey, $propVal;
-        
+
         $user = RestAuthUser::create($this->conn, $username1, null, null);
-        $this->assertEquals(array(), $user->getProperties());
-        
+        $this->assertEquals(array(), $this->getProperties($user));
+
         $user = RestAuthUser::create($this->conn, $username2, null, array());
-        $this->assertEquals(array(), $user->getProperties());
-        
+        $this->assertEquals(array(), $this->getProperties($user));
+
         $initProps = array( $propKey => $propVal );
         $user = RestAuthUser::create($this->conn, $username3, null, $initProps);
-        $this->assertEquals($initProps, $user->getProperties());
+        $this->assertEquals($initProps, $this->getProperties($user));
         $this->assertEquals($propVal, $user->getProperty($propKey));
-        
+
         $initProps['foo'] = 'bar';
         ksort($initProps);
         $user = RestAuthUser::create($this->conn, $username4, null, $initProps);
-        $all_props = $user->getProperties();
+        $all_props = $this->getProperties($user);
         ksort($all_props);
         $this->assertEquals($initProps, $all_props);
         $this->assertEquals($propVal, $user->getProperty($propKey));
@@ -193,7 +215,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             $this->assertEquals(array(), RestAuthUser::getAll($this->conn));
         }
     }
-    
+
     /**
      * Try creating a user twice.
      *
@@ -215,7 +237,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             $this->assertFalse($user->verifyPassword($new_pass));
         }
     }
-    
+
     /**
      * Test for creating users.
      *
@@ -224,7 +246,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function testCreateUserTest()
     {
         global $username1, $password1, $propKey, $propVal;
-        
+
         $this->assertTrue(RestAuthUser::createTest($this->conn, $username1));
         $this->assertTrue(
             RestAuthUser::createTest(
@@ -242,7 +264,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             )
         );
     }
-    
+
     /**
      * Test for creating invalid users.
      *
@@ -251,28 +273,28 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function testCreateInvalidUserTest()
     {
         global $username1, $password1;
-        
+
         // username too short:
         try {
             RestAuthUser::createTest($this->conn, 'a');
             $this->fail();
         } catch (RestAuthPreconditionFailed $e) {
         }
-        
+
         try {
             // username invalid:
             RestAuthUser::createTest($this->conn, 'user:name');
             $this->fail();
         } catch (RestAuthPreconditionFailed $e) {
         }
-        
+
         try {
             // password too short
             RestAuthUser::createTest($this->conn, $username1, 'a');
             $this->fail();
         } catch (RestAuthPreconditionFailed $e) {
         }
-        
+
         $user = RestAuthUser::create($this->conn, $username1, $password1);
         try {
             // existing user:
@@ -282,7 +304,7 @@ class UserTest extends PHPUnit_Framework_TestCase
             $this->assertTrue($user->verifyPassword($password1));
         }
     }
-    
+
     /**
      * Try verifying the password.
      *
@@ -305,7 +327,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function testVerifyPasswordInvalidUser()
     {
         global $username1, $password1;
-        
+
         $user = new RestAuthUser($this->conn, $username1);
 
         $this->assertFalse($user->verifyPassword("foobar"));
@@ -367,7 +389,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function testSetPasswordInvalidUser()
     {
         global $username1, $password1;
-        
+
         $user = new RestAuthUser($this->conn, $username1);
         try {
             $user->setPassword($password1);
@@ -386,7 +408,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function testSetTooShortPasswort()
     {
         global $username1, $password1;
-        
+
         $user = RestAuthUser::create($this->conn, $username1, $password1);
         try {
             $user->setPassword("x");
@@ -423,7 +445,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     {
         global $username1, $password1;
         $user = RestAuthUser::create($this->conn, $username1, $password1);
-    
+
         $user->remove();
         $this->assertEquals(array(), RestAuthUser::getAll($this->conn));
         try {
@@ -442,7 +464,7 @@ class UserTest extends PHPUnit_Framework_TestCase
     public function testRemoveInvalidUser()
     {
         global $username1, $password1;
-        
+
         $user = new RestAuthUser($this->conn, $username1);
         try {
             $user->remove();
@@ -463,11 +485,11 @@ class UserTest extends PHPUnit_Framework_TestCase
         global $username1;
         $user1 = new RestAuthUser($this->conn, $username1);
         $user2 = new RestAuthUser($this->conn, $username1);
-        
+
         $this->assertEquals(0, RestAuthUser::cmp($user1, $user2));
         $this->assertEquals(0, RestAuthUser::cmp($user2, $user1));
     }
-    
+
     /**
      * Testing users for unequality.
      *

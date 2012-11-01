@@ -201,7 +201,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
 
         $group1->addUser($user1);
         $group2->addUser($user2);
-        
+
         // verify initial state:
         $this->assertEquals(array($user1), $group1->getMembers());
         $this->assertEquals(array($user2), $group2->getMembers());
@@ -242,7 +242,7 @@ class MetaGroupTest extends PHPUnit_Framework_TestCase
     public function testRemoveGroupNotMember()
     {
         global $group1, $group2;
-        
+
         try {
             $group1->removeGroup($group2);
             $this->fail();
