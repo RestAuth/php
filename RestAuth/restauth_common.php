@@ -492,6 +492,9 @@ class RestAuthConnection
         case 401:
             throw new RestAuthUnauthorized($response);
 
+        case 403:
+            throw new RestAuthForbidden($response);
+
         case 406:
             throw new RestAuthNotAcceptable($response);
 
