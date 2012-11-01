@@ -156,7 +156,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
 
         $headers = array (
-            'auth' => 'Authorization: Basic dm93aTp2b3dp',
+            'auth' => 'Authorization: Basic ZXhhbXBsZS5jb206bm9wYXNz',
             'accept' => 'Accept: application/json',
         );
         $contenttype = 'Content-Type: application/json';
@@ -246,7 +246,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
      *
      * @return null
      */
-    public function testWrongHost()
+    public function testInvalidHost()
     {
         global $RestAuthUser, $RestAuthPass;
         $host = 'http://[::3]:8000';
@@ -256,6 +256,32 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
             RestAuthUser::getAll($conn);
             $this->fail();
         } catch (RestAuthHttpException $e) {
+        }
+    }
+
+    public function testWrongHost()
+    {
+        global $RestAuthHost, $RestAuthPass;
+        $RestAuthUser = 'nohosts.example.com';
+        $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
+
+        try {
+            RestAuthUser::getAll($conn);
+            $this->fail();
+        } catch (RestAuthUnauthorized $e) {
+        }
+    }
+
+    public function testNoPermissions()
+    {
+        global $RestAuthHost, $RestAuthPass;
+        $RestAuthUser = 'example.net';
+        $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
+
+        try {
+            RestAuthUser::getAll($conn);
+            $this->fail();
+        } catch (RestAuthForbidden $e) {
         }
     }
 
