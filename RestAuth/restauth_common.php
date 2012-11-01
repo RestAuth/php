@@ -251,8 +251,8 @@ class RestAuthConnection
 
     private $handle;
     private $ssl = false;
-    private $verify_peer;
-    private $verify_host;
+    private $verifypeer;
+    private $verifyhost;
 
     /**
      * A simple constructor.
