@@ -161,6 +161,14 @@ class RestAuthJsonHandler extends ContentHandler
 /**
  * A HTTP response. Since php5 provides no easy handling for this, we have to
  * implement this ourselves :-(
+ *
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2012 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
  */
 class RestAuthHttpResponse
 {
@@ -170,6 +178,14 @@ class RestAuthHttpResponse
     private $_headers;
     private $_body;
 
+    /**
+     * A simple constructor.
+     *
+     * @param integer $status      The HTTP response status
+     * @param string  $response    The raw HTTP response, including all headers
+     *     (possibly) the HTTP status line.
+     * @param integer $header_size The size of the HTTP headers.
+     */
     public function __construct($status, $response, $header_size)
     {
         $this->_status = $status;
@@ -177,45 +193,78 @@ class RestAuthHttpResponse
         $this->_header_size = $header_size;
     }
 
+    /**
+     * Get the HTTP response code.
+     *
+     * @return integer The HTTP response code.
+     */
     public function getResponseCode()
     {
         return $this->_status;
     }
 
+    /**
+     * Get all headers.
+     *
+     * @return array All headers in this response.
+     */
     public function getHeaders()
     {
         if (is_null($this->_headers)) {
-            $this->parseHeaders();
+            $this->_parseHeaders();
         }
 
         return $this->_headers;
     }
 
+    /**
+     * Get one specific header.
+     *
+     * @param string $field The HTTP header of interest.
+     *
+     * @return string The value of HTTP header.
+     */
     public function getHeader($field)
     {
         if (is_null($this->_headers)) {
-            $this->parseHeaders();
+            $this->_parseHeaders();
         }
 
         return $this->_headers[$field];
     }
 
+    /**
+     * Get the HTTP response body.
+     *
+     * @return string The HTTP response body.
+     */
     public function getBody()
     {
-        $this->parseBody();
+        $this->_parseBody();
         return utf8_encode($this->_body);
     }
 
-    private function parseBody() {
+    /**
+     * Split the response body and headers.
+     *
+     * @return null
+     */
+    private function _parseBody()
+    {
         if (is_null($this->_body)) {
             $this->_raw_headers = substr($this->_response, 0, $this->_header_size);
             $this->_body = substr($this->_response, $this->_header_size);
         }
     }
 
-    private function parseHeaders()
+    /**
+     * Parse raw request headers into an array of headers.
+     *
+     * @return null
+     */
+    private function _parseHeaders()
     {
-        $this->parseBody();
+        $this->_parseBody();
 
         $headers = str_replace("\r", "", $this->_raw_headers);
         $headers = explode("\n", $headers);
@@ -240,7 +289,7 @@ class RestAuthHttpResponse
  * @category  Authentication
  * @package   RestAuth
  * @author    Mathias Ertl <mati@restauth.net>
- * @copyright 2010-2011 Mathias Ertl
+ * @copyright 2010-2012 Mathias Ertl
  * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
  * @version   Release: @package_version@
  * @link      https://php.restauth.net
