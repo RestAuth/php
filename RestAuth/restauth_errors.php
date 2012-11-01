@@ -262,8 +262,6 @@ class RestAuthHttpException extends RestAuthException
 {
     /**
      * Constructor.
-     *
-     * @param Exception $http_exception The exception causing this exception.
      */
     public function __construct()
     {
