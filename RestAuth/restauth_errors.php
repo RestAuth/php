@@ -213,6 +213,25 @@ class RestAuthUnauthorized extends RestAuthException
 }
 
 /**
+ * Thrown when authentication was successful, but the client is not allowed
+ * to perform an operation.
+ *
+ * On a protocol level, this corresponds to the HTTP status code 403.
+ *
+ * @category  Authentication
+ * @package   RestAuth
+ * @author    Mathias Ertl <mati@restauth.net>
+ * @copyright 2012 Mathias Ertl
+ * @license   http://www.gnu.org/licenses/gpl.html  GNU General Public Licence, version 3
+ * @version   Release: @package_version@
+ * @link      https://php.restauth.net
+ */
+class RestAuthForbidden extends RestAuthException
+{
+    protected $code = 403;
+}
+
+/**
  * Thrown when the RestAuth server cannot generate a response in the requested
  * format.
  *
