@@ -132,6 +132,63 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         RestAuthUser::getAll($conn);
     }
 
+    private function assertPrivates($conn, $headers, $contenttype, $options)
+    {
+        $this->assertAttributeEquals(
+            $headers,  /* expected value */
+            '_headers',  /* attribute name */
+            $conn
+        );
+        $this->assertAttributeEquals(
+            $contenttype,  /* expected value */
+            '_contenttype',  /* attribute name */
+            $conn
+        );
+        $this->assertAttributeEquals(
+            $options,  /* expected value */
+            '_curlOptions',  /* attribute name */
+            $conn
+        );
+    }
+
+    public function testConstructor()
+    {
+        global $RestAuthHost, $RestAuthUser, $RestAuthPass;
+
+        $headers = array (
+            'auth' => 'Authorization: Basic dm93aTp2b3dp',
+            'accept' => 'Accept: application/json',
+        );
+        $contenttype = 'Content-Type: application/json';
+        $curlOptions = array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_HEADER => 1,
+        );
+
+        $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
+        $this->assertPrivates($conn, $headers, $contenttype, $curlOptions);
+
+        $handler = new FakeContentHandler();
+        $add_headers = array('Foo: Bar', 'Bla: Hugo');
+        $add_options = array(
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_SSL_VERIFYPEER => true,
+        );
+
+        $conn = new RestAuthConnection(
+            $RestAuthHost, $RestAuthUser, $RestAuthPass,
+            $handler, $add_options, $add_headers
+        );
+        $test_headers = array_merge($headers, $add_headers);
+        $test_headers['accept'] = 'Accept: ' . $handler->getMimeType();
+        $test_contenttype = 'Content-Type: ' . $handler->getMimeType();
+        $this->assertPrivates(
+            $conn, $test_headers, $test_contenttype,
+            array_merge($curlOptions, $add_options)
+        );
+
+    }
+
     /**
      * Try to authenticate with the wrong username.
      *
