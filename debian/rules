@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 GIT_URL=https://git.fsinf.at/restauth/php.git
-DH_ARGS = --with quilt
+DH_ARGS =
 
 include /usr/share/cdbs/1/rules/buildvars.mk
 
