@@ -164,52 +164,52 @@ class RestAuthJsonHandler extends ContentHandler
  */
 class RestAuthHttpResponse
 {
-    private $status;
-    private $response; // raw response as returned by curl_exec
-    private $raw_headers;
-    private $headers;
-    private $body;
+    private $_status;
+    private $_response; // raw response as returned by curl_exec
+    private $_raw_headers;
+    private $_headers;
+    private $_body;
 
     public function __construct($status, $response, $header_size)
     {
-        $this->status = $status;
-        $this->response = $response;
-        $this->header_size = $header_size;
+        $this->_status = $status;
+        $this->_response = $response;
+        $this->_header_size = $header_size;
     }
 
     public function getResponseCode()
     {
-        return $this->status;
+        return $this->_status;
     }
 
     public function getHeaders()
     {
-        if (is_null($this->headers)) {
+        if (is_null($this->_headers)) {
             $this->parseHeaders();
         }
 
-        return $this->headers;
+        return $this->_headers;
     }
 
     public function getHeader($field)
     {
-        if (is_null($this->headers)) {
+        if (is_null($this->_headers)) {
             $this->parseHeaders();
         }
 
-        return $this->headers[$field];
+        return $this->_headers[$field];
     }
 
     public function getBody()
     {
         $this->parseBody();
-        return utf8_encode($this->body);
+        return utf8_encode($this->_body);
     }
 
     private function parseBody() {
-        if (is_null($this->body)) {
-            $this->raw_headers = substr($this->response, 0, $this->header_size);
-            $this->body = substr($this->response, $this->header_size);
+        if (is_null($this->_body)) {
+            $this->_raw_headers = substr($this->_response, 0, $this->_header_size);
+            $this->_body = substr($this->_response, $this->_header_size);
         }
     }
 
@@ -217,7 +217,7 @@ class RestAuthHttpResponse
     {
         $this->parseBody();
 
-        $headers = str_replace("\r", "", $this->raw_headers);
+        $headers = str_replace("\r", "", $this->_raw_headers);
         $headers = explode("\n", $headers);
         foreach ($headers as $value) {
             if (strpos($value, ':') === false) {
@@ -227,7 +227,7 @@ class RestAuthHttpResponse
             $header = explode(": ", $value);
             $headerdata[$header[0]] = $header[1];
         }
-        $this->headers = $headerdata;
+        $this->_headers = $headerdata;
     }
 }
 
