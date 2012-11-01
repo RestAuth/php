@@ -212,7 +212,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
     {
         global $RestAuthHost, $RestAuthUser, $RestAuthPass;
         $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
-        $conn->handler = new FakeContentHandler();
+        $conn->setContentHandler(new FakeContentHandler());
 
         try {
             RestAuthUser::getAll($conn);
@@ -256,14 +256,14 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         global $RestAuthHost, $RestAuthUser, $RestAuthPass, $username1;
         $conn = new RestAuthConnection($RestAuthHost, $RestAuthUser, $RestAuthPass);
 
-        $conn->handler = new FakeContentHandler();
+        $conn->setContentHandler(new FakeContentHandler());
 
         $params = array('whatever' => "foobar");
         try {
             $resp = $conn->post('/users/', $params);
             $this->fail();
         } catch (RestAuthUnsupportedMediaType $e) {
-            $conn->handler = new RestAuthJsonHandler();
+            $conn->setContentHandler();
             $this->assertEquals(array(), RestAuthUser::getAll($conn));
         }
     }
@@ -285,7 +285,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
             $resp = $conn->put('/users/'.$username1.'/', $params);
             $this->fail();
         } catch (RestAuthBadRequest $e) {
-            $conn->handler = new RestAuthJsonHandler();
+            $conn->setContentHandler();
 
             $this->assertEquals(array($user), RestAuthUser::getAll($conn));
             $this->assertTrue($user->verifyPassword($password1));
@@ -306,7 +306,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
         );
         $user = RestAuthUser::create($conn, $username1, $password1);
 
-        $conn->handler = new FakeContentHandler();
+        $conn->setContentHandler(new FakeContentHandler());
 
         $params = array('password' => $password2);
         try {
@@ -314,7 +314,7 @@ class ConnectionTest extends PHPUnit_Framework_TestCase
             $resp = $conn->put('/users/'.$username1.'/', $params);
             $this->fail();
         } catch (RestAuthUnsupportedMediaType $e) {
-            $conn->handler = new RestAuthJsonHandler();
+            $conn->setContentHandler();
 
             $this->assertEquals(array($user), RestAuthUser::getAll($conn));
             $this->assertTrue($user->verifyPassword($password1));
