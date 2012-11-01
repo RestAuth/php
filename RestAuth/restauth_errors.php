@@ -266,16 +266,6 @@ class RestAuthHttpException extends RestAuthException
     public function __construct()
     {
     }
-
-    /**
-     * Get the root cause of this exception.
-     *
-     * @return Exception
-     */
-    public function getCause()
-    {
-        return $this->cause;
-    }
 }
 
 ?>
