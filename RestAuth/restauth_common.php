@@ -334,13 +334,6 @@ class RestAuthConnection
             );
         }
 
-        // set SSL options:
-        //TODO: Document how to set this using the curlopts parameter
-        //if ($this->ssl) {
-        //    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, $this->verifyhost);
-        //    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, $this->verifypeer);
-        //}
-
         self::$connection = $this;
     }
 
