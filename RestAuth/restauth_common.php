@@ -273,7 +273,7 @@ class RestAuthConnection
      *     options chapter} for available options. This array is merged with the
      *     default array, which sets 'verifypeer' and 'verifyhost' to true.
      */
-    public function __construct($url, $user, $password, $contentHandler=null, $curlOptionss=array(), $headers=array())
+    public function __construct($url, $user, $password, $contentHandler=null, $curlOptions=null, $headers=null)
     {
         $this->url = rtrim($url, '/');
         $this->setCredentials($user, $password);
@@ -283,6 +283,14 @@ class RestAuthConnection
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_HEADER => 1,
         );
+
+        // update any user-provided headers or options:
+        if (!is_null($headers)) {
+            $this->headers = array_merge($this->headers, $headers);
+        }
+        if (!is_null($curlOptions)) {
+            $this->curlOptions = array_merge($this->curlOptions, $curlOptions);
+        }
 
         // set SSL options:
         //TODO: Document how to set this using the curlopts parameter
@@ -382,7 +390,6 @@ class RestAuthConnection
      */
     public function send($method, $url, $body=null)
     {
-        // Build header array
         // initialize curl handle:
         $curlHandle = curl_init($this->url . $url);
         $headers = $this->headers;
