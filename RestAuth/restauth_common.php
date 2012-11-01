@@ -204,20 +204,6 @@ class RestAuthHttpResponse
     }
 
     /**
-     * Get all headers.
-     *
-     * @return array All headers in this response.
-     */
-    public function getHeaders()
-    {
-        if (is_null($this->_headers)) {
-            $this->_parseHeaders();
-        }
-
-        return $this->_headers;
-    }
-
-    /**
      * Get one specific header.
      *
      * @param string $field The HTTP header of interest.
