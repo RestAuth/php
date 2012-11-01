@@ -57,6 +57,28 @@
     <para>If you want to run the test-suite, generate test coverage or generate source code
      documentation, you will need install the required packages as well.
     </para>
+    <para>
+     <itemizedlist>
+      <listitem>
+       The only runtime dependency are the cURL bindings for PHP, which are
+       enabeld by default on many systems. On Debian/Ubuntu systems, you have
+       to install the <literal>php5-curl</literal> package.
+      </listitem>
+      <listitem>
+       <literal>PHPUnit</literal> has its own {@link https://github.com/sebastianbergmann/phpunit/#installation installation
+       instructions}. On Debian/Ubuntu systems, you can install the 
+       <literal>phpunit</literal> package.
+      </listitem>
+      <listitem>
+       To generate the projects documentation (that is, these pages), you need phpdocumentor1.
+       You can install it with <literal>pear install PhpDocumentor</literal>.
+
+       <para><programlisting language="bash">
+        pear install PhpDocumentor
+       </programlisting></para>
+      </listitem>
+     </itemizedlist>
+    </para>
    </refsect2>
   <refsect2 id="{@id installation_php-restauth}">
    <title>Install php-restauth</title>
@@ -107,9 +129,13 @@
    {@link http://www.phpunit.de phpunit}. Since it implements a network protocol,
    the library requires a RestAuth server to run on <literal>http://[::1]:8000</literal> that has
    the service <literal>vowi</literal> with the password <literal>vowi</literal> preconfigured.
-   The {@link https://server.restauth.net RestAuth server}  contains the script
-   <literal>test.sh</literal> in its source code to simply start a server and add the expected
-   service.
+   You can download the {@link https://server.restauth.net RestAuth server}
+   soource code and run
+
+   <para><programlisting language="bash">
+    python setup.py testserver
+   </programlisting></para>
+   ... to start a server with the correct settings enabled.
   </para>
 
   <para>
