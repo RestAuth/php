@@ -1,0 +1,42 @@
+<refentry id="{@id}">
+ <refnamediv>
+  <refname>Contribute</refname>
+  <refpurpose>How-to contribute</refpurpose>
+ </refnamediv>
+ <refsynopsisdiv>
+  <author>
+   Mathias Ertl
+   <authorblurb>
+    {@link mailto:mati@restauth.net mati@restauth.net}
+   </authorblurb>
+  </author>
+ </refsynopsisdiv>
+ <refsect1 id="{@id intro}">
+  <para>php-restauth is Free Software and as such invites everyone to contribute in any way possible.
+   <itemizedlist>
+    <listitem>
+      <para>If you find bugs or want to request new features, you can simply
+       {@link https://redmine.fsinf.at/projects/restauth-php/issues/new file a new issue} in our
+       {@link https://redmine.fsinf.at/projects/restauth-php issue tracker}.
+      </para>
+    </listitem>
+    <listitem>
+      <para>You can also join our XMPP/Jabber multi user chat at rest@conference.jabber.at. If you
+       don't have an account, you can join it without an account
+       {@link http://speeqe.com/room/rest@conference.jabber.at/ using speeqe}.
+      </para>
+    </listitem>
+    <listitem>
+      <para>Our codebase is hosted at
+       {@link https://git.fsinf.at/restauth/php git.fsinf.at/restauth/php}. You can fork our
+       codebase and code your own improvements and do a merge-request to get your changes into the
+       official codebase.
+      </para>
+      <para>Note that git.fsinf.at already uses a RestAuth installation. Account registration is not
+       possible on git.fsinf.at itself, please {@link https://fsinf.at/user/register register here}.
+      </para>
+    </listitem>
+   </itemizedlist>
+  </para>
+ </refsect1>
+</refentry>

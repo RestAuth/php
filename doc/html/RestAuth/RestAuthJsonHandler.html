@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class RestAuthJsonHandler</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class RestAuthJsonHandler</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Handle JSON content.</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Mathias Ertl &lt;<a href="mailto:mati@restauth.net">mati@restauth.net</a>&gt;</li>
+				<li><span class="field">version:</span> Release: @package_version@</li>
+				<li><span class="field">copyright:</span> 2010-2011 Mathias Ertl</li>
+				<li><span class="field">link:</span> <a href="https://php.restauth.net">https://php.restauth.net</a></li>
+				<li><span class="field">license:</span> <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence, version 3</a></li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_RestAuth---restauth_common.php.html">/RestAuth/restauth_common.php</a> (line <span class="field">99</span>)
+		</p>
+		
+				
+		<pre><a href="../RestAuth/ContentHandler.html">ContentHandler</a>
+   |
+   --RestAuthJsonHandler</pre>
+	
+			</div>
+</div>
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																												
+												<div class="method-definition">
+											<span class="method-result">str</span>
+										<a href="#getMimeType" title="details" class="method-name">getMimeType</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">str</span>
+										<a href="#marshalDict" title="details" class="method-name">marshalDict</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$arr</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">str</span>
+										<a href="#unmarshalDict" title="details" class="method-name">unmarshalDict</a>
+											(<span class="var-type">str</span>&nbsp;<span class="var-name">$obj</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">str</span>
+										<a href="#unmarshalList" title="details" class="method-name">unmarshalList</a>
+											(<span class="var-type">str</span>&nbsp;<span class="var-name">$obj</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">str</span>
+										<a href="#unmarshalStr" title="details" class="method-name">unmarshalStr</a>
+											(<span class="var-type">str</span>&nbsp;<span class="var-name">$obj</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="methodgetMimeType" id="getMimeType"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getMimeType</span> (line <span class="line-number">155</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the content type that this class handles.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Always returns 'application/json'.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">str</span>
+		<span class="method-name">
+			getMimeType
+		</span>
+				()
+			</div>
+	
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../RestAuth/ContentHandler.html#methodgetMimeType">ContentHandler::getMimeType()</a></dt>
+						<dd>Get the mimetype that this class handles.</dd>
+					</dl>
+			
+	</div>
+<a name="methodmarshalDict" id="marshalDict"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">marshalDict</span> (line <span class="line-number">145</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Marshal an array into a dictionary.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The serialized array.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">str</span>
+		<span class="method-name">
+			marshalDict
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$arr</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$arr</span><span class="var-description">: The array to serialize.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../RestAuth/ContentHandler.html#methodmarshalDict">ContentHandler::marshalDict()</a></dt>
+						<dd>Marshal an array into a dictionary.</dd>
+					</dl>
+			
+	</div>
+<a name="methodunmarshalDict" id="unmarshalDict"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">unmarshalDict</span> (line <span class="line-number">133</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Unmarshal a dictionary.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The unmarshalled dictionary.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">str</span>
+		<span class="method-name">
+			unmarshalDict
+		</span>
+					(<span class="var-type">str</span>&nbsp;<span class="var-name">$obj</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">str</span>
+				<span class="var-name">$obj</span><span class="var-description">: The serialized data to unmarshal.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../RestAuth/ContentHandler.html#methodunmarshalDict">ContentHandler::unmarshalDict()</a></dt>
+						<dd>Unmarshal a dictionary.</dd>
+					</dl>
+			
+	</div>
+<a name="methodunmarshalList" id="unmarshalList"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">unmarshalList</span> (line <span class="line-number">121</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Unmarshal a list.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The unmarshalled list.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">str</span>
+		<span class="method-name">
+			unmarshalList
+		</span>
+					(<span class="var-type">str</span>&nbsp;<span class="var-name">$obj</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">str</span>
+				<span class="var-name">$obj</span><span class="var-description">: The serialized data to unmarshal.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../RestAuth/ContentHandler.html#methodunmarshalList">ContentHandler::unmarshalList()</a></dt>
+						<dd>Unmarshal a list.</dd>
+					</dl>
+			
+	</div>
+<a name="methodunmarshalStr" id="unmarshalStr"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">unmarshalStr</span> (line <span class="line-number">108</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Unmarshal a string.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The unmarshalled string.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">str</span>
+		<span class="method-name">
+			unmarshalStr
+		</span>
+					(<span class="var-type">str</span>&nbsp;<span class="var-name">$obj</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">str</span>
+				<span class="var-name">$obj</span><span class="var-description">: The serialized data to unmarshal.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../RestAuth/ContentHandler.html#methodunmarshalStr">ContentHandler::unmarshalStr()</a></dt>
+						<dd>Unmarshal a string.</dd>
+					</dl>
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../RestAuth/ContentHandler.html">ContentHandler</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../RestAuth/ContentHandler.html#methodgetMimeType">ContentHandler::getMimeType()</a></span><br>
+													<span class="method-name"><a href="../RestAuth/ContentHandler.html#methodmarshalDict">ContentHandler::marshalDict()</a></span><br>
+													<span class="method-name"><a href="../RestAuth/ContentHandler.html#methodunmarshalDict">ContentHandler::unmarshalDict()</a></span><br>
+													<span class="method-name"><a href="../RestAuth/ContentHandler.html#methodunmarshalList">ContentHandler::unmarshalList()</a></span><br>
+													<span class="method-name"><a href="../RestAuth/ContentHandler.html#methodunmarshalStr">ContentHandler::unmarshalStr()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Fri, 23 Sep 2011 12:00:40 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

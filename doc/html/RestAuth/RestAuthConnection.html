@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class RestAuthConnection</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class RestAuthConnection</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">An instance of this class represents a connection to a RestAuth service.</p>
+<p class="description"><p>An instance of this class needs to be passed to any constructor of a  <a href="../RestAuth/RestAuthResource.html">RestAuthResource</a> or the respective factory methods.</p></p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Mathias Ertl &lt;<a href="mailto:mati@restauth.net">mati@restauth.net</a>&gt;</li>
+				<li><span class="field">version:</span> Release: @package_version@</li>
+				<li><span class="field">copyright:</span> 2010-2011 Mathias Ertl</li>
+				<li><span class="field">link:</span> <a href="https://php.restauth.net">https://php.restauth.net</a></li>
+				<li><span class="field">license:</span> <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence, version 3</a></li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_RestAuth---restauth_common.php.html">/RestAuth/restauth_common.php</a> (line <span class="field">175</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+												<div class="var-title">
+					static <span class="var-type">mixed</span>
+					<a href="#$connection" title="details" class="var-name">$connection</a>
+				</div>
+																							</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																				<div class="method-definition">
+					static 						<span class="method-result"><a href="../RestAuth/RestAuthConnection.html">RestAuthConnection</a></span>
+										<a href="#getConnection" title="details" class="method-name">getConnection</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$host</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$user</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$password</span> = <span class="var-default">''</span>])
+									</div>
+																																																
+												<div class="method-definition">
+											<span class="method-result">RestAuthConnection</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$host</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$user</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$password</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$sslOptions</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">HttpMessage</span>
+										<a href="#delete" title="details" class="method-name">delete</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">HttpMessage</span>
+										<a href="#get" title="details" class="method-name">get</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+									</div>
+																								<div class="method-definition">
+											<span class="method-result">HttpMessage</span>
+										<a href="#post" title="details" class="method-name">post</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$params</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">HttpMessage</span>
+										<a href="#put" title="details" class="method-name">put</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$params</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#sanitizePath" title="details" class="method-name">sanitizePath</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">HttpResponse</span>
+										<a href="#send" title="details" class="method-name">send</a>
+											(<span class="var-type">HttpRequest</span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">null</span>
+										<a href="#setCredentials" title="details" class="method-name">setCredentials</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$user</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$password</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$connection" id="$connection"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">mixed</span>
+			<span class="var-name">$connection</span>
+						(line <span class="line-number">177</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodgetConnection" id="getConnection"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method getConnection</span> (line <span class="line-number">230</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Factory method to reuse existing connection objects. The parameters  of this method are not used at all if the connection is already defined,  otherwise they are passed unmodified to  RestAuthConnection::__construct.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> An instance of a RestAuthConnection.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../RestAuth/RestAuthConnection.html">RestAuthConnection</a></span>
+		<span class="method-name">
+			getConnection
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$host</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$user</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$password</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$host</span><span class="var-description">: The hostname of the RestAuth service</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$user</span><span class="var-description">: The username to use for authenticating with the      RestAuth service.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$password</span><span class="var-description">: The password to use for authenticating with the      RestAuth service.</span>			</li>
+				</ul>
+		
+			
+	</div>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">198</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">A simple constructor.</p>
+<p class="description"><p>Note that instantiating an object of this class does not invoke any  network connection by itself. Due to the statelessnes nature of HTTP i.e.  an unavailable service will only trigger an error when actually doing a  request.</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">RestAuthConnection</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$host</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$user</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$password</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$sslOptions</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$host</span><span class="var-description">: The hostname of the RestAuth service</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$user</span><span class="var-description">: The username to use for authenticating with the      RestAuth service.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$password</span><span class="var-description">: The password to use for authenticating with the      RestAuth service.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$sslOptions</span><span class="var-description">: Any SSL options to use, please see SSL options      chapter in the <a href="http://www.php.net/manual/en/http.request.options.php">HttpRequest
+     options chapter</a> for available options. This array is merged with the      default array, which sets 'verifypeer' and 'verifyhost' to true.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddelete" id="delete"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">delete</span> (line <span class="line-number">470</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Perform a DELETE request on the connection. This method takes care  of escaping parameters and assembling the correct URL. This  method internally calls the <a href="../RestAuth/RestAuthConnection.html#methodsend">send</a>  function to perform service authentication.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The response to the request.</li>
+				<li><span class="field">link:</span> <a href="http://www.php.net/manual/en/class.httpmessage.php">HttpMessage</a></li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthUnauthorized.html">RestAuthUnauthorized</a> When service authentication      failed.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthNotAcceptable.html">RestAuthNotAcceptable</a> When the server cannot generate     a response in the content type used by this connection.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthInternalServerError.html">RestAuthInternalServerError</a> When the RestAuth service     suffers from an internal error.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">HttpMessage</span>
+		<span class="method-name">
+			delete
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$url</span><span class="var-description">: The URL to perform the DELETE request on. The URL      must not include a query string.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$headers</span><span class="var-description">: Additional headers to send with this request.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodget" id="get"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">get</span> (line <span class="line-number">342</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Perform a GET request on the connection. This method takes care  of escaping parameters and assembling the correct URL. This  method internally calls the <a href="../RestAuth/RestAuthConnection.html#methodsend">send</a>  function to perform service authentication.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The response to the request.</li>
+				<li><span class="field">link:</span> <a href="http://www.php.net/manual/en/class.httpmessage.php">HttpMessage</a></li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthUnauthorized.html">RestAuthUnauthorized</a> When service authentication      failed.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthNotAcceptable.html">RestAuthNotAcceptable</a> When the server cannot generate     a response in the content type used by this connection.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthInternalServerError.html">RestAuthInternalServerError</a> When the RestAuth service     suffers from an internal error.</li>
+				<li><span class="field">throws:</span> RestAuthRuntimeException When some HTTP related error     occurs.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">HttpMessage</span>
+		<span class="method-name">
+			get
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$url</span><span class="var-description">: The URL to perform the GET request on. The URL must      not include a query string.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: Optional query parameters for this request.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$headers</span><span class="var-description">: Additional headers to send with this request.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodpost" id="post"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">post</span> (line <span class="line-number">378</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Perform a POST request on the connection. This method takes care  of escaping parameters and assembling the correct URL. This  method internally calls the <a href="../RestAuth/RestAuthConnection.html#methodsend">send</a>  function to perform service authentication.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The response to the request.</li>
+				<li><span class="field">link:</span> <a href="http://www.php.net/manual/en/class.httpmessage.php">HttpMessage</a></li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthUnauthorized.html">RestAuthUnauthorized</a> When service authentication      failed.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthBadRequest.html">RestAuthBadRequest</a> If the server was unable to parse     the request body.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthNotAcceptable.html">RestAuthNotAcceptable</a> When the server cannot generate     a response in the content type used by this connection.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthUnsupportedMediaType.html">RestAuthUnsupportedMediaType</a> The server does not      support the content type used by this connection.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthInternalServerError.html">RestAuthInternalServerError</a> When the RestAuth service     suffers from an internal error.</li>
+				<li><span class="field">throws:</span> RestAuthRuntimeException When some HTTP related error     occurs.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">HttpMessage</span>
+		<span class="method-name">
+			post
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$params</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$url</span><span class="var-description">: The URL to perform the POST request on. The URL     must not include a query string.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: Query parameters for this request.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$headers</span><span class="var-description">: Additional headers to send with this request.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodput" id="put"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">put</span> (line <span class="line-number">427</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Perform a PUT request on the connection. This method takes care  of escaping parameters and assembling the correct URL. This  method internally calls the <a href="../RestAuth/RestAuthConnection.html#methodsend">send</a>  function to perform service authentication.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The response to the request.</li>
+				<li><span class="field">link:</span> <a href="http://www.php.net/manual/en/class.httpmessage.php">HttpMessage</a></li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthUnauthorized.html">RestAuthUnauthorized</a> When service authentication      failed.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthBadRequest.html">RestAuthBadRequest</a> If the server was unable to parse     the request body.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthNotAcceptable.html">RestAuthNotAcceptable</a> When the server cannot generate     a response in the content type used by this connection.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthUnsupportedMediaType.html">RestAuthUnsupportedMediaType</a> The server does not      support the content type used by this connection.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthInternalServerError.html">RestAuthInternalServerError</a> When the RestAuth service     suffers from an internal error.</li>
+				<li><span class="field">throws:</span> RestAuthRuntimeException When some HTTP related error     occurs.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">HttpMessage</span>
+		<span class="method-name">
+			put
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$params</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$url</span><span class="var-description">: The URL to perform the PUTrequest on. The URL must      not include a query string.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: Query parameters for this request.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$headers</span><span class="var-description">: Additional headers to send with this request.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsanitizePath" id="sanitizePath"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">sanitizePath</span> (line <span class="line-number">487</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sanitize the path segment of an URL. Makes sure it ends with a slash,  contains no double slashes and performs character escaping.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The sanitized path segmet of an URL</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			sanitizePath
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$path</span><span class="var-description">: The path segment of an URL. Please note that this      should not contain the query part (&quot;?...&quot;) or the domain.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsend" id="send"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">send</span> (line <span class="line-number">278</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Send an HTTP request to the RestAuth service.</p>
+<p class="description"><p>This method is called by the <a href="../RestAuth/RestAuthConnection.html#methodget">get</a>,  <a href="../RestAuth/RestAuthConnection.html#methodpost">post</a>,  <a href="../RestAuth/RestAuthConnection.html#methodput">put</a> and  <a href="../RestAuth/RestAuthConnection.html#methoddelete">delete</a> methods.  This method takes care of service authentication, encryption  and sets the Accept headers.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> The response from the RestAuth server.</li>
+				<li><span class="field">link:</span> <a href="http://www.php.net/manual/en/class.httprequest.php">HttpRequest</a></li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthUnauthorized.html">RestAuthUnauthorized</a> When service authentication      failed.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthNotAcceptable.html">RestAuthNotAcceptable</a> When the server cannot generate     a response in the content type used by this connection.</li>
+				<li><span class="field">throws:</span> <a href="../RestAuth/RestAuthInternalServerError.html">RestAuthInternalServerError</a> When the RestAuth service     suffers from an internal error.</li>
+				<li><span class="field">throws:</span> RestAuthRuntimeException When some HTTP related error     occurs.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">HttpResponse</span>
+		<span class="method-name">
+			send
+		</span>
+					(<span class="var-type">HttpRequest</span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">HttpRequest</span>
+				<span class="var-name">$request</span><span class="var-description">: The request to use.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetCredentials" id="setCredentials"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">setCredentials</span> (line <span class="line-number">248</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Set the authentication credentials used when accessing the RestAuth  service. This method is already invoked by the constructor, so you only  have to call it when they change for some reason.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">null</span>
+		<span class="method-name">
+			setCredentials
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$user</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$password</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$user</span><span class="var-description">: The username to use</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$password</span><span class="var-description">: The password to use</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Fri, 23 Sep 2011 12:00:40 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

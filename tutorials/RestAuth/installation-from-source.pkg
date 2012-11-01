@@ -1,0 +1,154 @@
+<refentry id="{@id}">
+ <refnamediv>
+  <refname>Installation from source</refname>
+  <refpurpose>How-to install from source</refpurpose>
+ </refnamediv>
+ <refsynopsisdiv>
+  <author>
+   Mathias Ertl
+   <authorblurb>
+    {@link mailto:mati@restauth.net mati@restauth.net}
+   </authorblurb>
+  </author>
+ </refsynopsisdiv>
+ <refsect1 id="{@id requirements}">
+  <title>Requirements</title>
+  <para>php-restauth requires few external libraries:
+   <itemizedlist>
+    <listitem>PHP 5.1 or later</listitem>
+    <listitem>{@link http://php.net/manual/en/book.http.php pecl_http}</listitem>
+    <listitem>{@link http://www.phpunit.de PHPUnit} if you want to run the test-suite</listitem>
+    <listitem>{@link http://www.xdebug.org/ Xdebug} if you want to create a test coverage</listitem>
+    <listitem>{@link http://www.phpdoc.org/ phpDocumentor} if you want to generate source code
+     documentation (this page)</listitem>
+   </itemizedlist>
+  </para>
+ </refsect1>
+ 
+ <refsect1 id="{@id get_source}">
+  <title>Get source</title>
+  <refsect2 id="{@id get_source_from_git}">
+   <title>From git</title>
+   <para>This project is developed on {@link https://git.fsinf.at git.fsinf.at }. You can view the
+    source code at {@link https://git.fsinf.at/restauth/php git.fsinf.at/restauth/php}. To clone
+    the repository to a directory named "php-restauth", simply do:
+    
+    <para><programlisting language="bash">
+     git clone http://git.fsinf.at/restauth/php.git restauth-php
+    </programlisting></para>
+
+    Older versions are marked as tags. You can view available tags with
+    <code language="bash">git tag -l</code>. You
+    can use any of those versions with <code language="bash">git checkout</code>, for example
+    <code language="bash">git checkout 1.0</code>. To move back to the newest
+    version, use <code language="bash">git checkout master</code>.
+   </para>
+  </refsect2>
+  <refsect2 id="{@id get_source_official_releases}">
+   <title>Official releases</title>
+   <para>You can download official releases of php-restauth at
+    {@link https://php.restauth.net/download}.</para>
+  </refsect2>
+ </refsect1>
+
+ <refsect1 id="{@id installation}">
+  <title>Installation</title>
+   <refsect2 id="{@id installation_dependencies}">
+    <title>Install dependencies</title>
+    <para>You can use PECL to install {@link http://php.net/manual/en/book.http.php pecl_http}:
+     
+     <para><programlisting language="bash">
+      pecl install pecl_http
+     </programlisting></para>
+    </para>
+    <para>If you also want to run the test-suite, generate test coverage or generate source code
+     documentation, you will need install the required packages as well.
+    </para>
+   </refsect2>
+  <refsect2 id="{@id installation_php-restauth}">
+   <title>Install php-restauth</title>
+   <para>Installation itself is very easy. Just go to the directory where your source is located
+    ("php-restauth" in the above example) and just run:
+
+    <para><programlisting language="bash">
+     pear install -f package.xml
+    </programlisting></para>
+    
+    <note>
+     <para>On most systems, the <literal>pear install</literal> needs to run with superuser
+     privileges.</para>
+    </note>
+
+    <para>
+     You can verify that the installation worked by running this command from your home directory:
+     <para><programlisting language="bash">
+      php -r "include('RestAuth/restauth.php');"
+     </programlisting></para>
+    </para>
+     
+    <para>
+     This will throw an error if php-restauth was not installed successfully.
+    </para>
+   </para>
+  </refsect2>
+ </refsect1>
+ <refsect1 id="{@id updating}">
+  <title>Updating</title>
+  <para>If you ever want to update the source code, just use:</para>
+    <para><programlisting language="bash">
+     make clean;
+     git pull;
+     pear upgrade -f package.xml;
+    </programlisting></para>
+ </refsect1>
+ <refsect1 id="{@id run_tests}">
+  <title>Run tests</title>
+  <para>
+  <warning><para>Running the test-suite or generating a test coverage report will
+   <emphasis>remove all data</emphasis> from the running RestAuth server. Do not perform these tests
+   on a live installation.</para>
+  </warning>
+  </para>
+
+  <para>RestAuthClient features an extensive test suite using
+   {@link http://www.phpunit.de phpunit}. Since it implements a network protocol,
+   the library requires a RestAuth server to run on <literal>http://[::1]:8000</literal> that has
+   the service <literal>vowi</literal> with the password <literal>vowi</literal> preconfigured.
+   The {@link https://server.restauth.net RestAuth server}  contains the script
+   <literal>test.sh</literal> in its source code to simply start a server and add the expected
+   service.
+  </para>
+
+  <para>
+   Once you started the server, you can run the test-suite using:
+
+   <para><programlisting language="bash">
+    make test
+   </programlisting></para>
+  </para>
+   
+  <refsect2 id="{@id test_coverage}">
+   <title>Test coverage</title>
+   <para>
+    You can also generate a test coverage report by simply executing the command:
+     
+    <para><programlisting language="bash">
+     make coverage
+    </programlisting></para>
+     
+    The test coverage in HTML format will go to doc/coverage/.
+   </para>
+  </refsect2>
+ </refsect1>
+ 
+ <refsect1 id="{@id build_documentation}">
+  <title>Build documentation</title>
+  <para>To generate the most recent documentation (the newest version of the document you're
+   currently reading), just run:
+
+  <para><programlisting language="bash">
+   make doc
+  </programlisting></para>
+  </para>   
+ </refsect1>
+</refentry>

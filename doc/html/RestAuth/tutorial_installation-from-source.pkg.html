@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Installation from source</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+	<table class="tutorial-nav-box">
+	<tr>
+		<td style="width: 30%">
+							<a href="../RestAuth/tutorial_installation.pkg.html" class="nav-button">Previous</a>
+					</td>
+		<td style="text-align: center">
+							<a href="../RestAuth/tutorial_installation.pkg.html" class="nav-button">Up</a>
+					</td>
+		<td style="text-align: right; width: 30%">
+							<a href="../RestAuth/tutorial_installation-using-pear.pkg.html" class="nav-button">Next</a>
+					</td>
+	</tr>
+	<tr>
+		<td style="width: 30%">
+							<span class="detail">Installation</span>
+					</td>
+		<td style="text-align: center">
+							<span class="detail">Installation</span>
+					</td>
+		<td style="text-align: right; width: 30%">
+							<span class="detail">Installation using PEAR</span>
+					</td>
+	</tr>
+</table>
+	
+<div><a name=""></a><div class="ref-title-box"><h1 class="ref-title">Installation from source</h1>
+  <h2 class="ref-purpose">How-to install from source</h2></div>
+ <div class="ref-synopsis"><span class="author">Mathias Ertl
+   <div class="author-blurb"><a href="mailto:mati@restauth.net">mati@restauth.net</a></div></span></div>
+ <span><a name="requirements"></a><h2 class="title">Requirements</h2><p>php-restauth requires few external libraries:
+   <ul><li>PHP 5.1 or later</li>
+    <li><a href="http://php.net/manual/en/book.http.php">pecl_http</a></li>
+    <li><a href="http://www.phpunit.de">PHPUnit</a> if you want to run the test-suite</li>
+    <li><a href="http://www.xdebug.org/">Xdebug</a> if you want to create a test coverage</li>
+    <li><a href="http://www.phpdoc.org/">phpDocumentor</a> if you want to generate source code
+     documentation (this page)</li></ul></p></span>
+ 
+ <span><a name="get_source"></a><h2 class="title">Get source</h2><span><a name="get_source.get_source_from_git"></a><h3 class="title">From git</h3><p>This project is developed on <a href="https://git.fsinf.at">git.fsinf.at</a>. You can view the
+    source code at <a href="https://git.fsinf.at/restauth/php">git.fsinf.at/restauth/php</a>. To clone
+    the repository to a directory named &quot;php-restauth&quot;, simply do:
+    
+    <p><div class="src-code">git clone http://git.fsinf.at/restauth/php.git restauth-php</div></p>
+
+    Older versions are marked as tags. You can view available tags with
+    git tag -l. You
+    can use any of those versions with git checkout, for example
+    git checkout 1.0. To move back to the newest
+    version, use git checkout master.</p></span>
+  <span><a name="get_source.get_source_official_releases"></a><h3 class="title">Official releases</h3><p>You can download official releases of php-restauth at
+    <a href="https://php.restauth.net/download">https://php.restauth.net/download</a>.</p></span></span>
+
+ <span><a name="installation"></a><h2 class="title">Installation</h2><span><a name="installation.installation_dependencies"></a><h3 class="title">Install dependencies</h3><p>You can use PECL to install <a href="http://php.net/manual/en/book.http.php">pecl_http</a>:
+     
+     <p><div class="src-code">pecl install pecl_http</div></p></p>
+    <p>If you also want to run the test-suite, generate test coverage or generate source code
+     documentation, you will need install the required packages as well.</p></span>
+  <span><a name="installation.installation_php-restauth"></a><h3 class="title">Install php-restauth</h3><p>Installation itself is very easy. Just go to the directory where your source is located
+    (&quot;php-restauth&quot; in the above example) and just run:
+
+    <p><div class="src-code">pear install -f package.xml</div></p>
+    
+    <p>On most systems, the <code>pear install</code> needs to run with superuser
+     privileges.</p>
+
+    <p>You can verify that the installation worked by running this command from your home directory:
+     <p><div class="src-code">php -r &quot;include('RestAuth/restauth.php');&quot;</div></p></p>
+     
+    <p>This will throw an error if php-restauth was not installed successfully.</p></p></span></span>
+ <span><a name="updating"></a><h2 class="title">Updating</h2><p>If you ever want to update the source code, just use:</p>
+    <p><div class="src-code">make clean;
+     git pull;
+     pear upgrade -f package.xml;</div></p></span>
+ <span><a name="run_tests"></a><h2 class="title">Run tests</h2><p><span class="warning"><p>Running the test-suite or generating a test coverage report will
+   <em>remove all data</em> from the running RestAuth server. Do not perform these tests
+   on a live installation.</p></span></p>
+
+  <p>RestAuthClient features an extensive test suite using
+   <a href="http://www.phpunit.de">phpunit</a>. Since it implements a network protocol,
+   the library requires a RestAuth server to run on <code>http://[::1]:8000</code> that has
+   the service <code>vowi</code> with the password <code>vowi</code> preconfigured.
+   The <a href="https://server.restauth.net">RestAuth server</a>  contains the script
+   <code>test.sh</code> in its source code to simply start a server and add the expected
+   service.</p>
+
+  <p>Once you started the server, you can run the test-suite using:
+
+   <p><div class="src-code">make test</div></p></p>
+   
+  <span><a name="run_tests.test_coverage"></a><h3 class="title">Test coverage</h3><p>You can also generate a test coverage report by simply executing the command:
+     
+    <p><div class="src-code">make coverage</div></p>
+     
+    The test coverage in HTML format will go to doc/coverage/.</p></span></span>
+ 
+ <span><a name="build_documentation"></a><h2 class="title">Build documentation</h2><p>To generate the most recent documentation (the newest version of the document you're
+   currently reading), just run:
+
+  <p><div class="src-code">make doc</div></p></p></span></div>
+
+	<table class="tutorial-nav-box">
+	<tr>
+		<td style="width: 30%">
+							<a href="../RestAuth/tutorial_installation.pkg.html" class="nav-button">Previous</a>
+					</td>
+		<td style="text-align: center">
+							<a href="../RestAuth/tutorial_installation.pkg.html" class="nav-button">Up</a>
+					</td>
+		<td style="text-align: right; width: 30%">
+							<a href="../RestAuth/tutorial_installation-using-pear.pkg.html" class="nav-button">Next</a>
+					</td>
+	</tr>
+	<tr>
+		<td style="width: 30%">
+							<span class="detail">Installation</span>
+					</td>
+		<td style="text-align: center">
+							<span class="detail">Installation</span>
+					</td>
+		<td style="text-align: right; width: 30%">
+							<span class="detail">Installation using PEAR</span>
+					</td>
+	</tr>
+</table>
+	
+	<p class="notes" id="credit">
+		Documentation generated on Fri, 23 Sep 2011 12:00:39 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>
