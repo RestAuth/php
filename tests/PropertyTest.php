@@ -82,6 +82,15 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Function to get the given users properties without the auto-generated
+     * 'date joined' property.
+     *
+     * @param RestAuthUser $user The user of interest.
+     *
+     * @return array The properties of that user excluding the 'date joined'
+     *      property.
+     */
     public function getProperties($user)
     {
         $props = $user->getProperties();
