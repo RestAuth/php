@@ -22,7 +22,6 @@
    <para><programlisting language="bash">
     pear install RestAuth/Authentication_RestAuth
    </programlisting></para>
-   Don't forget to install {@link http://php.net/manual/en/book.http.php pecl_http}.
   </para>
  </refsect1>
  <refsect1 id="{@id update}">

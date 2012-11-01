@@ -16,7 +16,6 @@
   <para>php-restauth requires few external libraries:
    <itemizedlist>
     <listitem>PHP 5.1 or later</listitem>
-    <listitem>{@link http://php.net/manual/en/book.http.php pecl_http}</listitem>
     <listitem>{@link http://www.phpunit.de PHPUnit} if you want to run the test-suite</listitem>
     <listitem>{@link http://www.xdebug.org/ Xdebug} if you want to create a test coverage</listitem>
     <listitem>{@link http://www.phpdoc.org/ phpDocumentor} if you want to generate source code
@@ -55,13 +54,7 @@
   <title>Installation</title>
    <refsect2 id="{@id installation_dependencies}">
     <title>Install dependencies</title>
-    <para>You can use PECL to install {@link http://php.net/manual/en/book.http.php pecl_http}:
-     
-     <para><programlisting language="bash">
-      pecl install pecl_http
-     </programlisting></para>
-    </para>
-    <para>If you also want to run the test-suite, generate test coverage or generate source code
+    <para>If you want to run the test-suite, generate test coverage or generate source code
      documentation, you will need install the required packages as well.
     </para>
    </refsect2>
