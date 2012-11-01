@@ -54,6 +54,12 @@ $groupname5 = "group5 ӁӜӚ"; // cyrillic
 
 $propKey = "property 漢字"; // traditional chinese
 $propVal = "value 汉字"; // simplified chinese
+$propKey1 = "property1 漢字"; // traditional chinese
+$propVal1 = "value1 汉字"; // simplified chinese
+$propKey2 = "property1 漢字"; // traditional chinese
+$propVal2 = "value1 汉字"; // simplified chinese
+$propKey3 = "property2 漢字"; // traditional chinese
+$propVal3 = "value2 汉字"; // simplified chinese
 
 /**
  * Basic user handling tests.

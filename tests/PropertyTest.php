@@ -292,6 +292,76 @@ class PropertyTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testSetProperties()
+    {
+        global $user, $propKey1, $propVal1, $propKey2, $propVal2;
+        global $propKey3, $propVal3;
+
+        $properties = array(
+            $propKey1 => $propKey1,
+            $propKey2 => $propKey2,
+            $propKey3 => $propKey3,
+        );
+
+        $this->assertNull($user->setProperties($properties));
+
+        $retrieved = $this->getProperties($user);
+        ksort($retrieved);
+        $this->assertEquals($properties, $retrieved);
+        $this->assertEquals($propVal1, $user->getProperty($propKey1));
+        $this->assertEquals($propVal2, $user->getProperty($propKey2));
+        $this->assertEquals($propVal3, $user->getProperty($propKey3));
+    }
+
+    public function testSetPropertiesPartialOverwrite()
+    {
+        global $user, $propKey1, $propVal1, $propKey2, $propVal2;
+        global $propKey3, $propVal3;
+
+        $properties = array(
+            $propKey1 => $propKey1,
+            $propKey2 => $propKey2,
+            $propKey3 => $propKey3,
+        );
+
+        $this->assertNull($user->setProperties($properties));
+
+        $retrieved = $this->getProperties($user);
+        ksort($retrieved);
+        $this->assertEquals($properties, $retrieved);
+        $this->assertEquals($propVal1, $user->getProperty($propKey1));
+        $this->assertEquals($propVal2, $user->getProperty($propKey2));
+        $this->assertEquals($propVal3, $user->getProperty($propKey3));
+
+        // next, overwrite some properties, also creating some new ones
+        $properties[$propKey2] = 'new value';
+        $properties['new key'] = 'new property';
+        $this->assertNull($user->setProperties($properties));
+
+        $retrieved = $this->getProperties($user);
+        ksort($retrieved);
+        $this->assertEquals($properties, $retrieved);
+        $this->assertEquals($propVal1, $user->getProperty($propKey1));
+        $this->assertEquals('new value', $user->getProperty($propKey2));
+        $this->assertEquals($propVal3, $user->getProperty($propKey3));
+        $this->assertEquals('new property', $user->getProperty('new key'));
+    }
+
+    public function testSetPropertiesInvalidUser()
+    {
+        global $user, $propKey, $propVal;
+        $username = "invalid name";
+
+        $invalidUser = new RestAuthUser($this->conn, $username);
+        try {
+            $invalidUser->setProperties(array($propKey, $propVal));
+            $this->fail();
+        } catch (RestAuthResourceNotFound $e) {
+            $this->assertEquals("user", $e->getType());
+            $this->assertEquals(array($user), RestAuthUser::getAll($this->conn));
+        }
+    }
+
     /**
      * Try removing a property.
      *
