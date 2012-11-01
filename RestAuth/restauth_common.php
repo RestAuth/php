@@ -250,9 +250,9 @@ class RestAuthConnection
     public static $connection;
 
     private $handle;
-    private $ssl = false;
-    private $verifypeer;
-    private $verifyhost;
+    private $headers;
+    private $curlOptions;
+    private $contenttype;
 
     /**
      * A simple constructor.
@@ -273,17 +273,29 @@ class RestAuthConnection
      *     options chapter} for available options. This array is merged with the
      *     default array, which sets 'verifypeer' and 'verifyhost' to true.
      */
-    public function __construct($url, $user, $password, $verifypeer=false, $verifyhost=2)
+    public function __construct($url, $user, $password, $contentHandler=null, $curlOptionss=array(), $headers=array())
     {
         $this->url = rtrim($url, '/');
         $this->setCredentials($user, $password);
-        $this->handler = new RestAuthJsonHandler();
 
-        if (!strncmp($url, 'https', 5)) {
-            $this->ssl = true;
-            $this->verifypeer = $verifypeer;
-            $this->verifyhost = $verifyhost;
-        }
+        // build standard headers:
+        $this->headers = array(
+            'Authorization: ' . $this->auth_header,
+        );
+
+        $this->setContentHandler($contentHandler);
+
+        $this->curlOptions = array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_HEADER => 1,
+        );
+
+        // set SSL options:
+        //TODO: Document how to set this using the curlopts parameter
+        //if ($this->ssl) {
+        //    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, $this->verifyhost);
+        //    curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, $this->verifypeer);
+        //}
 
         self::$connection = $this;
     }
@@ -325,6 +337,17 @@ class RestAuthConnection
         $this->auth_header = 'Basic ' . base64_encode($user . ':' . $password);
     }
 
+    public function setContentHandler($handler=null) {
+        if (is_null($handler)) {
+            $this->handler = new RestAuthJsonHandler();
+        } else {
+            $this->handler = $handler;
+        }
+
+        $this->contenttype = 'Content-Type: ' . $this->handler->getMimeType();
+        $this->headers['accept'] = 'Accept: ' . $this->handler->getMimeType();
+    }
+
     /**
      * Send an HTTP request to the RestAuth service.
      *
@@ -353,31 +376,22 @@ class RestAuthConnection
     public function send($method, $url, $body=null)
     {
         // Build header array
-        $headers = array(
-            'Accept: ' . $this->handler->getMimeType(),
-            'Authorization: ' . $this->auth_header,
-        );
-
         // initialize curl handle:
         $curlHandle = curl_init($this->url . $url);
-        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curlHandle, CURLOPT_HEADER, 1);
-        curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, $method);
+        $headers = $this->headers;
+        $curlOptions = $this->curlOptions;
+
+        $curlOptions[CURLOPT_CUSTOMREQUEST] = $method;
 
         // set body if we POST/PUT:
         if (!is_null($body)) {
-            curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $body);
-            $headers[] = 'Content-Type: ' . $this->handler->getMimeType();
+            $curlOptions[CURLOPT_POSTFIELDS] = $body;
+            $headers[] = $this->contenttype;;
         }
 
-        // finally set headers
-        curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $headers);
-
-        // set SSL options:
-        if ($this->ssl) {
-            curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, $this->verifyhost);
-            curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, $this->verifypeer);
-        }
+        // finally set all options at once:
+        $curlOptions[CURLOPT_HTTPHEADER] = $headers;
+        curl_setopt_array($curlHandle, $curlOptions);
 
         $result = curl_exec($curlHandle);
         if ($result === false) {
@@ -385,6 +399,7 @@ class RestAuthConnection
         } else {
             $status = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
             $header_size = curl_getinfo($curlHandle, CURLINFO_HEADER_SIZE);
+
             $response = new RestAuthHttpResponse($status, $result, $header_size);
         }
 
