@@ -74,6 +74,8 @@ class RestAuthGroup extends RestAuthResource
      * @throws {@link RestAuthBadRequest} When the request body could not be
      *    parsed.
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthGroupExists} If the group already exists.
      * @throws {@link RestAuthPreconditionFailed} When the groupname is invalid.
      * @throws {@link RestAuthUnsupportedMediaType} The server does not support
@@ -147,6 +149,8 @@ class RestAuthGroup extends RestAuthResource
      * @return RestAuthGroup An instance representing a remote group.
      *
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the group does not exist.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
      *    returns HTTP status code 500
@@ -180,6 +184,8 @@ class RestAuthGroup extends RestAuthResource
      * @return array Array of {@link RestAuthGroup groups}.
      *
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the user does not exist.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate a
      *    response in the content type used by this connection.
@@ -237,6 +243,8 @@ class RestAuthGroup extends RestAuthResource
      * @return array Array of {@link RestAuthUser users}.
      *
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate a
      *    response in the content type used by this connection.
      * @throws {@link RestAuthResourceNotFound} When the group does not exist.
@@ -279,6 +287,8 @@ class RestAuthGroup extends RestAuthResource
      * @throws {@link RestAuthBadRequest} When the request body could not be
      *    parsed.
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the group does not exist.
      * @throws {@link RestAuthUnsupportedMediaType} The server does not support
      *    the content type used by this connection.
@@ -318,6 +328,8 @@ class RestAuthGroup extends RestAuthResource
      * @return boolean true if the user is a member, false if not
      *
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the group does not exist.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
      *    returns HTTP status code 500
@@ -360,6 +372,8 @@ class RestAuthGroup extends RestAuthResource
      * @return null
      *
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the group does not exist.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
      *     returns HTTP status code 500
@@ -391,6 +405,8 @@ class RestAuthGroup extends RestAuthResource
      * @return null
      *
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the group or user does not
      *    exist.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -433,6 +449,8 @@ class RestAuthGroup extends RestAuthResource
      * @throws {@link RestAuthBadRequest} When the request body could not be
      *    parsed.
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When either this group or
      *    the subgroup does not exist.
      * @throws {@link RestAuthUnsupportedMediaType} The server does not support
@@ -472,6 +490,8 @@ class RestAuthGroup extends RestAuthResource
      * @return array Array of {@link RestAuthGroup groups}.
      *
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate a
      *    response in the content type used by this connection.
      * @throws {@link RestAuthResourceNotFound} When the group does not exist.
@@ -510,6 +530,8 @@ class RestAuthGroup extends RestAuthResource
      * @return null
      *
      * @throws {@link RestAuthUnauthorized} When service authentication failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the group or subgroup does
      *    not exist.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service

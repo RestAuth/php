@@ -95,6 +95,8 @@ class RestAuthUser extends RestAuthResource
      *     parsed.
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthUserExists} If the user already exists.
@@ -192,6 +194,8 @@ class RestAuthUser extends RestAuthResource
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} If the user does not exist in
      *    RestAuth.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
@@ -228,6 +232,8 @@ class RestAuthUser extends RestAuthResource
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -283,6 +289,8 @@ class RestAuthUser extends RestAuthResource
      *    parsed.
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the user does exist
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
@@ -333,6 +341,8 @@ class RestAuthUser extends RestAuthResource
      *    parsed.
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
      * @throws {@link RestAuthUnsupportedMediaType} The server does not
@@ -365,6 +375,8 @@ class RestAuthUser extends RestAuthResource
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the user does exist
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
@@ -399,6 +411,8 @@ class RestAuthUser extends RestAuthResource
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the user does exist
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
@@ -439,6 +453,8 @@ class RestAuthUser extends RestAuthResource
      *    parsed.
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the user does exist
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
@@ -471,6 +487,24 @@ class RestAuthUser extends RestAuthResource
         // @codeCoverageIgnoreEnd
     }
 
+    /**
+     * Set multiple properties at once.
+     *
+     * @param array $properties An array of key/value pairs of properties to set.
+     *
+     * @throws {@link RestAuthBadRequest} When the request body could not be
+     *    parsed.
+     * @throws {@link RestAuthUnauthorized} When service authentication
+     *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
+     * @throws {@link RestAuthResourceNotFound} When the user does exist
+     * @throws {@link RestAuthInternalServerError} When the RestAuth service
+     *    returns HTTP status code 500
+     * @throws {@link RestAuthUnknownStatus} If the response status is unknown.
+     *
+     * @return null
+     */
     public function setProperties($properties)
     {
         $url = "$this->name/props/";
@@ -505,6 +539,8 @@ class RestAuthUser extends RestAuthResource
      *    parsed.
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the user does exist
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
@@ -591,6 +627,8 @@ class RestAuthUser extends RestAuthResource
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the user does exist
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
@@ -626,6 +664,8 @@ class RestAuthUser extends RestAuthResource
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the user does exist
      * @throws {@link RestAuthNotAcceptable} When the server cannot generate
      *    a response in the content type used by this connection.
@@ -688,6 +728,8 @@ class RestAuthUser extends RestAuthResource
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the group does not
      *    exist.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
@@ -719,6 +761,8 @@ class RestAuthUser extends RestAuthResource
      *    parsed.
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the group does not
      *    exist.
      * @throws {@link RestAuthUnsupportedMediaType} The server does not
@@ -751,6 +795,8 @@ class RestAuthUser extends RestAuthResource
      *
      * @throws {@link RestAuthUnauthorized} When service authentication
      *    failed.
+     * @throws {@link RestAuthForbidden} When the client is not allowed to
+     *    perform that operation.
      * @throws {@link RestAuthResourceNotFound} When the group or user does
      *    not exist.
      * @throws {@link RestAuthInternalServerError} When the RestAuth service
