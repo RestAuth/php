@@ -152,21 +152,18 @@ class UserTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($user->verifyPassword($password1));
         $this->assertFalse($user->verifyPassword(''));
-        $this->assertFalse($user->verifyPassword(null));
 
         $user = RestAuthUser::create($this->conn, $username2, '');
         $this->assertEquals($user, RestAuthUser::get($this->conn, $username2));
 
         $this->assertFalse($user->verifyPassword($password1));
         $this->assertFalse($user->verifyPassword(''));
-        $this->assertFalse($user->verifyPassword(null));
 
         $user = RestAuthUser::create($this->conn, $username3, null);
         $this->assertEquals($user, RestAuthUser::get($this->conn, $username3));
 
         $this->assertFalse($user->verifyPassword($password1));
         $this->assertFalse($user->verifyPassword(''));
-        $this->assertFalse($user->verifyPassword(null));
     }
 
     /**
@@ -365,20 +362,16 @@ class UserTest extends PHPUnit_Framework_TestCase
         $user = RestAuthUser::create($this->conn, $username1, $password1);
         $this->assertTrue($user->verifyPassword($password1));
         $this->assertFalse($user->verifyPassword(''));
-        $this->assertFalse($user->verifyPassword(null));
 
         $user->setPassword();
         $this->assertFalse($user->verifyPassword($password1));
         $this->assertFalse($user->verifyPassword(''));
-        $this->assertFalse($user->verifyPassword(null));
         $user->setPassword(null);
         $this->assertFalse($user->verifyPassword($password1));
         $this->assertFalse($user->verifyPassword(''));
-        $this->assertFalse($user->verifyPassword(null));
         $user->setPassword('');
         $this->assertFalse($user->verifyPassword($password1));
         $this->assertFalse($user->verifyPassword(''));
-        $this->assertFalse($user->verifyPassword(null));
     }
 
     /**
