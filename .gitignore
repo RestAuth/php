@@ -1,4 +1,5 @@
-*.orig.tar.gz
 *.swp
 *.swo
-*.build
+doc/
+Authentication_RestAuth-*.tgz
+Makefile.local

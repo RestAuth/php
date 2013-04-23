@@ -467,7 +467,7 @@ class RestAuthUser extends RestAuthResource
     public function setProperty($name, $value)
     {
         $url = "$this->name/props/$name";
-        $params = array('value' => $value);
+        $params = array('value' => (string)$value);
         $resp = $this->putRequest($url, $params);
         switch ($resp->getResponseCode()) {
         // todo: 200 is never tested!!!
@@ -507,6 +507,11 @@ class RestAuthUser extends RestAuthResource
      */
     public function setProperties($properties)
     {
+        # convert all properties to strings:
+        foreach ($properties as $key => $value) {
+            $properties[$key] = (string)$value;
+        }
+
         $url = "$this->name/props/";
         $resp = $this->putRequest($url, $properties);
 
@@ -556,7 +561,7 @@ class RestAuthUser extends RestAuthResource
     public function createProperty($name, $value)
     {
         $url = "$this->name/props/";
-        $params = array('prop' => $name, 'value' =>$value);
+        $params = array('prop' => $name, 'value' => (string)$value);
         $resp = $this->postRequest($url, $params);
         switch ($resp->getResponseCode()) {
         case 201:
@@ -592,7 +597,7 @@ class RestAuthUser extends RestAuthResource
     public function createPropertyTest($name, $value)
     {
         $url = "/test/users/".$this->name."/props/";
-        $params = array('prop' => $name, 'value' =>$value);
+        $params = array('prop' => $name, 'value' => (string)$value);
         $resp = $this->conn->post($url, $params);
         switch ($resp->getResponseCode()) {
         case 201:

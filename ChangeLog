@@ -1,3 +1,9 @@
+RestAuth 0.6.1 (22 April 2013)
+
+  * Convert properties to string before they are sent to the RestAuth server.
+    This has become necessary with tighter type-checking in the server
+	reference implementation.
+
 RestAuth 0.6.0 (01 November 2012)
 
   * Support for RestAuth 0.6. This includes setting multiple properties.
