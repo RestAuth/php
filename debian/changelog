@@ -1,5 +1,11 @@
 php-restauth (1:0.6.0-1) quantal; urgency=low
 
+  * Bump from upstream
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Tue, 23 Apr 2013 20:55:12 +0200
+
+php-restauth (1:0.6.0-1) quantal; urgency=low
+
   * bump from upstream. 
   * Add php5-curl insteaad of php-pecl-http as dependency
   * remove quilt from debhelper
