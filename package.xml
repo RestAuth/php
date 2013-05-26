@@ -16,10 +16,10 @@
   <email>mati@restauth.net</email>
   <active>yes</active>
  </lead>
- <date>2013-04-22</date>
- <time>23:58:12</time>
+ <date>2013-05-26</date>
+ <time>15:01:23</time>
  <version>
-  <release>0.6.1</release> 
+  <release>0.6.2</release> 
   <api>0.6</api>
  </version>
  <stability>
@@ -67,6 +67,21 @@
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.6.2</release>
+    <api>0.6</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-05-26</date>
+   <license uri="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence, version 3</license>
+   <notes>
+       Rename ContentHandler to RestAuthContentHandler to avoid nameclashes.
+   </notes>
+  </release>
   <release>
    <version>
     <release>0.6.1</release>
