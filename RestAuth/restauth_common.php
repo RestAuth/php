@@ -39,7 +39,7 @@
  * @version   Release: @package_version@
  * @link      https://php.restauth.net
  */
-abstract class ContentHandler
+abstract class RestAuthContentHandler
 {
     /**
      * Unmarshal a string.
@@ -96,7 +96,7 @@ abstract class ContentHandler
  * @version   Release: @package_version@
  * @link      https://php.restauth.net
  */
-class RestAuthJsonHandler extends ContentHandler
+class RestAuthJsonHandler extends RestAuthContentHandler
 {
     /**
      * Unmarshal a string.
@@ -303,7 +303,7 @@ class RestAuthConnection
      *     authenticating with the RestAuth service.
      * @param string         $password       The password to use for
      *     authenticating with the RestAuth service.
-     * @param ContentHandler $contentHandler The content handler used.
+     * @param RestAuthContentHandler $contentHandler The content handler used.
      *     If null, a {@link RestAuthJsonContentHandler} will be used.
      * @param array          $curlOptions    Any additional curl options
      *     to pass to this connection. See the documentation of {@link
