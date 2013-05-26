@@ -1,3 +1,7 @@
+RestAuth 0.6.2 (26 May 2013)
+
+  * Rename ContentHandler to RestAuthContentHandler to avoid nameclashes.
+
 RestAuth 0.6.1 (22 April 2013)
 
   * Convert properties to string before they are sent to the RestAuth server.

@@ -44,7 +44,7 @@ require_once 'RestAuth/restauth.php';
  * @version    Release: @package_version@
  * @link       https://php.restauth.net
  */
-class FakeContentHandler extends ContentHandler
+class FakeContentHandler extends RestAuthContentHandler
 {
     /**
      * Not really unmarshal a string.
