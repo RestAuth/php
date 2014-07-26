@@ -1,4 +1,10 @@
-php-restauth (1:0.6.2-1) quantal; urgency=low
+php-restauth (1:0.6.2-2) unstable; urgency=low
+
+  * Update maintainer address.
+
+ -- Mathias Ertl <mati@restauth.net>  Sat, 26 Jul 2014 19:07:03 +0200
+
+php-restauth (1:0.6.2-1) unstable; urgency=low
 
   * Bump from upstream
 
