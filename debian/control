@@ -3,8 +3,10 @@ Section: php
 Priority: extra
 Maintainer: Mathias Ertl <mati@restauth.net>
 Build-Depends: debhelper (>= 7.0.50), git-core, php-phpdocumentor, cdbs
-Standards-Version: 3.9.1
-Homepage: http://fs.fsinf.at/wiki/RestAuth/PHP
+Standards-Version: 3.9.5
+Homepage: https://php.restauth.net
+Vcs-Git: https://github.com/RestAuth/php.git
+Vcs-Browser: https://github.com/RestAuth/php/tree/debian
 
 Package: php-restauth
 Architecture: all

@@ -1,6 +1,7 @@
 php-restauth (1:0.6.2-2) unstable; urgency=low
 
   * Update maintainer address.
+  * Update website address, add Vcs-* fields.
 
  -- Mathias Ertl <mati@restauth.net>  Sat, 26 Jul 2014 19:07:03 +0200
 
