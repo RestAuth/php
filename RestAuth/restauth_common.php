@@ -472,7 +472,7 @@ class RestAuthConnection
         // set body if we POST/PUT:
         if (!is_null($body)) {
             $curlOptions[CURLOPT_POSTFIELDS] = $body;
-            $headers[] = $this->_contenttype;;
+            $headers[] = $this->_contenttype;
         }
 
         // finally set all options at once:
