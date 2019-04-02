@@ -1,3 +1,9 @@
+php-restauth (1:0.6.2-3) unstable; urgency=low
+
+  * Depend on php-curl instead of php5-curl
+
+ -- David Kaufmann <astra@ionic.at>  Tue, 03 Apr 2019 23:55:00 +0200
+
 php-restauth (1:0.6.2-2) unstable; urgency=low
 
   * Update maintainer address.

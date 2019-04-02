@@ -11,7 +11,7 @@ Vcs-Browser: https://github.com/RestAuth/php/tree/debian
 Package: php-restauth
 Architecture: all
 Section: php
-Depends: ${shlibs:Depends}, ${misc:Depends}, php5-curl
+Depends: ${shlibs:Depends}, ${misc:Depends}, php-curl
 Description: client library for RestAuth webservices
  This library is written in pure php and implements all features of the RestAuth
  protocol.
