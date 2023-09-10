@@ -1,3 +1,9 @@
+php-restauth (1:0.6.4-2) unstable; urgency=low
+
+  * remove php-restauth-channel dependency
+
+ -- David Kaufmann <astra@pallene.htu.tuwien.ac.at>  Sun, 10 Sep 2023 05:11:33 +0200
+
 php-restauth (1:0.6.4-1) unstable; urgency=low
 
   * bump debhelper compat to 10
