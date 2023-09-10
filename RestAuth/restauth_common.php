@@ -177,6 +177,7 @@ class RestAuthHttpResponse
     private $_raw_headers;
     private $_headers;
     private $_body;
+    private $_header_size;
 
     /**
      * A simple constructor.
@@ -227,7 +228,7 @@ class RestAuthHttpResponse
     public function getBody()
     {
         $this->_parseBody();
-        return utf8_encode($this->_body);
+        return $this->_body;
     }
 
     /**
@@ -283,6 +284,7 @@ class RestAuthHttpResponse
 class RestAuthConnection
 {
     public static $connection;
+	public static $url;
 
     private $_handler;
     private $_headers = array();

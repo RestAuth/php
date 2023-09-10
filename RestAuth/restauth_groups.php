@@ -63,6 +63,9 @@ class RestAuthGroup extends RestAuthResource
 {
     const PREFIX = '/groups/';
 
+    public static $conn;
+    public static $name;
+
     /**
      * Factory method that creates a new group in RestAuth.
      *
