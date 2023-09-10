@@ -1,8 +1,14 @@
+php-restauth (1:0.6.4-3) unstable; urgency=low
+
+  * set pear pseudochannel as upstream
+
+ -- David Kaufmann <astra@ionic.at>  Sun, 10 Sep 2023 05:34:59 +0200
+
 php-restauth (1:0.6.4-2) unstable; urgency=low
 
   * remove php-restauth-channel dependency
 
- -- David Kaufmann <astra@pallene.htu.tuwien.ac.at>  Sun, 10 Sep 2023 05:11:33 +0200
+ -- David Kaufmann <astra@ionic.at>  Sun, 10 Sep 2023 05:11:33 +0200
 
 php-restauth (1:0.6.4-1) unstable; urgency=low
 
@@ -12,7 +18,7 @@ php-restauth (1:0.6.4-1) unstable; urgency=low
   * remove install file for doc/html
   * utf8_encode is not used, application/json has to be utf8 anyway
 
- -- David Kaufmann <astra@pallene.htu.tuwien.ac.at>  Sun, 10 Sep 2023 04:07:20 +0200
+ -- David Kaufmann <astra@ionic.at>  Sun, 10 Sep 2023 04:07:20 +0200
 
 php-restauth (1:0.6.3-1) unstable; urgency=low
 
