@@ -1,3 +1,13 @@
+php-restauth (1:0.6.4-1) unstable; urgency=low
+
+  * bump debhelper compat to 10
+  * add php-pear as build dependency
+  * add pear-restauth-channel as dependency
+  * remove install file for doc/html
+  * utf8_encode is not used, application/json has to be utf8 anyway
+
+ -- David Kaufmann <astra@pallene.htu.tuwien.ac.at>  Sun, 10 Sep 2023 04:07:20 +0200
+
 php-restauth (1:0.6.3-1) unstable; urgency=low
 
   * Depend on php-curl instead of php5-curl
