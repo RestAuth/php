@@ -284,7 +284,7 @@ class RestAuthHttpResponse
 class RestAuthConnection
 {
     public static $connection;
-	public static $url;
+	public $url;
 
     private $_handler;
     private $_headers = array();

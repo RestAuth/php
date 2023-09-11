@@ -79,6 +79,9 @@ class RestAuthUser extends RestAuthResource
 {
     const PREFIX = '/users/';
 
+	public $conn;
+	public $name;
+
     /**
      * Factory method that creates a new user in the RestAuth database and
      * throws {@link RestAuthUserExists} if the user already exists.
